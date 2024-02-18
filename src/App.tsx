@@ -1,10 +1,20 @@
-
+import { Routes, Route } from "react-router-dom";
+import Equb from "./pages/Groups";
+import About from "./pages/About";
+import Home from "./pages/Home";
+import Root from "./route/Root";
 const App = () => {
   return (
-    <div className="flex justify-center items-center text-red-500 text-5xl">
-      do your task properly !
+    <div>
+      <Routes>
+        <Route path="/" element={<Root />}>
+          <Route index element={<Home />} />
+          <Route path="/group" element={<Equb />} />
+          <Route path="/about" element={<About />} />
+        </Route>
+      </Routes>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
