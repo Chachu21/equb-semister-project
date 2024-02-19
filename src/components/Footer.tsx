@@ -8,7 +8,7 @@ const Footer= () => {
           {/* Left Section: Organization Mark and Logo*/}
           <div className="mb-4 md:mb-0">
             <img
-              src="../assets/equb.jpg"
+              src="equb1.jpg"
               alt="Logo"
               className="h-12 w-auto mb-2"
             />
