@@ -28,7 +28,7 @@ const Testimonial = () => {
       comment: "Great product! It's user-friendly and efficient. 4/5 stars!",
       rating: 4,
     },
-  ];
+  ] ;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 shadow-md">

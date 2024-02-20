@@ -44,14 +44,14 @@ function Navbar() {
               }
             >
               <button className="bg-[#008B8B] hover:bg-[#7da7a7]  p-2 text-white rounded-lg w-24 h-8 flex justify-center items-center">
-                Sign In
+               <Link to='/login'> Sign In</Link>
               </button>
             </div>
           </ul>
         </div>
         <div className="hidden sm:flex">
           <button className="bg-[#008B8B] hover:bg-[#7da7a7] p-2 text-white rounded-lg w-24 h-8 flex justify-center items-center">
-            Sign In
+           <Link to='/login'> Sign In</Link>
           </button>
         </div>
         <div className="sm:hidden">

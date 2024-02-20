@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["es2020", "dom", "dom.iterable"],
-    "module": "esnext",
-    "skipLibCheck": false,
-        
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
     /* Bundler mode */
-    "moduleResolution": "node", // Change to "node" for Vite
-   
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,

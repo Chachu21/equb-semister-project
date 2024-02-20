@@ -40,7 +40,7 @@ const Service = () => {
       //   },
     ];
  return (
-   <div className="sm:mx-[50px] sm:my-[10px] bg-gray-50 ">
+   <div className="sm:mx-[50px] sm:my-[10px] bg-white ">
      <h2 className="flex justify-center items-center my-5 pt-10 text-3xl text-[#1F284F] underline underline-offset-8">
        Our Services
      </h2>

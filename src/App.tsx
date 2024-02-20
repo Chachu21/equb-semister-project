@@ -8,7 +8,7 @@ import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <div>
       <Routes>
@@ -16,22 +16,15 @@ const App: React.FC = () => {
           <Route index element={<Home />} />
           <Route path="/group" element={<Equb />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Equb />} />
-          <Route path="/register" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
+        <Route path="/forgotpassword" element ={<ForgotPassword />} />
       </Routes>
-
-      <div>
-        
-        {/* <Register />
-        <Login />
-        <ForgotPassword /> */}
-        
-      </div>
     </div>
-  );;
+  );
 };
 
-export default App;;
+export default App;
 
 

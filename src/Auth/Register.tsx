@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [fullName, setFullName] = useState<string>("");
@@ -118,9 +119,9 @@ const Register = () => {
           {/* TODO
           routes must be done latter */}
           Already have an account?
-          <a href="#" className="text-blue-500 font-semibold">
+          <Link to="/login" className="text-blue-500 font-semibold">
             Log In
-          </a>
+          </Link>
         </p>
       </div>
     </div>

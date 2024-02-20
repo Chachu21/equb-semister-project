@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -88,7 +89,7 @@ const Login = () => {
             <label className="text-gray-700 text-sm font-semibold">
               {/* TODO
                the forgot password route must be done */}
-              <a href="#">forgot password</a>
+              <Link  to="/forgotpassword">forgot password</Link>
             </label>
           </div>
         </div>
@@ -131,9 +132,9 @@ const Login = () => {
           {/* TODO
           we have to give the correct route here */}
           Don't have an account?{" "}
-          <a href="#" className="text-blue-500 font-semibold">
+          <Link to="/register" className="text-blue-500 font-semibold">
             Sign Up free
-          </a>
+          </Link>
         </p>
       </div>
     </div>
