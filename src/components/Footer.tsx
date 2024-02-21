@@ -1,17 +1,13 @@
-;
+import React from "react";
 
-const Footer= () => {
+const Footer = () => {
   return (
     <footer className="bg-white text-black py-8 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between">
           {/* Left Section: Organization Mark and Logo*/}
           <div className="mb-4 md:mb-0">
-            <img
-              src="equb1.jpg"
-              alt="Logo"
-              className="h-12 w-auto mb-2"
-            />
+            <img src="equb1.jpg" alt="Logo" className="h-12 w-auto mb-2" />
             <p className="text-md  ">
               Empowering Communities
               <br />
@@ -71,7 +67,6 @@ const Footer= () => {
                         font-weight="none"
                         font-size="none"
                         text-anchor="none"
-                        
                       >
                         <g transform="translate(-32,-32) scale(5.33333,5.33333)">
                           <path

@@ -1,3 +1,4 @@
+import React from "react";
 
 interface TestimonialData {
   name: string;
@@ -67,7 +68,7 @@ const Testimonial = () => {
                 {testimonial.rating}
               </p>
             </div>
-         {/* Testimonial content */}
+            {/* Testimonial content */}
             <div className="p-4">
               {/* Comment */}
               <p className="text-gray-800 mb-4 text-center">

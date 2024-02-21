@@ -1,7 +1,8 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../components/EqubCard";
 import { FaSearch } from "react-icons/fa";
+import React from "react";
 
 interface EqubType {
   _id: string;

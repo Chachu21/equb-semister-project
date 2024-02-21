@@ -1,11 +1,10 @@
-import  { useState } from "react";
+import React from "react";
+import { useState } from "react";
 //interfaces for typscript type checks
 interface FAQ {
   question: string;
   answer: string;
 }
-
-
 
 const FAQItem: React.FC<{ faq: FAQ }> = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +59,7 @@ const FrequentlyAskedQuestions: React.FC = () => {
       answer:
         "Description of the advantages of EQUB membership, such as access to interest-free loans, financial assistance, and community support.",
     },
-    
+
     // Add more FAQs as needed
   ];
 

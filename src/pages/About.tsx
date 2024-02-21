@@ -1,5 +1,6 @@
 import * as React from "react";
 import AboutCard from "../components/AboutCard";
+import Footer from "../components/Footer";
 
 const About = () => {
   const dummyData = [
@@ -99,7 +100,7 @@ const About = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center justify-center h-full my-12">
         <div className="w-full max-w-2xl p-6 bg-gray-100 rounded-lg shadow-lg">
           <h2 className="text-2xl text-[#1F284F] font-bold mb-4">
             Our Memories
@@ -115,6 +116,7 @@ const About = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
