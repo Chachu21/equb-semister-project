@@ -1,14 +1,18 @@
+import * as React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Links = [
-  {name:"Home", url:"/"},
-  {name:"Group",url:'/group'},
-  { name: "About", url:'/about'}
+  { name: "Home", url: "/" },
+  { name: "Group", url: "/group" },
+  { name: "About", url: "/about" },
 ];
 
 const listItems = Links.map((link) => (
-  <li key={link.name} className="px-3 py-2 cursor-pointer rounded hover:bg-sky-100">
+  <li
+    key={link.name}
+    className="px-3 py-2 cursor-pointer rounded hover:bg-sky-100"
+  >
     <Link to={link.url}> {link.name}</Link>
   </li>
 ));

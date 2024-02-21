@@ -3,6 +3,8 @@ import Equb from "./pages/Groups";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Root from "./route/Root";
+import * as React from "react";
+
 const App = () => {
   return (
     <div>
