@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Links = [
-  { name: "Home", url: "/" },
-  { name: "Group", url: "/group" },
-  { name: "About", url: "/about" },
+  {name:"Home", url:"/"},
+  {name:"Group",url:'/group'},
+  { name: "About", url:'/about'},
+ 
+  
 ];
 
 const listItems = Links.map((link) => (

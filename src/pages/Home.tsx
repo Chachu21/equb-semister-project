@@ -4,6 +4,11 @@ import * as React from "react";
 import Feature from "../components/Feature";
 import SampleEqubGroup from "../components/SampleEqubGroup";
 import HowItWorks from "../components/HowItWorks";
+import WhoisEligible from "../components/WhoisEligible";
+import FrequentlyAskedQuestions from "../components/FAQ";
+import FeedbackForm from "../components/Feedback";
+import Testimonial from "../components/Testimonial";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -13,6 +18,11 @@ const Home = () => {
       <Feature />
       <SampleEqubGroup />
       <HowItWorks />
+      <WhoisEligible />
+      <FrequentlyAskedQuestions />
+      <FeedbackForm />
+      <Testimonial />
+      <Footer />
     </section>
   );
 };

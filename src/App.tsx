@@ -3,9 +3,13 @@ import Equb from "./pages/Groups";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Root from "./route/Root";
-import * as React from "react";
+import ForgotPassword from "./Auth/ForgotPassword";
+import Login from "./Auth/Login";
+import Register from "./Auth/Register";
+import React from "react";
 
-const App = () => {
+
+const App: React.FC = () => {
   return (
     <div>
       <Routes>
@@ -13,10 +17,22 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/group" element={<Equb />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Equb />} />
+          <Route path="/register" element={<About />} />
         </Route>
       </Routes>
+
+      <div>
+        
+        {/* <Register />
+        <Login />
+        <ForgotPassword /> */}
+        
+      </div>
     </div>
-  );
+  );;
 };
 
-export default App;
+export default App;;
+
+
