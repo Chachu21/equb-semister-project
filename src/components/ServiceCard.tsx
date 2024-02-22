@@ -1,3 +1,5 @@
+import * as React from "react";
+
 interface serviceCardProps {
   title: string;
   content: string;

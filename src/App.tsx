@@ -5,8 +5,7 @@ import Home from "./pages/Home";
 import Root from "./route/Root";
 
 
-
-const App: React.FC = () => {
+const App = () => {
   return (
     <div>
       <Routes>
