@@ -1,17 +1,32 @@
+import React from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-
-// i used email to recover from forget password
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
 
-  const handleForgotPassword = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO
-    // Handle forgot password logic
-    console.log("Email:", email);
-    // Reset form field
-    setEmail("");
+    try {
+      //this is the demo will correct it soon
+      const response = await fetch("/api/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      if (response.ok) {
+        // Password reset email sent successfully
+        // You can display a success message to the user or redirect them to another page
+        console.log("Password reset email sent successfully");
+      } else {
+        // Handle error
+        console.error("Failed to send password reset email");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -46,12 +61,10 @@ const ForgotPassword = () => {
       </div>
       <div className="bg-gray-100 text-center py-4">
         <p className="text-gray-600">
-          Remembered your password?
-           {/* TODO 
-           here the login route must be './login'  */}
-          <a href="#" className="text-blue-500 font-semibold">
+          Remembered your password?{" "}
+          <Link to={"/login"} className="text-blue-500 font-semibold">
             Login now
-          </a>
+          </Link>
         </p>
       </div>
     </div>
