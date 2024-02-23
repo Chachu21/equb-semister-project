@@ -119,7 +119,10 @@ const SampleEqubGroup = () => {
             infiniteLoop={true}
             stopOnHover={false}
           >
-            <div className="grid grid-cols-3 gap-8" key="carousel-grid">
+            <div
+              className="grid lg:grid-cols-3 w-full md:grid-cols-1 sm:grid-cols-1 gap-8"
+              key="carousel-grid"
+            >
               {equbType
                 .slice(currentIndex, currentIndex + pageSize)
                 .map((equbItem) => (
