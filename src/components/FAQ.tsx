@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 //interfaces for typscript type checks
 interface FAQ {
   question: string;
@@ -10,7 +9,7 @@ const FAQItem: React.FC<{ faq: FAQ }> = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-200 shadow-md w-full">
+    <div className="border-b border-gray-200 shadow-sm w-full">
       <button
         className="flex justify-between items-center w-full py-4 focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
@@ -33,7 +32,7 @@ const FAQItem: React.FC<{ faq: FAQ }> = ({ faq }) => {
 
 const FAQs: React.FC<{ faqs: FAQ[] }> = ({ faqs }) => {
   return (
-    <div className="max-w-lg mx-auto w-full">
+    <div className="mx-auto container px-2 md:px-0 w-full flex flex-col justify-center items-center ">
       {faqs.map((faq, index) => (
         <FAQItem key={index} faq={faq} />
       ))}
@@ -64,8 +63,8 @@ const FrequentlyAskedQuestions: React.FC = () => {
   ];
 
   return (
-    <div className="py-8  w-full">
-      <h2 className="text-2xl font-semibold text-center mb-8">
+    <div className="flex flex-col justify-center items-center py-10 w-full md:px-[50px]">
+      <h2 className="text-2xl font-semibold text-center my-8">
         Frequently Asked Questions
       </h2>
       <FAQs faqs={faqs} />

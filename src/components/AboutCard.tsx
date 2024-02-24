@@ -31,6 +31,7 @@ const Card: React.FC<CardProps> = ({ fullName, image, description }) => {
         </div>
         <p className="text-sm text-center mt-2">{description}</p>
       </div>
+     
     </div>
   );
 };

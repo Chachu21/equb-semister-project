@@ -1,102 +1,148 @@
+import axios from "axios";
+import { useFormik } from "formik";
+import React from "react";
+import { Link } from "react-router-dom";
+import * as yup from "yup";
 
-import { useState } from "react";
+// Define password rules regex
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
+
+// Define the basic validation schema using Yup
+const basicSchema = yup.object().shape({
+  email: yup.string().email("Please enter a valid email").required("Required"),
+  password: yup
+    .string()
+    .min(5)
+    .matches(passwordRules, "Please create a stronger password")
+    .required("Required"),
+});
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [remember, setRemember] = useState<boolean>(false);
+  // useFormik hook for form handling
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      rememberMe: false, // Add rememberMe field for checkbox
+    },
+    validationSchema: basicSchema,
+    onSubmit: async (values, actions) => {
+      console.log("submitting muller");
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // TODO
-    // Handle login logic
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("remember:", remember);
-    // Reset form fields
-    setEmail("");
-    setPassword("");
-    setRemember(false);
-  };
+      try {
+        const response = await axios.post(
+          //will corrected soon
+          "http://localhost:5003/api/v1/users/register",
+          {
+            email: values.email, // Pass values.email
+            password: values.password, // Pass values.password
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("An error occurred:", errors);
+      }
+
+      console.log("values are :", values);
+      console.log("actions are  :", actions);
+      setTimeout(() => {
+        actions.resetForm();
+        actions.setSubmitting(false);
+      }, 1000);
+    },
+  });
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="px-6 py-8">
-        <h2 className="text-2xl font-semibold mb-6 ml-24">Login</h2>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="enter your email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="your password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold mb-4"
+    <div className="w-[50%] mx-auto  bg-white rounded-lg shadow-md overflow-hidden">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
+        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
+
+        <div className="mb-4">
+          <label
+            htmlFor="email"
+            className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Login
-          </button>
-        </form>
-      </div>
-      <div>
-        <div className="flex items-center justify-evenly">
-          <div className="mb-4 flex items-center">
+            Email
+          </label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            id="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+          />
+          {errors.email && touched.email && (
+            <p className="text-red-500 text-xs italic">{errors.email}</p>
+          )}
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="password"
+            id="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+          />
+          {errors.password && touched.password && (
+            <p className="text-red-500 text-xs italic">{errors.password}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col md:flex-row items-center justify-between mb-4">
+          <div className="flex items-center mb-2 md:mb-0">
             <input
               type="checkbox"
-              id="remember"
-              checked={remember}
-              onChange={(e) => setRemember(e.target.checked)}
+              id="rememberMe"
+              checked={values.rememberMe}
+              onChange={handleChange}
               className="mr-2"
             />
-            <label
-              htmlFor="remember"
-              className="text-gray-700 text-sm font-semibold"
-            >
-              Remember me
+            <label htmlFor="rememberMe" className="text-gray-700">
+              Remember Me
             </label>
           </div>
-
-          <div className="mb-4 flex items-center">
-            <label className="text-gray-700 text-sm font-semibold">
-              {/* TODO
-               the forgot password route must be done */}
-              <a href="#">forgot password</a>
-            </label>
-          </div>
+          <Link
+            to="/forgotpassword"
+            className="text-blue-500 text-sm md:text-base"
+          >
+            Forgot Password?
+          </Link>
         </div>
-      </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          disabled={isSubmitting}
+        >
+          Login
+        </button>
+      </form>
+
       <p className="text-center mb-2">or</p>
       <button
         type="button"
-        className="w-full flex items-center justify-center bg-white border border-gray-300 p-3 rounded-lg font-semibold mb-4"
+        className="w-[70%] mx-auto flex items-center justify-center bg-white border border-gray-200 p-5 rounded-lg font-semibold mb-4"
       >
         {/* svg is google icons */}
         <svg
@@ -126,14 +172,13 @@ const Login = () => {
         </svg>
         continue with Google
       </button>
-      <div className="bg-gray-100 text-center py-4">
-        <p className="text-gray-600">
-          {/* TODO
-          we have to give the correct route here */}
+
+      <div className=" text-center py-4">
+        <p>
           Don't have an account?{" "}
-          <a href="#" className="text-blue-500 font-semibold">
-            Sign Up free
-          </a>
+          <Link to={"/register"} className="text-blue-500 font-semibold">
+            Sign up
+          </Link>
         </p>
       </div>
     </div>
