@@ -47,16 +47,17 @@ function Navbar() {
                   : "hidden"
               }
             >
-              <button className="bg-[#008B8B] hover:bg-[#7da7a7]  p-2 text-white rounded-lg w-24 h-8 flex justify-center items-center">
+              {/* <button className="bg-[#008B8B] hover:bg-[#7da7a7]  p-2 text-white rounded-lg w-24 h-8 flex justify-center items-center">
                 Sign In
-              </button>
+              </button> */}
             </div>
           </ul>
         </div>
         <div className="hidden sm:flex">
-          <button className="bg-[#008B8B] hover:bg-[#7da7a7] p-2 text-white rounded-lg w-24 h-8 flex justify-center items-center">
+          <Link to={'/register'}  className="bg-[#008B8B] hover:bg-[#7da7a7] p-2 text-white rounded-lg w-24 h-8 flex justify-center items-center">
             Sign In
-          </button>
+          </Link>
+          
         </div>
         <div className="sm:hidden">
           <button

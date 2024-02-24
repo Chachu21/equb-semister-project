@@ -9,9 +9,6 @@ import FrequentlyAskedQuestions from "../components/FAQ";
 import FeedbackForm from "../components/Feedback";
 import Testimonial from "../components/Testimonial";
 import Footer from "../components/Footer";
-import Register from "../Auth/Register";
-import Login from "../Auth/Login";
-import ForgotPassword from "../Auth/ForgotPassword";
 
 
 
@@ -29,9 +26,7 @@ const Home = () => {
       <FeedbackForm />
       <Testimonial />
       <Footer />
-      <Register />
-      <Login />
-      <ForgotPassword />
+      
 
     </section>
   );
