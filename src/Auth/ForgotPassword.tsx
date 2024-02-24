@@ -1,5 +1,5 @@
+import React from "react";
 import { useState } from "react";
-
 
 // i used email to recover from forget password
 const ForgotPassword = () => {
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
       <div className="bg-gray-100 text-center py-4">
         <p className="text-gray-600">
           Remembered your password?
-           {/* TODO 
+          {/* TODO 
            here the login route must be './login'  */}
           <a href="#" className="text-blue-500 font-semibold">
             Login now
