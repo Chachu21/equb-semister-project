@@ -1,9 +1,10 @@
+
 interface BannerProps {
   onClose: () => void;
 }
 const Banner = ({ onClose }: BannerProps) => {
   return (
-    <div className="bg-[#FEF3D9] py-2 text-black flex justify-between items-center  px-3">
+    <div className="bg-[#FEF3D9] py-2 text-black flex justify-between items-center px-3 z-50">
       <div />
       <p className="text-center">This is a banner at the top of the navbar</p>
       <button onClick={onClose}>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -41,7 +41,7 @@ const Card: React.FC<cardProps> = ({
   const handleJoin = async () => {
     try {
       if (!user_id) {
-        navigate("/Login");
+        navigate("/group");
         return;
       }
 

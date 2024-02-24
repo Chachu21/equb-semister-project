@@ -6,6 +6,7 @@ import Root from "./route/Root";
 import ForgotPassword from "./Auth/ForgotPassword";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 const App = () => {
@@ -19,7 +20,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
-        <Route path="/forgotpassword" element ={<ForgotPassword />} />
+        <Route path="/admindashboard" element={<AdminDashboard />}></Route>
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
       </Routes>
     </div>
   );

@@ -1,4 +1,3 @@
-
 interface TestimonialData {
   name: string;
   role: string;
@@ -28,20 +27,20 @@ const Testimonial = () => {
       comment: "Great product! It's user-friendly and efficient. 4/5 stars!",
       rating: 4,
     },
-  ] ;
+  ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 shadow-md">
-      <h1 className="text-3xl font-bold mb-4 text-center">
+    <div className="flex flex-col jsutify-center items-center mx-auto px-4 space-y-32 py-10 ">
+      <h1 className="text-3xl font-bold mb-4 text-[#1F284F]">
         Everybody Loves Us
       </h1>
-      <p className="text-lg text-gray-600 mb-8 text-center">
+      {/* <p className="text-lg text-gray-600 mb-8 text-center">
         Check out some of our recent product reviews.
-      </p>
+      </p> */}
 
-      <div className="flex justify-center shadow-sm">
+      <div className="flex flex-col space-y-10 md:flex-row md:justify-center shadow-sm">
         {testimonials.map((testimonial, index) => (
-          <div key={index} className="relative max-w-sm mx-4">
+          <div key={index} className="relative max-w-sm mx-4 shadow-sm">
             {/* Stars */}
             <div className="flex justify-center items-center mt-8 mb-4">
               <div className="relative">
@@ -67,7 +66,7 @@ const Testimonial = () => {
                 {testimonial.rating}
               </p>
             </div>
-         {/* Testimonial content */}
+            {/* Testimonial content */}
             <div className="p-4">
               {/* Comment */}
               <p className="text-gray-800 mb-4 text-center">
