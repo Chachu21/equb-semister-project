@@ -84,7 +84,7 @@ const About = () => {
       </div>
 
       <div className="h-screen bg-[#690261] relative flex flex-col justify-center items-center">
-        <div className="h-20 w-80 my-6 flex justify-center items-center bg-white rounded-lg border border-gray-300">
+        <div className="h-20 w-80 flex justify-center items-center bg-white rounded-lg border border-gray-300">
           <div>
             <h2 className="text-2xl text-[#1F284F] font-bold">
               Our Team Members
@@ -92,14 +92,14 @@ const About = () => {
             <p className="text-sm text-[#1F284F]">MEET OUR TEAM!</p>
           </div>
         </div>
-        <div className="flex flex-wrap justify-center m-3 py-4 overflow-y-auto">
+        <div className="flex flex-wrap justify-center m-3 overflow-y-auto">
           {dummyData.map((data, index) => (
             <AboutCard key={index} {...data} />
           ))}
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center h-full my-12">
+      <div className="flex flex-col items-center justify-center h-full">
         <div className="w-full max-w-2xl p-6 bg-gray-100 rounded-lg shadow-lg">
           <h2 className="text-2xl text-[#1F284F] font-bold mb-4">
             Our Memories

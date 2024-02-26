@@ -3,6 +3,7 @@ import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Card from "../components/SampleEqubCard";
+import React from "react";
 
 interface EqubType {
   _id: string;
@@ -119,10 +120,7 @@ const SampleEqubGroup = () => {
             infiniteLoop={true}
             stopOnHover={false}
           >
-            <div
-              className="grid lg:grid-cols-3 w-full md:grid-cols-1 sm:grid-cols-1 gap-8"
-              key="carousel-grid"
-            >
+            <div className="grid grid-cols-3 gap-8" key="carousel-grid">
               {equbType
                 .slice(currentIndex, currentIndex + pageSize)
                 .map((equbItem) => (
@@ -135,6 +133,7 @@ const SampleEqubGroup = () => {
                     equb_Group_id={equbItem._id}
                   />
                 ))}
+               
             </div>
           </Carousel>
         </div>

@@ -29,6 +29,7 @@ const Card = ({ fullName, image, description }: CardProps) => {
         </div>
         <p className="text-sm text-center mt-2">{description}</p>
       </div>
+     
     </div>
   );
 };

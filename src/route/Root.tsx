@@ -3,7 +3,6 @@ import Navbar from "../components/Header";
 import Banner from "../components/frame";
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
-
 const Root = () => {
   const [showBanner, setShowBanner] = useState(true);
 
