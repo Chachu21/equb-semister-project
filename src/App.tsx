@@ -3,12 +3,6 @@ import Equb from "./pages/Groups";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Root from "./route/Root";
-import React from "react";
-import Register from "./Auth/Register";
-import Login from "./Auth/Login";
-import ForgotPassword from "./Auth/ForgotPassword";
-
-
 
 
  const App = () => {
@@ -21,19 +15,15 @@ import ForgotPassword from "./Auth/ForgotPassword";
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
+        </Route>
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/admin" element={<AdminDashboard />}>
+          <Route index element={<AdminContent />} />
+          <Route path="/admin/profile" element={<Profile />} />
         </Route>
       </Routes>
-
-      <div>
-        {/* <Register />
-        <Login />
-        <ForgotPassword /> */}
-      </div>
     </div>
   );
 };
 
-export default App;;
-
-
+export default App;

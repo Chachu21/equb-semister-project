@@ -13,7 +13,13 @@ const basicSchema = yup.object().shape({
     .min(3, "Username must be at least 3 characters long")
     .required("Required"),
   email: yup.string().email("Please enter a valid email").required("Required"),
-  phone : yup.string().matches(/^(09|\+2519)\d{8}$/, "Please enter a valid Ethiopian phone number").required("Required"),
+  phone: yup
+    .string()
+    .matches(
+      /^(09|\+2519)\d{8}$/,
+      "Please enter a valid Ethiopian phone number"
+    )
+    .required("Required"),
   password: yup
     .string()
     .min(5)
@@ -29,7 +35,6 @@ const basicSchema = yup.object().shape({
     .required("You must accept the terms and conditions"),
 });
 
-
 const Register = () => {
   // useFormik hook for form handling
   const {
@@ -44,7 +49,7 @@ const Register = () => {
     initialValues: {
       name: "",
       email: "",
-      phone:"",
+      phone: "",
       password: "",
       confirmPassword: "",
       agreeTerms: false, // Initial value for agreeTerms checkbox
@@ -53,28 +58,27 @@ const Register = () => {
 
     //TODO
     //we have to handle the requests
-    onSubmit: async(values,actions) => {
+    onSubmit: async (values, actions) => {
       // Define onSubmit as an arrow function
-      console.log('submitting muller');
- try {
-   const response = await axios.post(
-    //will corrected soon
-     "http://localhost:5003/api/v1/users/login",
-     {
-       email: values.email, // Pass values.email
-       password: values.password, // Pass values.password
-     }
-   );
-   console.log(response.data);
- } catch (error) {
-   console.error("An error occurred:", errors);
- }
+      console.log("submitting muller");
+      try {
+        const response = await axios.post(
+          //will corrected soon
+          "http://localhost:5003/api/v1/users/login",
+          {
+            email: values.email, // Pass values.email
+            password: values.password, // Pass values.password
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("An error occurred:", errors);
+      }
 
-
-      console.log('values are :',values);
-      console.log('actions are  :',actions);
+      console.log("values are :", values);
+      console.log("actions are  :", actions);
       setTimeout(() => {
-         actions.resetForm();
+        actions.resetForm();
         actions.setSubmitting(false);
       }, 1000);
     },

@@ -1,5 +1,4 @@
-
-import  { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
@@ -8,7 +7,6 @@ const ForgotPassword = () => {
   const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-
       //this is the demo will correct it soon
       const response = await fetch("/api/forgot-password", {
         method: "POST",
