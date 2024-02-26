@@ -6,6 +6,7 @@ import SearchUi from "../UI/SearchUi";
 
 const ManageGroups = ({  }) => {
   // Dummy data for equb groups
+  //will do the logic
   const EqubGroups = [
     {
       id: "1",
