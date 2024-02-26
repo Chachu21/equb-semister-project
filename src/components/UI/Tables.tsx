@@ -15,7 +15,7 @@ interface tableProps {
   header: header[];
   datas: tableData[];
 }
-
+import React from "react";
 const Tables = ({ header, datas }: tableProps) => {
   //     const tableData= [
   //       {

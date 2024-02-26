@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
-import SearchUi from './dasboard/adminDashboard/UI/SearchUi';
-import UserTables from './dasboard/adminDashboard/UI/UserTables';
+import SearchUi from '../UI/SearchUi';
+import UserTables from '../UI/UserTables';
+
+
 
 
 

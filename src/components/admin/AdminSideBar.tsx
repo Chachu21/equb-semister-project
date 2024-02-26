@@ -6,6 +6,7 @@ import {
   RiNotification4Line,
   RiMessage2Line,
 } from "react-icons/ri";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "../../Redux/store";
@@ -31,7 +32,7 @@ const AdminSideBar = () => {
       <Link
         to="/admin"
         className="items-center pb-4 border-b border-b-gray-800"
-      >
+        >
         <h2 className="font-bold text-2xl">
           Equb
           <span className="bg-[#008B8B] text-white px-2 rounded-md">Admin</span>
@@ -50,7 +51,7 @@ const AdminSideBar = () => {
         </li>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
-            to=""
+            to="manageuser"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 s"
           >
             <RiUserLine className="mr-3 text-xl" />
@@ -60,7 +61,7 @@ const AdminSideBar = () => {
         </li>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
-            to=""
+            to="transactions"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
           >
             <RiExchangeDollarFill className="mr-3 text-xl" />
@@ -71,7 +72,7 @@ const AdminSideBar = () => {
         <span className="text-gray-400 font-bold">Equb Groups</span>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
-            to=""
+            to="managegroups"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle"
           >
             <RiGroupLine className="mr-3 text-xl" />

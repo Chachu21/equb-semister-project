@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import ManageGroupTables from "./dasboard/adminDashboard/UI/ManageGroupTables";
-import SearchUi from "./dasboard/adminDashboard/UI/SearchUi";
+import ManageGroupTables from "../UI/ManageGroupTables";
+import SearchUi from "../UI/SearchUi";
+
 
 
 const ManageGroups = ({  }) => {

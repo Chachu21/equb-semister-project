@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
-import SearchUi from './dasboard/adminDashboard/UI/SearchUi';
+import SearchUi from '../UI/SearchUi';
+import TransactionTables from '../UI/TransactionTables';
 
-import TransactionTables from './dasboard/adminDashboard/UI/TransactionTables';
 
 const Transactions = () => {
  const header = [

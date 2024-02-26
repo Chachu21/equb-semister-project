@@ -1,3 +1,4 @@
+import React from "react";
 const Profile = () => {
   return (
     <section className="section main-section md:p-6 py-1 px-1">

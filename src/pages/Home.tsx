@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
 import ForgotPassword from "../Auth/ForgotPassword";
+import React from 'react'
 
 
 
