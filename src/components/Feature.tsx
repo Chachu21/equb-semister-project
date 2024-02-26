@@ -1,4 +1,3 @@
-import React from "react";
 import FeatureCard from "./FeatureCard";
 import {
   faSave,
@@ -53,7 +52,7 @@ const Feature = () => {
       <h2 className="flex justify-center items-center my-5 pt-10 text-3xl text-[#1F284F] underline underline-offset-8">
         Features
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 place-content-center place-items-center">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-content-center place-items-center">
         {featureData.map((card, index) => (
           <FeatureCard
             key={index}

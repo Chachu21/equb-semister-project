@@ -1,4 +1,3 @@
-import * as React from "react";
 import AboutCard from "../components/AboutCard";
 import Footer from "../components/Footer";
 

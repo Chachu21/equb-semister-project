@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const FeedbackForm = () => {
   const [name, setName] = useState<string>("");
@@ -34,9 +33,9 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="form-container max-w-md mx-auto shadow-md p-6">
-      <h2 className="text-xl font-semibold mb-4 ml-16">Feedback Form</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="form-container shadow-sm mx-auto md:mx-0 py-6 px-2 md:px-[50px] flex flex-col justify-center items-center">
+      <h2 className="text-xl font-semibold mb-4 text-center">Feedback Form</h2>
+      <form onSubmit={handleSubmit} className="w-full">
         <div className="form-group mb-4">
           <label htmlFor="name" className="block mb-1">
             Name
@@ -48,7 +47,7 @@ const FeedbackForm = () => {
             name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
         </div>
@@ -63,7 +62,7 @@ const FeedbackForm = () => {
             placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
         </div>
@@ -93,7 +92,7 @@ const FeedbackForm = () => {
             rows={4}
             value={comments}
             onChange={(e) => setComments(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
         </div>
