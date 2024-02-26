@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import DashboardView from "./DashboardView";
 import Card from "./UI/Card";
 import React from "react";
+import LineCharts from "./UI/LineChart";
 
 const SideBar = () => {
   //for sidebar open and close hse global state
@@ -162,6 +163,10 @@ const SideBar = () => {
 
         <div className="p-6">
           <Card />
+        </div>
+
+        <div className="p-6">
+          <LineCharts />
         </div>
       </main>
     </div>

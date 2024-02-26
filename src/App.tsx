@@ -9,7 +9,6 @@ import Register from "./Auth/Register";
 import React from "react";
 import AdminDashboard from "./pages/AdminDashboard";
 
-
 const App = () => {
   return (
     <div>
@@ -29,5 +28,3 @@ const App = () => {
 };
 
 export default App;
-
-
