@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Card from "../components/SampleEqubCard";
+import React from "react";
 
 interface EqubType {
   _id: string;
@@ -98,10 +99,10 @@ const SampleEqubGroup = () => {
   };
 
   return (
-    <div>
-      <div className="h-32 bg-[#1F284F] rounded-lg flex justify-center items-center mb-6">
-        <h1 className="text-white text-4xl font-bold">
-          Let's join an equb group together!
+    <div className="pt-20 px-[50px]">
+      <div className="h-32 bg-[#008B8B] rounded-lg flex justify-center items-center mb-6 py-32">
+        <h1 className="text-white text-4xl font-bold capitalize">
+          Let's join an equb group for Saving together!
         </h1>
       </div>
       <div className="flex flex-col justify-center items-center space-y-2 m-auto sm:mx-[50px] pb-10 relative">
@@ -132,6 +133,7 @@ const SampleEqubGroup = () => {
                     equb_Group_id={equbItem._id}
                   />
                 ))}
+               
             </div>
           </Carousel>
         </div>
