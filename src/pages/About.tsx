@@ -1,4 +1,3 @@
-import * as React from "react";
 import AboutCard from "../components/AboutCard";
 
 const About = () => {

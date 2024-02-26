@@ -33,22 +33,22 @@ const Login = () => {
       rememberMe: false, // Add rememberMe field for checkbox
     },
     validationSchema: basicSchema,
-    onSubmit: async(values, actions) => {
+    onSubmit: async (values, actions) => {
       console.log("submitting muller");
 
-       try {
-         const response = await axios.post(
-           //will corrected soon
-           "http://localhost:5003/api/v1/users/register",
-           {
-             email: values.email, // Pass values.email
-             password: values.password, // Pass values.password
-           }
-         );
-         console.log(response.data);
-       } catch (error) {
-         console.error("An error occurred:", errors);
-       }
+      try {
+        const response = await axios.post(
+          //will corrected soon
+          "http://localhost:5003/api/v1/users/register",
+          {
+            email: values.email, // Pass values.email
+            password: values.password, // Pass values.password
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("An error occurred:", errors);
+      }
 
       console.log("values are :", values);
       console.log("actions are  :", actions);
