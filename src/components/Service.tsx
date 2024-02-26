@@ -1,4 +1,3 @@
-import * as React from "react";
 import ServiceCard from "./ServiceCard";
 
 const Service = () => {

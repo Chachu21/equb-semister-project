@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
@@ -6,7 +5,7 @@ const Links = [
   { name: "Home", url: "/" },
   { name: "Group", url: "/group" },
   { name: "About", url: "/about" },
-  { name: "AdminDashboard", url: "/admindashboard" },
+  { name: "AdminDashboard", url: "/admin" },
 ];
 
 const Navbar = () => {

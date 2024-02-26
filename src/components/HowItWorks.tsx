@@ -1,5 +1,3 @@
-import React from "react"
-
 const HowItWorks = () => {
   return (
     <div className="flex flex-col space-y-5 mt-10 justify-center">

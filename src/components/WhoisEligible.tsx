@@ -1,5 +1,3 @@
-import React from "react";
-
 const WhoisEligible = () => {
   return (
     <div className="flex flex-col judtify-center items-center md:px-[50px] w-full pt-32 container mx-auto">
