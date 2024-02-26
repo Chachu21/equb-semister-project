@@ -6,7 +6,6 @@ import {
   RiNotification4Line,
   RiMessage2Line,
 } from "react-icons/ri";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "../../Redux/store";
@@ -32,7 +31,7 @@ const AdminSideBar = () => {
       <Link
         to="/admin"
         className="items-center pb-4 border-b border-b-gray-800"
-        >
+      >
         <h2 className="font-bold text-2xl">
           Equb
           <span className="bg-[#008B8B] text-white px-2 rounded-md">Admin</span>

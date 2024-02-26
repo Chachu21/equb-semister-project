@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ManageGroupTables from "../UI/ManageGroupTables";
 import SearchUi from "../UI/SearchUi";
 
-
-
-const ManageGroups = ({  }) => {
+const ManageGroups = ({}) => {
   // Dummy data for equb groups
   //will do the logic
   const EqubGroups = [
@@ -63,16 +61,15 @@ const ManageGroups = ({  }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredGroup, setFilteredGroup] = useState([]);
 
- const handleSearch = (searchTerm: string) => {
-   console.log("Search term:", searchTerm); // Log the search term
-   setSearchTerm(searchTerm);
-   const filteredResults: any = EqubGroups.filter((data) =>
-     data.period.toLowerCase().includes(searchTerm.toLowerCase())
-   );
-   console.log("Filtered results:", filteredResults); // Log the filtered results
-   setFilteredGroup(filteredResults);
- };
-
+  const handleSearch = (searchTerm: string) => {
+    console.log("Search term:", searchTerm); // Log the search term
+    setSearchTerm(searchTerm);
+    const filteredResults: any = EqubGroups.filter((data) =>
+      data.period.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    console.log("Filtered results:", filteredResults); // Log the filtered results
+    setFilteredGroup(filteredResults);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">

@@ -1,14 +1,10 @@
-import React,{useState} from 'react'
-import SearchUi from '../UI/SearchUi';
-import UserTables from '../UI/UserTables';
-
-
-
-
+import { useState } from "react";
+import SearchUi from "../UI/SearchUi";
+import UserTables from "../UI/UserTables";
 
 const UserManage = () => {
-// 
-  
+  //
+
   const tableData = [
     {
       id: "1",
@@ -94,16 +90,16 @@ const UserManage = () => {
     { id: "5", title: "Registration Date" },
     { id: "6", title: "Last Login Date" },
   ];
-   const [searchTerm, setSearchTerm] = useState<string>("");
-   const [filteredUser, setFilteredUser] = useState([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filteredUser, setFilteredUser] = useState([]);
 
-   const handleSearch = (searchTerm: string) => {
-     setSearchTerm(searchTerm);
-     const filteredResults: any = tableData.filter((data) =>
-       data.fullName.toLowerCase().includes(searchTerm.toLowerCase())
-     );
-     setFilteredUser(filteredResults);
-   };
+  const handleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm);
+    const filteredResults: any = tableData.filter((data) =>
+      data.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUser(filteredResults);
+  };
   return (
     <div>
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage users</h1>
@@ -114,6 +110,6 @@ const UserManage = () => {
       />
     </div>
   );
-}
+};
 
-export default UserManage
+export default UserManage;
