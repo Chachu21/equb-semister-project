@@ -12,6 +12,7 @@ import AdminContent from "./components/admin/AdminContent";
 import UserManage from "./components/admin/UserManage";
 import Transactions from "./components/admin/Transactions";
 import ManageGroups from "./components/admin/ManageGroups";
+import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
 
 
 
@@ -33,6 +34,10 @@ import ManageGroups from "./components/admin/ManageGroups";
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
           <Route path="/admin/profile" element={<Profile />} />
+          <Route
+            path="/admin/grouphistory"
+            element={<UserGroupDetailHistory />}
+          />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />
