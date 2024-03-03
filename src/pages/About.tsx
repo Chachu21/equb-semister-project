@@ -1,5 +1,4 @@
 import AboutCard from "../components/AboutCard";
-import Footer from "../components/Footer";
 
 const About = () => {
   const dummyData = [
@@ -52,16 +51,16 @@ const About = () => {
 
             <div className="flex items-center justify-center w-full mt-6 sm:mt-0 sm:w-1/2">
               <img
-                className="w-full h-full sm:max-w-3xl"
-                src="https://merakiui.com/images/components/Catalogue-pana.svg"
-                alt="Catalogue-pana.svg"
+                src="equb1.jpg"
+                alt="Logo"
+                className="w-full h-full sm:max-w-3xl" // Apply rounded-full class for circular shape
               />
             </div>
           </div>
         </div>
       </section>
-      <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-8 p-4 sm:p-8">
-        <div className="flex flex-col items-start bg-gray-100 p-6 rounded-lg mb-4 sm:mb-0">
+      <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-8 p-4 sm:p-8 my-10">
+        <div className="flex flex-col items-start bg-white shadow-lg p-6 rounded-lg mb-4 sm:mb-0">
           <h2 className="text-xl sm:text-2xl text-[#1F284F] font-bold mb-2 sm:mb-4">
             Vision
           </h2>
@@ -71,7 +70,7 @@ const About = () => {
             collaboration, reshaping financial cooperation.
           </p>
         </div>
-        <div className="flex flex-col items-start bg-gray-100 p-6 rounded-lg">
+        <div className="flex flex-col items-start bg-white shadow-lg p-6 rounded-lg">
           <h2 className="text-xl sm:text-2xl text-[#1F284F] font-bold mb-2 sm:mb-4">
             Mission
           </h2>
@@ -84,7 +83,7 @@ const About = () => {
       </div>
 
       <div className="h-screen bg-[#690261] relative flex flex-col justify-center items-center">
-        <div className="h-20 w-80 flex justify-center items-center bg-white rounded-lg border border-gray-300">
+        <div className="h-20 w-80 my-4 flex justify-center items-center bg-white rounded-lg border border-gray-300">
           <div>
             <h2 className="text-2xl text-[#1F284F] font-bold">
               Our Team Members
@@ -99,8 +98,8 @@ const About = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center h-full">
-        <div className="w-full max-w-2xl p-6 bg-gray-100 rounded-lg shadow-lg">
+      <div className="flex flex-col items-center justify-center my-10 h-full">
+        <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg">
           <h2 className="text-2xl text-[#1F284F] font-bold mb-4">
             Our Memories
           </h2>
@@ -115,7 +114,7 @@ const About = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

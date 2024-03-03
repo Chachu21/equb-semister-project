@@ -11,32 +11,86 @@ import {
 } from "recharts";
 
 interface DataItem {
-  name: string;
-  members: number;
-  amount: number;
-  amt: number;
+  month: string;
+  daily: number;
+  weekly: number;
+  monthly: number;
 }
 
 const LineCharts: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([
     {
-      name: "Daily",
-      members: 4000,
-      amount: 2400,
-      amt: 2400,
+      month: "January",
+      daily: 30,
+      weekly: 15,
+      monthly: 90,
     },
     {
-      name: "Weekly",
-      members: 3000,
-      amount: 1398,
-      amt: 2210,
+      month: "February",
+      daily: 40,
+      weekly: 60,
+      monthly: 80,
     },
     {
-      name: "Monthly",
-      members: 2000,
-      amount: 9800,
-      amt: 2290,
+      month: "March",
+      daily: 55,
+      weekly: 72,
+      monthly: 120,
     },
+    {
+      month: "April",
+      daily: 31,
+      weekly: 59,
+      monthly: 90,
+    },
+    {
+      month: "May",
+      daily: 48,
+      weekly: 64,
+      monthly: 156,
+    },
+    {
+      month: "June",
+      daily: 59,
+      weekly: 78,
+      monthly: 190,
+    },{
+      month: "July",
+      daily: 30,
+      weekly: 15,
+      monthly: 90,
+    },
+    {
+      month: "August",
+      daily: 40,
+      weekly: 60,
+      monthly: 80,
+    },
+    {
+      month: "September",
+      daily: 55,
+      weekly: 72,
+      monthly: 120,
+    },
+    {
+      month: "October",
+      daily: 31,
+      weekly: 59,
+      monthly: 90,
+    },
+    {
+      month: "November",
+      daily: 48,
+      weekly: 64,
+      monthly: 156,
+    },
+    {
+      month: "December",
+      daily: 59,
+      weekly: 78,
+      monthly: 190,
+    },
+    // Add more data for other months as needed
   ]);
 
   return (
@@ -53,17 +107,31 @@ const LineCharts: React.FC = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="month" />
         <YAxis />
         <Tooltip />
         <Legend />
         <Line
           type="monotone"
-          dataKey="amount"
+          dataKey="daily"
           stroke="#8884d8"
           activeDot={{ r: 8 }}
+          name="Daily"
         />
-        <Line type="monotone" dataKey="members" stroke="#82ca9d" />
+        <Line
+          type="monotone"
+          dataKey="weekly"
+          stroke="#82ca9d"
+          activeDot={{ r: 8 }}
+          name="Weekly"
+        />
+        <Line
+          type="monotone"
+          dataKey="monthly"
+          stroke="#ff7300"
+          activeDot={{ r: 8 }}
+          name="Monthly"
+        />
       </LineChart>
     </ResponsiveContainer>
   );

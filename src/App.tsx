@@ -12,10 +12,9 @@ import AdminContent from "./components/admin/AdminContent";
 import UserManage from "./components/admin/UserManage";
 import Transactions from "./components/admin/Transactions";
 import ManageGroups from "./components/admin/ManageGroups";
+import AccountDetail from "./components/admin/AccountDetail";
 
-
-
- const App = () => {
+const App = () => {
   return (
     <div>
       <Routes>
@@ -33,6 +32,7 @@ import ManageGroups from "./components/admin/ManageGroups";
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
           <Route path="/admin/profile" element={<Profile />} />
+          <Route path="/admin/accountdetail" element={<AccountDetail />} />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />

@@ -112,6 +112,18 @@ const AdminSideBar = () => {
         </li>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
+            to="accountdetail"
+            className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
+          >
+            <RiNotification4Line className="mr-3 text-xl" />
+            <span className="text-sm">Account Detail</span>
+            <span className=" md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-600 bg-red-200 rounded-full">
+              5
+            </span>
+          </Link>
+        </li>
+        <li onClick={handleCloseSideBar} className="mb-1 group">
+          <Link
             to="/admin/profile"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
           >
