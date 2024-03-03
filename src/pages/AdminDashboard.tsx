@@ -11,7 +11,7 @@ const AdminDashboard = () => {
       <AdminSideBar />
       <div
         className={`w-full relative flex flex-col flex-1 bg-gray-200 min-h-screen transition-all ${
-          isClicked ? "md:ml-0" : "md:ml-64 md:w-[calc(100%-256px)]"
+          isClicked ? "md:ml-0" : "md:w-[calc(100%-256px)]  md:ml-64"
         }`}
       >
         <AdminHeader />
