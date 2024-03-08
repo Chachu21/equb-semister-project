@@ -47,7 +47,7 @@ const FeedbackForm = () => {
             name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+            className="w-full p-3 border border-gray-300 rounded-lg outline-[#008B8B] shadow-sm"
             required
           />
         </div>
@@ -62,7 +62,7 @@ const FeedbackForm = () => {
             placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm outline-[#008B8B]"
             required
           />
         </div>
@@ -92,21 +92,21 @@ const FeedbackForm = () => {
             rows={4}
             value={comments}
             onChange={(e) => setComments(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+            className="w-full p-3 border border-gray-300 outline-[#008B8B] rounded-lg shadow-sm"
             required
           />
         </div>
         <div className="flex justify-end ">
           <button
             type="button"
-            className="btn btn-cancel  text-blue-500 mr-7"
+            className="btn btn-cancel  text-[#008B8B] mr-7"
             onClick={handleCancel}
           >
             Cancel
           </button>
           <button
             type="submit"
-            className=" bg-blue-500 text-white p-3 rounded-lg font-semibold mb-4"
+            className=" bg-[#008B8B] hover:bg-[#7da7a7] text-white p-3 rounded-lg font-semibold mb-4"
           >
             Submit
           </button>

@@ -13,7 +13,6 @@ import UserManage from "./components/admin/UserManage";
 import Transactions from "./components/admin/Transactions";
 import ManageGroups from "./components/admin/ManageGroups";
 import AccountDetail from "./components/admin/AccountDetail";
-import UserGroupManageTables from "./components/UI/UserGroupManageTables";
 import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
 
 const App = () => {
@@ -33,7 +32,10 @@ const App = () => {
           <Route path="/admin/manageuser" element={<UserManage />} />
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
-          <Route path="/admin/grouphistory" element={<UserGroupDetailHistory />} />
+          <Route
+            path="/admin/grouphistory"
+            element={<UserGroupDetailHistory />}
+          />
 
           {/* <Route path="/admin/profile" element={<Profile />} /> */}
           <Route path="/admin/accountdetail" element={<AccountDetail />} />
