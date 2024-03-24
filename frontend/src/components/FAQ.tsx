@@ -63,8 +63,8 @@ const FrequentlyAskedQuestions: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center py-10 w-full md:px-[50px]">
-      <h2 className="text-2xl font-semibold text-center my-8">
+    <div className="flex flex-col justify-center items-center py-5 md:py-40 w-full container mx-auto">
+      <h2 className="text-2xl font-semibold text-center my-8 text-[#1F284F]">
         Frequently Asked Questions
       </h2>
       <FAQs faqs={faqs} />

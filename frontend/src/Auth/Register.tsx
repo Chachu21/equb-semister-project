@@ -1,19 +1,21 @@
-import axios from "axios";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { useMutation } from "@apollo/client";
+import {
+  SignupMutationVariables,
+  SignupMutationResponse,
+  SIGNUP_MUTATION,
+} from "../generated/mutations";
 
 // Define password rules regex
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
 // Define the basic validation schema using Yup
 const basicSchema = yup.object().shape({
-  name: yup
-    .string()
-    .min(3, "Username must be at least 3 characters long")
-    .required("Required"),
+  full_name: yup.string().required("Required"),
   email: yup.string().email("Please enter a valid email").required("Required"),
-  phone: yup
+  phone_no: yup
     .string()
     .matches(
       /^(09|\+2519)\d{8}$/,
@@ -36,6 +38,13 @@ const basicSchema = yup.object().shape({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [signup, { data }] = useMutation<
+    SignupMutationResponse,
+    SignupMutationVariables
+  >(SIGNUP_MUTATION);
+  console.log(data);
+
   // useFormik hook for form handling
   const {
     values,
@@ -47,40 +56,39 @@ const Register = () => {
     handleSubmit,
   } = useFormik({
     initialValues: {
-      name: "",
+      full_name: "",
       email: "",
-      phone: "",
+      phone_no: "",
       password: "",
       confirmPassword: "",
-      agreeTerms: false, // Initial value for agreeTerms checkbox
+      agreeTerms: false,
     },
     validationSchema: basicSchema,
-
-    //TODO
-    //we have to handle the requests
-    onSubmit: async (values, actions) => {
-      // Define onSubmit as an arrow function
-      console.log("submitting muller");
+    // Handle form submission
+    onSubmit: async (formValues) => {
       try {
-        const response = await axios.post(
-          //will corrected soon
-          "http://localhost:5003/api/v1/users/login",
-          {
-            email: values.email, // Pass values.email
-            password: values.password, // Pass values.password
-          }
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error("An error occurred:", errors);
-      }
+        console.log("form value", formValues);
+        const response = await signup({
+          variables: {
+            full_name: formValues.full_name,
+            email: formValues.email,
+            phone_no: formValues.phone_no,
+            password: formValues.password,
+            agreeTerms: formValues.agreeTerms,
+          },
+        });
+        console.log(response);
 
-      console.log("values are :", values);
-      console.log("actions are  :", actions);
-      setTimeout(() => {
-        actions.resetForm();
-        actions.setSubmitting(false);
-      }, 1000);
+        if (response?.data?.signup) {
+          // Handle successful signup
+          console.log("Signup successful:", response.data);
+          localStorage.setItem("user", JSON.stringify(response.data.signup));
+          // Redirect or handle authentication as needed
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Signup error:", error);
+      }
     },
   });
 
@@ -95,24 +103,26 @@ const Register = () => {
         </h2>
         <div className="mb-4">
           <label
-            htmlFor="name"
+            htmlFor="full_name"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Full Name
           </label>
           <input
             type="text"
-            id="name"
-            placeholder="Enter your fullname"
-            value={values.name}
+            id="full_name"
+            placeholder="Enter your full name"
+            value={values.full_name}
             onChange={handleChange}
             onBlur={handleBlur}
             className={`w-full p-3 border ${
-              errors.name && touched.name ? "border-red-500" : "border-gray-300"
+              errors.full_name && touched.full_name
+                ? "border-red-500"
+                : "border-gray-300"
             } rounded-lg shadow-sm`}
           />
-          {errors.name && touched.name && (
-            <p className="text-red-500 text-xs italic">{errors.name}</p>
+          {errors.full_name && touched.full_name && (
+            <p className="text-red-500 text-xs italic">{errors.full_name}</p>
           )}
         </div>
 
@@ -138,7 +148,7 @@ const Register = () => {
         </div>
         <div className="mb-4">
           <label
-            htmlFor="phone"
+            htmlFor="phone_no"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Phone Number
@@ -146,14 +156,14 @@ const Register = () => {
           <input
             type="text"
             placeholder="Enter your phone number"
-            id="phone"
-            value={values.phone}
+            id="phone_no"
+            value={values.phone_no}
             onChange={handleChange}
             onBlur={handleBlur}
             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
           />
-          {errors.phone && touched.phone && (
-            <p className="text-red-500 text-xs italic">{errors.phone}</p>
+          {errors.phone_no && touched.phone_no && (
+            <p className="text-red-500 text-xs italic">{errors.phone_no}</p>
           )}
         </div>
         <div className="mb-4">

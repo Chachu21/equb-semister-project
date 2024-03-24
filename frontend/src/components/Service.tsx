@@ -49,6 +49,7 @@ const Service = () => {
             title={card.title}
             content={card.content}
             url={card.url}
+            key={card.title}
           />
         ))}
       </div>

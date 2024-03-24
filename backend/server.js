@@ -1,16 +1,16 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import userRouter from "./src/routes/userRoute.js/user.js";
+
 const app = express();
-const port = 3000; // You can change the port number if needed
-
-// Middleware to parse JSON requests
+const port = process.env.PORT || 3000;
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Sample route
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+//routing
 
-// Start the server
+app.use("/api/v1/auth", userRouter);
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}`);
 });

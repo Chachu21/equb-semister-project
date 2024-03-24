@@ -30,7 +30,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="flex flex-col jsutify-center items-center mx-auto px-4 space-y-32 py-10 ">
+    <div className="container bg-white dark:bg-gray-900 dark:text-white flex flex-col jsutify-evenly items-center mx-auto  space-y-32 py-10 ">
       <h1 className="text-3xl font-bold mb-4 text-[#1F284F]">
         Everybody Loves Us
       </h1>
@@ -40,14 +40,14 @@ const Testimonial = () => {
 
       <div className="flex flex-col space-y-10 md:flex-row md:justify-center shadow-sm">
         {testimonials.map((testimonial, index) => (
-          <div key={index} className="relative max-w-sm mx-4 shadow-sm">
+          <div key={index} className="relative max-w-sm  shadow-sm">
             {/* Stars */}
             <div className="flex justify-center items-center mt-8 mb-4">
               <div className="relative">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <span
                     key={index}
-                    className={`absolute -top-9 -left-4 text-3xl ${
+                    className={`absolute -top-9 -left-4 text-4xl ${
                       index < testimonial.rating
                         ? "text-yellow-500"
                         : "text-gray-300"

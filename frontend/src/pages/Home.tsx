@@ -8,9 +8,6 @@ import FrequentlyAskedQuestions from "../components/FAQ";
 import FeedbackForm from "../components/Feedback";
 import Testimonial from "../components/Testimonial";
 
-
-
-
 const Home = () => {
   return (
     <section className="flex flex-col space-y-10 m-auto sm:mx-[50px] min-h-screen">

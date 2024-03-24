@@ -1,0 +1,39 @@
+table:
+  name: users
+  schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - agreeTerms
+        - email
+        - full_name
+        - password
+        - phone_no
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - email
+        - full_name
+        - password
+        - phone_no
+        - id
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - agreeTerms
+        - email
+        - full_name
+        - password
+        - phone_no
+      filter:
+        id:
+          _eq: X-Hasura-User_Id
+      check: null
+    comment: ""
