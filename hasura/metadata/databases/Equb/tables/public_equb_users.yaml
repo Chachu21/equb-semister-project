@@ -1,0 +1,3 @@
+table:
+  name: equb_users
+  schema: public
