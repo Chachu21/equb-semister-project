@@ -70,7 +70,7 @@ const AdminSideBar = () => {
         <span className="text-gray-400 font-bold">Equb Groups</span>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
-            to="managegroups"
+            to="/admin/createGroup"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle"
           >
             <RiGroupLine className="mr-3 text-xl" />

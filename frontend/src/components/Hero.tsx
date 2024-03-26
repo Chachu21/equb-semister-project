@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="bg-white dark:bg-gray-900 dark:text-white items-center">
+    <section className="bg-white dark:bg-gray-900 dark:text-white items-center w-full">
       <div className="container py-5 mx-auto">
         <div className="items-center md:flex">
           <div className="w-full md:w-1/2">

@@ -10,7 +10,7 @@ import Testimonial from "../components/Testimonial";
 
 const Home = () => {
   return (
-    <section className="flex flex-col space-y-10 m-auto sm:mx-[50px] min-h-screen">
+    <section className="flex flex-col space-y-10 min-h-screen bg-white dark:bg-gray-700 dark:text-white">
       <Hero />
       <Service />
       <HowItWorks />

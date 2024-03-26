@@ -7,13 +7,13 @@ import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import ForgotPassword from "./Auth/ForgotPassword";
 import AdminDashboard from "./pages/AdminDashboard";
-import Payment from "./components/payment/payment";
 import AdminContent from "./components/admin/AdminContent";
 import UserManage from "./components/admin/UserManage";
 import Transactions from "./components/admin/Transactions";
 import ManageGroups from "./components/admin/ManageGroups";
 import AccountDetail from "./components/admin/AccountDetail";
 import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
+import CreateGroup from "./components/UserDashboard/CreateGroup";
 
 const App = () => {
   return (
@@ -39,7 +39,7 @@ const App = () => {
 
           {/* <Route path="/admin/profile" element={<Profile />} /> */}
           <Route path="/admin/accountdetail" element={<AccountDetail />} />
-          <Route path="/admin/profile" element={<Payment />} />
+          <Route path="/admin/createGroup" element={<CreateGroup />} />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />
