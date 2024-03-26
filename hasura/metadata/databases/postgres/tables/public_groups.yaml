@@ -1,0 +1,13 @@
+table:
+  name: groups
+  schema: public
+object_relationships:
+  - name: users
+    using:
+      manual_configuration:
+        column_mapping:
+          userId: id
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: public
