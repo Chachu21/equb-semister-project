@@ -1,14 +1,9 @@
-import { useMutation } from "@apollo/client";
+import axios from "axios";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import * as yup from "yup";
-import {
-  LOGIN_MUTATION,
-  LoginMutationResponse,
-  LoginMutationVariables,
-} from "../generated/mutations";
 import logins from "../../public/logins.jpg";
-
 // Define password rules regex
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
@@ -23,14 +18,6 @@ const basicSchema = yup.object().shape({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  const [login, { error, loading }] = useMutation<
-    LoginMutationResponse,
-    LoginMutationVariables
-  >(LOGIN_MUTATION);
-  error && <p>{error.message}</p>;
-  loading && <p>loading....</p>;
   // useFormik hook for form handling
   const {
     values,
@@ -47,37 +34,32 @@ const Login = () => {
       rememberMe: false, // Add rememberMe field for checkbox
     },
     validationSchema: basicSchema,
-    onSubmit: async (formValues, actions) => {
-      console.log(formValues);
+    onSubmit: async (values, actions) => {
+      console.log("submitting muller");
+
       try {
-        const response = await login({
-          variables: {
-            email: formValues.email,
-            password: formValues.password,
-          },
-        });
-        if (response?.data?.login) {
-          // Handle successful signup
-          console.log("Signup successful:", response.data);
-          localStorage.setItem(
-            "user",
-            JSON.stringify(response.data.login.token)
-          );
-          actions.setSubmitting(false);
-          // Redirect or handle authentication as needed
-          navigate("/admin");
-        }
+        const response = await axios.post(
+          //will corrected soon
+          "http://localhost:5003/api/v1/users/register",
+          {
+            email: values.email, // Pass values.email
+            password: values.password, // Pass values.password
+          }
+        );
+        console.log(response.data);
       } catch (error) {
-        console.error("Login error:", error);
-        actions.resetForm();
-        actions.setSubmitting(false);
+        console.error("An error occurred:", errors);
       }
+
+      console.log("values are :", values);
+      console.log("actions are  :", actions);
       setTimeout(() => {
         actions.resetForm();
         actions.setSubmitting(false);
       }, 1000);
     },
   });
+
 
   return (
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center content-center mt-1 mb-20 md:mt-5">

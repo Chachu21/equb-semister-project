@@ -4,11 +4,6 @@ import feedback from "../../public/feedback.png";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  COMMENT_MUTATION,
-  CommentResponse,
-  CommentVaribles,
-} from "../generated/comment";
 
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
@@ -18,9 +13,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const FeedbackForm = () => {
-  const [addComments] = useMutation<CommentResponse, CommentVaribles>(
-    COMMENT_MUTATION
-  );
+ 
 
   const formik = useFormik({
     initialValues: {
@@ -42,22 +35,8 @@ const FeedbackForm = () => {
     rating: number;
   }) => {
     // Handle form submission
-    try {
-      const response = await addComments({
-        variables: {
-          full_name: values.full_name,
-          email: values.email,
-          content: values.content,
-          rating: values.rating,
-        },
-      });
-
-      if (response.data?.insert_comment_one.email) {
-        toast.success("successfully sent your comment, thanks so much!!!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  console.log(values);
+  
 
     // Reset form fields
     formik.resetForm();
