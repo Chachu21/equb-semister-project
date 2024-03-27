@@ -1,16 +1,21 @@
-import express from "express";
-import cors from "cors";
-import userRouter from "./src/routes/userRoute.js/user.js";
+const express = require("express");
 
+require("dotenv").config();
+
+const cors = require("cors");
+const connectToDB = require("./config/db_config");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT ||5000;
+
+//for database connection
+connectToDB();
+//middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-//routing
 
-app.use("/api/v1/auth", userRouter);
+//server listen
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`server is running on port ${port}`);
 });
+
+module.exports = app;
