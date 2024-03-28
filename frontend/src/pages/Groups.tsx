@@ -6,20 +6,20 @@ import React from "react";
 
 interface EqubType {
   _id: string;
-  amount_of_deposit: number;
-  equb_type_id: string;
-  total_Members: number;
+  amount: number;
+  types: string;
+  member: number;
   status: string; // Assuming this property exists in your data
-  createdAt: Date;
+  createdOn: Date;
 }
 
 const Equb = () => {
   const [isSearched, setIsSearched] = useState(false);
   const [equbType, setEqubType] = useState<EqubType[]>([]);
   const [queries, setQueries] = useState<{
-    type?: string;
+    types?: string;
     amount?: number;
-    members?: number;
+    member?: number;
   }>({});
   const [filteredData, setFilteredData] = useState<EqubType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -29,17 +29,15 @@ const Equb = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5003/api/v1/groups/search`,
+          `http://localhost:5000/api/v1/group/get`,
           {
             params: {
               ...queries,
               page: currentPage,
-              pageSize: 8,
-              sort: "-createdAt", // Sort by createdAt attribute in descending order
+              pageSize: 10,
             },
           }
         );
-        console.log(response.data);
 
         setEqubType(response.data.searchResult);
         setTotalPages(response.data.totalPages);
@@ -56,13 +54,13 @@ const Equb = () => {
     setCurrentPage(1);
     try {
       const response = await axios.get(
-        `http://localhost:5003/api/v1/groups/search`,
+        `http://localhost:5000/api/v1/group/get`,
         {
           params: {
             ...queries,
             page: 1, // Always reset to page 1 when submitting the form
-            pageSize: 9,
-            sort: "-createdAt", // Sort by createdAt attribute in descending order
+            pageSize: 10,
+            // sort: "-createdAt", // Sort by createdAt attribute in descending order
           },
         }
       );
@@ -80,7 +78,7 @@ const Equb = () => {
   };
 
   return (
-    <div className="flex flex-col relative justify-center items-center space-y-2 m-auto sm:mx-[50px] pb-10">
+    <div className="container mx-auto flex flex-col relative justify-center items-center space-y-2 pb-10">
       <div className="justify-center w-full z-0 bg-[#008B8B] items-center flex  flex-col space-y-10 py-5">
         <div className="text-center text-white font-bold text-[24px] ">
           Strengthening Collective Investing! Together, let's accumulate money.
@@ -88,24 +86,24 @@ const Equb = () => {
         <form
           action=""
           onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row  items-center justify-center gap-2"
+          className="flex flex-col lg:flex-row  items-center justify-center gap-2"
         >
           <select
-            id="type"
-            name="type"
-            value={queries.type || ""}
+            id="types"
+            name="types"
+            value={queries.types || ""}
             onChange={(e) =>
               setQueries((prevState) => ({
                 ...prevState,
-                type: e.target.value,
+                types: e.target.value,
               }))
             }
-            className="bg-gray-100 outline-none border-2 border-gray-300 pl-3 w-full sm:w-[250px] h-10 rounded-[10px]  placeholder:text-[18px] leading-4 font-normal"
+            className="bg-gray-100 outline-none border-2 border-gray-300 pl-3 w-full md:w-[250px] h-10 rounded-[10px]  placeholder:text-[18px] leading-4 font-normal"
           >
             <option value="">Select equb type</option>
-            <option value="64905b0bafe7ffbb048ac95f">Monthly</option>
-            <option value="649b35dfa8e66ccd7073efd5">Weekly</option>
-            <option value="64905af2afe7ffbb048ac95e">Daily</option>
+            <option value="monthly">Monthly</option>
+            <option value="weekly">Weekly</option>
+            <option value="daily">Daily</option>
           </select>
 
           <input
@@ -119,42 +117,42 @@ const Equb = () => {
               }))
             }
             type="number"
-            className="bg-gray-100 outline-none border-2 border-gray-300 pl-3 w-full sm:w-[250px] h-10 rounded-[10px]  placeholder:text-[18px] leading-4 font-normal"
+            className="bg-gray-100 outline-none border-2 border-gray-300 pl-3 w-full md:w-[250px] h-10 rounded-[10px]  placeholder:text-[18px] leading-4 font-normal"
             placeholder="amount of deposit"
           />
 
           <input
-            id="members"
-            name="members"
-            value={queries.members || ""}
+            id="member"
+            name="member"
+            value={queries.member || ""}
             onChange={(e) =>
               setQueries((prevState) => ({
                 ...prevState,
-                members: e.target.value ? parseInt(e.target.value) : undefined,
+                member: e.target.value ? parseInt(e.target.value) : undefined,
               }))
             }
             type="number"
-            className="bg-gray-100 outline-none border-2 border-gray-300 pl-3 w-full sm:w-[250px] h-10  rounded-[10px] placeholder:text-[18px] leading-4 font-normal"
+            className="bg-gray-100 outline-none border-2 border-gray-300 pl-3 w-full md:w-[250px] h-10  rounded-[10px] placeholder:text-[18px] leading-4 font-normal"
             placeholder="number of members"
           />
 
           <button
             type="submit"
-            className="bg-blue-400 h-10 flex px-[14px] justify-center items-center rounded-[5px] cursor-pointer"
+            className="bg-blue-400 h-10 flex md:w-fit w-full px-[14px] justify-center items-center rounded-[5px] cursor-pointer"
           >
             <FaSearch color="white" />
           </button>
         </form>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3  gap-8 flex-wrap ">
+      <div className="w-full md:container md:mx-auto md:max-w-7xl grid grid-cols-1 md:grid-cols-3 md:gap-8 gap-3 ">
         {filteredData.length > 0 ? (
           filteredData.map((equbItem) => (
             <Card
               key={equbItem._id}
-              amount={equbItem.amount_of_deposit}
-              equb_type_id={equbItem.equb_type_id}
-              No_member={equbItem.total_Members}
-              createdAt={equbItem.createdAt}
+              amount={equbItem.amount}
+              types={equbItem.types}
+              No_member={equbItem.member}
+              createdAt={equbItem.createdOn}
               equb_Group_id={equbItem._id}
             />
           ))
@@ -164,10 +162,10 @@ const Equb = () => {
           equbType.map((equbItem) => (
             <Card
               key={equbItem._id}
-              amount={equbItem.amount_of_deposit}
-              equb_type_id={equbItem.equb_type_id}
-              No_member={equbItem.total_Members}
-              createdAt={equbItem.createdAt}
+              amount={equbItem.amount}
+              types={equbItem.types}
+              No_member={equbItem.member}
+              createdAt={equbItem.createdOn}
               equb_Group_id={equbItem._id}
             />
           ))

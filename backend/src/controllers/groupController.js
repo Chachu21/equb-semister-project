@@ -130,7 +130,7 @@ export const joinGroup = async (req, res) => {
 
 export const getGroups = async (req, res) => {
   try {
-    const { types, amount, members, page = 1, pageSize = 10 } = req.query; // Set defaults for page and pageSize
+    const { types, amount, member, page = 1, pageSize = 10 } = req.query; // Set defaults for page and pageSize
 
     const conditions = [];
 
@@ -148,10 +148,10 @@ export const getGroups = async (req, res) => {
       }
     }
 
-    if (members) {
+    if (member) {
       try {
-        const parsedMembers = parseInt(members);
-        conditions.push({ members: { $eq: parsedMembers } });
+        const parsedMembers = parseInt(member);
+        conditions.push({ member: { $eq: parsedMembers } });
       } catch (error) {
         return res.status(400).json({ error: "Invalid members format" });
       }

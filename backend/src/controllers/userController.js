@@ -15,7 +15,6 @@ export const createUser = async (req, res) => {
     imageUrl,
   } = req.body;
   try {
-    console.log(req.body);
     // Check if the user with the same phone number or email already exists
     const existingUser = await User.findOne({
       $or: [{ phone }, { email }],
@@ -110,15 +109,17 @@ export const deleteUser = async (req, res) => {
 };
 
 export const loginController = async function (req, res) {
-  const { email, password } = req.body;
+  const { email, password, phone } = req.body;
 
   try {
     // Find the user based on the phone number
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      $or: [{ phone }, { email }],
+    });
 
     // Check if the user exists
     if (!user) {
-      return res.status(401).json({ error: "Invalid email credentials" });
+      return res.status(401).json({ error: "Invalid  credentials" });
     }
 
     // Compare the password with the hashed password
@@ -126,13 +127,17 @@ export const loginController = async function (req, res) {
 
     // Check if the password is correct
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ error: "Invalid credentioals" });
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, email }, "equb", {
-      expiresIn: "1m",
-    });
+    const token = jwt.sign(
+      { userId: user._id, email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1m",
+      }
+    );
 
     // Send the token in the response
     res.status(200).json({ user_id: user._id, token });

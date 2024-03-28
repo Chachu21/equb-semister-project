@@ -24,11 +24,9 @@ const userSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-     
     },
     agreeTerms: {
       type: Boolean,
-      
     },
     groups: [
       {

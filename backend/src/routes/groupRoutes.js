@@ -6,7 +6,7 @@ import {
   getGroups,
   joinGroup,
 } from "../controllers/groupController.js";
-import { verifyToken } from "../utils/jwtMiddleware.js";
+import { verifyToken } from "../midleware/jwtMiddleware.js";
 
 const groupRouter = express.Router();
 
