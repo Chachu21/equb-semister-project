@@ -104,15 +104,15 @@ export const deleteUser = async (req, res) => {
 };
 
 export const loginController = async function (req, res) {
-  const { phone_number, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     // Find the user based on the phone number
-    const user = await User.findOne({ phone_number });
+    const user = await User.findOne({ email });
 
     // Check if the user exists
     if (!user) {
-      return res.status(401).json({ error: "Invalid phone credentials" });
+      return res.status(401).json({ error: "Invalid email credentials" });
     }
 
     // Compare the password with the hashed password
@@ -124,7 +124,7 @@ export const loginController = async function (req, res) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, phone_number }, "equb", {
+    const token = jwt.sign({ userId: user._id, email }, "equb", {
       expiresIn: "1m",
     });
 

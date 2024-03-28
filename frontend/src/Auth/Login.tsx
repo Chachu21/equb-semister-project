@@ -1,8 +1,12 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import logins from "../../public/logins.jpg";
+import { loginSuccess } from "../Redux/Features/userSlice";
+
 // Define password rules regex
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
@@ -17,6 +21,9 @@ const basicSchema = yup.object().shape({
 });
 
 const Login = () => {
+
+  const dispatch = useDispatch();
+
   // useFormik hook for form handling
   const {
     values,
@@ -39,12 +46,15 @@ const Login = () => {
       try {
         const response = await axios.post(
           //will corrected soon
-          "http://localhost:5003/api/v1/users/register",
+          "http://localhost:5000/api/v1/users/login",
           {
             email: values.email, // Pass values.email
             password: values.password, // Pass values.password
           }
         );
+        const userData = response.data; // Assuming response contains user data
+        dispatch(loginSuccess(userData)); // Dispatch loginSuccess action with user data
+        console.log("Login successful");
         console.log(response.data);
       } catch (error) {
         console.error("An error occurred:", errors);
@@ -58,7 +68,6 @@ const Login = () => {
       }, 1000);
     },
   });
-
 
   return (
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center content-center mt-1 mb-20 md:mt-5">
