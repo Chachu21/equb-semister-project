@@ -5,7 +5,7 @@ import User from "../models/users.js";
 // Create User
 export const createUser = async (req, res) => {
   const {
-    full_name,
+    name,
     phone_number,
     address,
     password,
@@ -14,11 +14,13 @@ export const createUser = async (req, res) => {
     imageUrl,
   } = req.body;
   try {
+    console.log(req.body);
     // Check if the user with the same phone number or email already exists
     const existingUser = await User.findOne({
       $or: [{ phone_number }, { email }],
     });
     if (existingUser) {
+      console.log(existingUser.phone_number, existingUser.email);
       return res.status(400).json({
         error: "User with this phone number or email already exists",
       });
@@ -29,7 +31,7 @@ export const createUser = async (req, res) => {
 
     // Create a new user object
     const newUser = new User({
-      full_name,
+      name,
       phone_number,
       address,
       password: hashedPassword,
@@ -93,7 +95,8 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const deletedUser = await User.findByIdAndRemove(userId);
+    console.log(userId);
+    const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -104,11 +107,11 @@ export const deleteUser = async (req, res) => {
 };
 
 export const loginController = async function (req, res) {
-  const { phone_number, password } = req.body;
+  const { phone_number, password, email } = req.body;
 
   try {
     // Find the user based on the phone number
-    const user = await User.findOne({ phone_number });
+    const user = await User.findOne({ email });
 
     // Check if the user exists
     if (!user) {
@@ -124,9 +127,13 @@ export const loginController = async function (req, res) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, phone_number }, "equb", {
-      expiresIn: "1m",
-    });
+    const token = jwt.sign(
+      { userId: user._id, phone: user.phone_number, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     // Send the token in the response
     res.status(200).json({ user_id: user._id, token });

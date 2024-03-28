@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
-    full_name: {
+    name: {
       type: String,
     },
 
@@ -26,6 +26,12 @@ const userSchema = mongoose.Schema(
       type: String,
       unique: true,
     },
+    groups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
   },
   { timestamps: true }
 );
