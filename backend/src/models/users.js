@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema(
   {
-    full_name: {
+    name: {
       type: String,
     },
 
-    phone_number: {
+    phone: {
       type: String,
     },
     address: {
@@ -24,7 +24,11 @@ const userSchema = mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      unique: true,
+     
+    },
+    agreeTerms: {
+      type: Boolean,
+      
     },
   },
   { timestamps: true }
