@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
 
-    phone_number: {
+    phone: {
       type: String,
     },
     address: {
@@ -24,7 +24,11 @@ const userSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      unique: true,
+     
+    },
+    agreeTerms: {
+      type: Boolean,
+      
     },
     groups: [
       {

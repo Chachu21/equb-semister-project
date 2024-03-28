@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 // Define password rules regex
@@ -36,6 +36,7 @@ const basicSchema = yup.object().shape({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   // useFormik hook for form handling
   const {
     values,
@@ -64,13 +65,16 @@ const Register = () => {
       try {
         const response = await axios.post(
           //will corrected soon
-          "http://localhost:5003/api/v1/users/login",
+          "http://localhost:5000/api/v1/users/signUp",
           {
             email: values.email, // Pass values.email
             password: values.password, // Pass values.password
+            phone: values.phone, // Pass values.email
+            agreeTerms: values.agreeTerms,
           }
         );
         console.log(response.data);
+        navigate("/login");
       } catch (error) {
         console.error("An error occurred:", errors);
       }

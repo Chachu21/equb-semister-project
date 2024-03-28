@@ -7,7 +7,7 @@ import userRouter from "./routes/userRoute.js";
 import groupRouter from "./routes/groupRoutes.js";
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -17,8 +17,8 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/group", groupRouter);
 //connect to the database
 createDatabase();
-
+//localhost:3000/api/v1/users/signUp
 // Start the server
-app.listen(port, () => {
+http: app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
