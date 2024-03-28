@@ -5,18 +5,19 @@ import User from "../models/users.js";
 // Create User
 export const createUser = async (req, res) => {
   const {
-    full_name,
-    phone_number,
+    name,
+    phone,
     address,
     password,
     bank_account_no,
     email,
+    agreeTerms,
     imageUrl,
   } = req.body;
   try {
     // Check if the user with the same phone number or email already exists
     const existingUser = await User.findOne({
-      $or: [{ phone_number }, { email }],
+      $or: [{ phone }, { email }],
     });
     if (existingUser) {
       return res.status(400).json({
@@ -29,17 +30,19 @@ export const createUser = async (req, res) => {
 
     // Create a new user object
     const newUser = new User({
-      full_name,
-      phone_number,
+      name,
+      phone,
       address,
       password: hashedPassword,
       bank_account_no,
       email,
+      agreeTerms,
       imageUrl,
     });
     // Save the user to the database
-    await newUser.save();
-
+   const savedUser= await newUser.save();
+    // Log the saved user details
+    console.log("Saved user:", savedUser);
     // Send a success response
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
