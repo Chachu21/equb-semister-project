@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import logins from "../../public/logins.jpg";
 import { loginSuccess } from "../Redux/Features/userSlice";
@@ -21,8 +20,12 @@ const basicSchema = yup.object().shape({
 });
 
 const Login = () => {
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const isLogin: boolean = useSelector(
+  //   (state: RootState) => state.user.isLogin
+  // );
+  // const user: any = useSelector((state: RootState) => state.user.user);
 
   // useFormik hook for form handling
   const {
@@ -56,10 +59,10 @@ const Login = () => {
         dispatch(loginSuccess(userData)); // Dispatch loginSuccess action with user data
         console.log("Login successful");
         console.log(response.data);
+        navigate("/admin");
       } catch (error) {
         console.error("An error occurred:", errors);
       }
-
       console.log("values are :", values);
       console.log("actions are  :", actions);
       setTimeout(() => {
