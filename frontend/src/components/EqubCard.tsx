@@ -4,19 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 interface cardProps {
+  name: string;
   amount: number;
   No_member: number;
   createdAt: Date;
   types: string;
   equb_Group_id: string;
+  status: string;
 }
 
 const Card: React.FC<cardProps> = ({
+  name,
   amount,
   No_member,
   createdAt,
   types,
   equb_Group_id,
+  status,
 }) => {
   const [members, setMembers] = useState<number>(0);
   const navigate = useNavigate();
@@ -58,32 +62,38 @@ const Card: React.FC<cardProps> = ({
     day: "numeric",
     month: "numeric",
     year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
   });
 
   return (
     <div className="mt-5">
-      <div className="flex container mx-auto flex-col p-5 md:p-6 space-y-4 justify-between items-start h-[340px] md:w-[360px] w-full  bg-white text-center border border-gray-300 dark:bg-neutral-700">
-        <div className="flex flex-col justify-evenly items-start space-y-8">
-          <div className=" flex font-bold text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
-            <span className="text-normal text-[18px] mr-5">type :</span>
-            {types}
+      <div className="flex container mx-auto flex-col p-5 md:p-6 space-y-4 justify-between items-start h-[340px] md:w-[400px] w-full  bg-white text-center border border-gray-300 dark:bg-neutral-700">
+        <div className="flex justify-between">
+          <div className="flex flex-col justify-evenly items-start space-y-8">
+            <div className=" flex font-normal text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
+              <span className="text-normal text-[18px] mr-5">Name :</span>
+              <span className="font-pacifico">{name}</span>
+            </div>
+            <div className=" flex font-normal text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
+              <span className="text-normal text-[18px] mr-5">type :</span>
+              {types}
+            </div>
+            <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
+              Members:
+              <span className="ml-5 font-bold">
+                ( {members}/{No_member} )<span className="px-3">joined</span>
+              </span>
+            </div>
+            <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
+              Amount: <span className="ml-5 font-bold"> {amount} Birr</span>
+            </div>
+            <div className="text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
+              <span>Created At:</span>
+              <span className="ml-5 font-bold">{formattedCreatedAt}.</span>
+            </div>
           </div>
-          <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
-            Members:
-            <span className="ml-5 font-bold">
-              ( {members}/{No_member} )<span className="px-3">joined</span>
-            </span>
-          </div>
-          <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
-            Amount: <span className="ml-5 font-bold"> {amount} Birr</span>
-          </div>
-          <div className="text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
-            <span>Created At:</span>
-            <span className="ml-5 font-bold">{formattedCreatedAt}.</span>
-          </div>
+          <span className="text-lg bg-yellow-200 rounded-lg  text-blue-900 h-fit px-3 py-1 font-semibold italic">
+            {status}
+          </span>
         </div>
         <button
           type="button"

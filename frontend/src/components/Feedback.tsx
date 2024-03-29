@@ -1,25 +1,23 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import feedback from "../../public/feedback.png";
-import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name is required"),
+  name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  content: Yup.string().required("content are required"),
+  comment: Yup.string().required("comment are required"),
   rating: Yup.number().required("Rating is required"),
 });
 
 const FeedbackForm = () => {
- 
-
   const formik = useFormik({
     initialValues: {
-      full_name: "",
+      name: "",
       email: "",
-      content: "",
+      comment: "",
       rating: 0,
     },
     validationSchema: validationSchema,
@@ -29,14 +27,20 @@ const FeedbackForm = () => {
   });
 
   const handleSubmit = async (values: {
-    full_name: string;
+    name: string;
     email: string;
-    content: string;
+    comment: string;
     rating: number;
   }) => {
     // Handle form submission
-  console.log(values);
-  
+    console.log(values);
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/comment/create",
+      values
+    );
+
+    toast.success("Successfully commented");
+    console.log(response.data);
 
     // Reset form fields
     formik.resetForm();
@@ -67,21 +71,21 @@ const FeedbackForm = () => {
           className="w-full order-2 md:order-2"
         >
           <div className="form-group mb-4">
-            <label htmlFor="full_name" className="block mb-1">
+            <label htmlFor="name" className="block mb-1">
               Full name
             </label>
             <input
               type="text"
               placeholder="enter your full name"
-              id="full_name"
-              name="full_name"
-              value={formik.values.full_name}
+              id="name"
+              name="name"
+              value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className="w-full p-3 border border-gray-300 rounded-lg outline-[#008B8B] shadow-sm"
             />
-            {formik.touched.full_name && formik.errors.full_name ? (
-              <div className="text-red-500">{formik.errors.full_name}</div>
+            {formik.touched.name && formik.errors.name ? (
+              <div className="text-red-500">{formik.errors.name}</div>
             ) : null}
           </div>
           <div className="form-group mb-4">
@@ -125,17 +129,17 @@ const FeedbackForm = () => {
           </div>
           <div className="form-group mb-4">
             <textarea
-              id="content"
-              name="content"
-              placeholder="Add content"
+              id="comment"
+              name="comment"
+              placeholder="Add comment"
               rows={4}
-              value={formik.values.content}
+              value={formik.values.comment}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className="w-full p-3 border border-gray-300 outline-[#008B8B] rounded-lg shadow-sm"
             />
-            {formik.touched.content && formik.errors.content ? (
-              <div className="text-red-500">{formik.errors.content}</div>
+            {formik.touched.comment && formik.errors.comment ? (
+              <div className="text-red-500">{formik.errors.comment}</div>
             ) : null}
           </div>
           <div className="flex justify-between md:justify-end items-center ">

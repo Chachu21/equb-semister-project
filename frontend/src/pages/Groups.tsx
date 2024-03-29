@@ -6,6 +6,7 @@ import React from "react";
 
 interface EqubType {
   _id: string;
+  name: string;
   amount: number;
   types: string;
   member: number;
@@ -144,16 +145,18 @@ const Equb = () => {
           </button>
         </form>
       </div>
-      <div className="w-full md:container md:mx-auto md:max-w-7xl grid grid-cols-1 md:grid-cols-3 md:gap-8 gap-3 ">
+      <div className="w-full md:container md:mx-auto md:max-w-7xl grid grid-cols-1 md:grid-cols-3 md:gap-14 gap-3 ">
         {filteredData.length > 0 ? (
           filteredData.map((equbItem) => (
             <Card
               key={equbItem._id}
+              name={equbItem.name}
               amount={equbItem.amount}
               types={equbItem.types}
               No_member={equbItem.member}
               createdAt={equbItem.createdOn}
               equb_Group_id={equbItem._id}
+              status={equbItem.status}
             />
           ))
         ) : isSearched ? (
@@ -162,11 +165,13 @@ const Equb = () => {
           equbType.map((equbItem) => (
             <Card
               key={equbItem._id}
+              name={equbItem.name}
               amount={equbItem.amount}
               types={equbItem.types}
               No_member={equbItem.member}
               createdAt={equbItem.createdOn}
               equb_Group_id={equbItem._id}
+              status={equbItem.status}
             />
           ))
         )}
