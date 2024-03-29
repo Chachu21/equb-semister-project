@@ -12,7 +12,7 @@ const Card = () => {
     const fetchStatusCounts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5003/api/v1/groups/equbStatusCounts`
+          `http://localhost:5000/api/v1/group/all`
         );
         setStatusCounts(response.data);
       } catch (error) {

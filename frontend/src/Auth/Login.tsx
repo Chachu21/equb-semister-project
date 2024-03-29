@@ -22,10 +22,6 @@ const basicSchema = yup.object().shape({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const isLogin: boolean = useSelector(
-  //   (state: RootState) => state.user.isLogin
-  // );
-  // const user: any = useSelector((state: RootState) => state.user.user);
 
   // useFormik hook for form handling
   const {
@@ -44,8 +40,6 @@ const Login = () => {
     },
     validationSchema: basicSchema,
     onSubmit: async (values, actions) => {
-      console.log("submitting muller");
-
       try {
         const response = await axios.post(
           //will corrected soon
@@ -57,14 +51,11 @@ const Login = () => {
         );
         const userData = response.data; // Assuming response contains user data
         dispatch(loginSuccess(userData)); // Dispatch loginSuccess action with user data
-        console.log("Login successful");
-        console.log(response.data);
+        localStorage.setItem("user", JSON.stringify(userData));
         navigate("/admin");
       } catch (error) {
         console.error("An error occurred:", errors);
       }
-      console.log("values are :", values);
-      console.log("actions are  :", actions);
       setTimeout(() => {
         actions.resetForm();
         actions.setSubmitting(false);

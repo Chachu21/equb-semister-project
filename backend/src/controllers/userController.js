@@ -135,7 +135,7 @@ export const loginController = async function (req, res) {
       { userId: user._id, email },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1m",
+        expiresIn: "1d",
       }
     );
 

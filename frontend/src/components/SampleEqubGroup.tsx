@@ -74,7 +74,6 @@ const SampleEqubGroup = () => {
         }
       );
       setEqubType(response.data.searchResult);
-      console.log(response.data);
     };
     smapleGroup();
   }, [queries]);

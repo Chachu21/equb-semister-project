@@ -1,7 +1,10 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { RootState } from "../Redux/store";
+import Modal from "./Model/JoinModel";
 
 interface cardProps {
   name: string;
@@ -23,9 +26,16 @@ const Card: React.FC<cardProps> = ({
   status,
 }) => {
   const [members, setMembers] = useState<number>(0);
+  const [showModal, setShowModal] = useState(false);
+  const isLogin = useSelector((state: RootState) => state.user.isLogin);
   const navigate = useNavigate();
-  const userStored = JSON.parse(localStorage.getItem("user_id") || "{}");
-  const user_id = userStored.user_id;
+  const userData = localStorage.getItem("user");
+  const token = userData ? JSON.parse(userData).token : "";
+
+  const handleLogin = () => {
+    // Redirect to the login page
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchSingleEqubgroup = async () => {
@@ -40,21 +50,35 @@ const Card: React.FC<cardProps> = ({
 
   const handleJoin = async () => {
     try {
-      if (!user_id) {
-        navigate("/Login");
+      if (!isLogin && !token) {
+        setShowModal(true);
         return;
       }
 
-      const joinResponse = await axios.get(
-        `http://localhost:5000/api/v1/group/join/${equb_Group_id}`
+      const joinResponse = await axios.post(
+        `http://localhost:5000/api/v1/group/join/${equb_Group_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      toast.success("Successfully joined group");
-      console.log(joinResponse.data);
-
-      // Add any additional logic based on the join response
+      if (joinResponse.status === 200) {
+        toast.success("Successfully joined group");
+      }
     } catch (error) {
-      console.error(error);
+      const axiosError = error as AxiosError<{ error: string }>;
+      if (
+        axiosError.response &&
+        axiosError.response.data &&
+        axiosError.response.data.error === "UserAlreadyJoined"
+      ) {
+        toast.warning("You are already a member of this group");
+      } else {
+        toast.error("Failed to join group");
+      }
     }
   };
 
@@ -105,6 +129,11 @@ const Card: React.FC<cardProps> = ({
           Join Us
         </button>
       </div>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onLogin={handleLogin}
+      />
     </div>
   );
 };
