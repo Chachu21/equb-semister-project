@@ -1,43 +1,42 @@
 import axios from "axios";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 interface cardProps {
+  name: string;
   amount: number;
   No_member: number;
   createdAt: Date;
-  equb_type_id: string;
+  types: string;
   equb_Group_id: string;
+  status: string;
 }
 
 const Card: React.FC<cardProps> = ({
+  name,
   amount,
   No_member,
   createdAt,
-  equb_type_id,
+  types,
   equb_Group_id,
+  status,
 }) => {
-  const [typeName, setTypeName] = useState<string>("");
+  const [members, setMembers] = useState<number>(0);
   const navigate = useNavigate();
   const userStored = JSON.parse(localStorage.getItem("user_id") || "{}");
   const user_id = userStored.user_id;
 
   useEffect(() => {
-    const fetchTypeName = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5003/api/v1/types/${equb_type_id}`
-        );
-        setTypeName(response.data.equb_type_name);
-      } catch (error) {
-        console.error(error);
-      }
+    const fetchSingleEqubgroup = async () => {
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/group/get/${equb_Group_id}`
+      );
+      setMembers(response.data.group.members.length);
     };
 
-    fetchTypeName();
-  }, [equb_type_id]);
+    fetchSingleEqubgroup();
+  }, [equb_Group_id]);
 
   const handleJoin = async () => {
     try {
@@ -46,18 +45,10 @@ const Card: React.FC<cardProps> = ({
         return;
       }
 
-      const checkResponse = await axios.get(
-        `http://localhost:5003/api/v1/groups/check/${user_id}/${equb_Group_id}`
+      const joinResponse = await axios.get(
+        `http://localhost:5000/api/v1/group/join/${equb_Group_id}`
       );
 
-      if (checkResponse.data.exists) {
-        toast.warning("Already joined equb group");
-        return;
-      }
-
-      const joinResponse = await axios.post(
-        `http://localhost:5003/api/v1/groups/join/${user_id}/${equb_Group_id}`
-      );
       toast.success("Successfully joined group");
       console.log(joinResponse.data);
 
@@ -71,29 +62,38 @@ const Card: React.FC<cardProps> = ({
     day: "numeric",
     month: "numeric",
     year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
   });
 
   return (
     <div className="mt-5">
-      <div className="flex flex-col p-5 space-y-4 justify-between items-start h-[340px] w-[340px] bg-white text-center shadow-[0_2px_15px_-3px_rgba(0,0,0,0.15),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-        <div className="flex flex-col justify-start items-start space-y-8">
-          <div className=" flex font-bold text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
-            <span className="text-normal text-[18px] mr-5">type :</span>
-            {typeName}
+      <div className="flex container mx-auto flex-col p-5 md:p-6 space-y-4 justify-between items-start h-[340px] md:w-[400px] w-full  bg-white text-center border border-gray-300 dark:bg-neutral-700">
+        <div className="flex justify-between">
+          <div className="flex flex-col justify-evenly items-start space-y-8">
+            <div className=" flex font-normal text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
+              <span className="text-normal text-[18px] mr-5">Name :</span>
+              <span className="font-pacifico">{name}</span>
+            </div>
+            <div className=" flex font-normal text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
+              <span className="text-normal text-[18px] mr-5">type :</span>
+              {types}
+            </div>
+            <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
+              Members:
+              <span className="ml-5 font-bold">
+                ( {members}/{No_member} )<span className="px-3">joined</span>
+              </span>
+            </div>
+            <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
+              Amount: <span className="ml-5 font-bold"> {amount} Birr</span>
+            </div>
+            <div className="text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
+              <span>Created At:</span>
+              <span className="ml-5 font-bold">{formattedCreatedAt}.</span>
+            </div>
           </div>
-          <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
-            Members: <span className="ml-5 font-bold"> 999/{No_member}</span>
-          </div>
-          <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
-            Amount: <span className="ml-5 font-bold"> {amount}</span>
-          </div>
-          <div className="text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
-            <span>Created At:</span>
-            <span className="ml-5 font-bold">{formattedCreatedAt}.</span>
-          </div>
+          <span className="text-lg bg-yellow-200 rounded-lg  text-blue-900 h-fit px-3 py-1 font-semibold italic">
+            {status}
+          </span>
         </div>
         <button
           type="button"

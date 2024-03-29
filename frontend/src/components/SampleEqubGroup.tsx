@@ -1,134 +1,119 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Card from "../components/SampleEqubCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Card from "../components/EqubCard";
+import { useNavigate } from "react-router-dom";
 
 interface EqubType {
   _id: string;
-  amount_of_deposit: number;
-  equb_type_id: string;
-  total_Members: number;
+  name: string;
+  amount: number;
+  types: string;
+  member: number;
   status: string;
-  createdAt: Date;
+  createdOn: Date;
 }
 
+const settings = {
+  dots: true,
+  arrows: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  cssEase: "linear",
+  pauseOnHover: true,
+  pauseOnFocus: true,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 800,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 640,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
+
 const SampleEqubGroup = () => {
+  const navigate = useNavigate();
+
   const [equbType, setEqubType] = useState<EqubType[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const pageSize = 3;
+  const queries = {};
 
-  let settings = {
-    dots: true,
-    arrows: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    cssEase: "linear",
-    pauseOnHover: true,
-    pauseOnFocus: true,
-  };
+  //Fetch recently created  sample equb group
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      handleNext();
-    }, 3000);
-
-    return () => clearInterval(intervalId);
-  }, [currentIndex]);
-
-  const fetchData = async () => {
-    try {
+    const smapleGroup = async () => {
       const response = await axios.get(
-        `http://localhost:5003/api/v1/groups/search`,
+        "http://localhost:5000/api/v1/group/get",
         {
           params: {
+            ...queries,
             page: 1,
-            pageSize,
-            sort: "-createdAt",
+            pageSize: 5,
           },
         }
       );
       setEqubType(response.data.searchResult);
-    } catch (error) {
-      console.log("Failed to fetch equbType data:", error);
-    }
-  };
-
-  const handleNext = async () => {
-    if (currentIndex + pageSize < equbType.length) {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-    } else {
-      try {
-        const response = await axios.get(
-          `http://localhost:5003/api/v1/groups/search`,
-          {
-            params: {
-              page: Math.floor(equbType.length / pageSize) + 1,
-              pageSize,
-              sort: "-createdAt",
-            },
-          }
-        );
-        setEqubType((prevEqubType) => [
-          ...prevEqubType,
-          ...response.data.searchResult,
-        ]);
-        setCurrentIndex(0); // Reset currentIndex to 0
-      } catch (error) {
-        console.log("Failed to fetch equbType data:", error);
-      }
-    }
-  };
-
-  const handlePrev = async () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prevIndex) => prevIndex - 1);
-    } else {
-      try {
-        const response = await axios.get(
-          `http://localhost:5003/api/v1/groups/search`,
-          {
-            params: {
-              page: 1,
-              pageSize,
-              sort: "-createdAt",
-            },
-          }
-        );
-        setEqubType([...response.data.searchResult, ...equbType]);
-        setCurrentIndex(0); // Reset currentIndex to 0
-      } catch (error) {
-        console.log("Failed to fetch equbType data:", error);
-      }
-    }
-  };
+      console.log(response.data);
+    };
+    smapleGroup();
+  }, [queries]);
 
   return (
-    <div className="container mx-auto md:mb-0">
+    <div className="container mx-auto">
       <div className="h-32 bg-[#008B8B] rounded-lg flex justify-center items-center mb-6 py-32">
         <h1 className="text-white text-4xl font-bold capitalize text-center md:text-left">
           Let's join an equb group for Saving together!
         </h1>
       </div>
-      <div className="container mx-auto">
+      <div className="container">
         <Slider {...settings}>
-          <div className="bg-gray-300 text-gray-800 font-mono items-center">
-            <h1>sample Equb </h1>
-          </div>
-          <div className="bg-gray-300 text-gray-800 font-mono items-center">
-            <h1>wowo Equb </h1>
-          </div>
+          {equbType.length > 0 &&
+            equbType.map((equb) => (
+              <div
+                className=""
+                key={equb._id}
+                onClick={() => {
+                  navigate("/group");
+                }}
+              >
+                <Card
+                  equb_Group_id={equb._id}
+                  name={equb.name}
+                  No_member={equb.member}
+                  createdAt={equb.createdOn}
+                  amount={equb.amount}
+                  types={equb.types}
+                  status={equb.status}
+                />
+              </div>
+            ))}
+          {equbType.length === 0 && (
+            <div className="w-full md:container md:mx-auto md:max-w-7xl grid grid-cols-1 md:grid-cols-3 md:gap-8 gap-3 ">
+              Wait untill some one create group, go and create your group as you
+              want
+            </div>
+          )}
         </Slider>
       </div>
     </div>
@@ -136,48 +121,3 @@ const SampleEqubGroup = () => {
 };
 
 export default SampleEqubGroup;
-
-//  <div className="flex flex-col justify-center items-center space-y-2 m-auto sm:mx-[50px] pb-10 relative">
-//    <div className="w-[90%]">
-//      {" "}
-//      {/* Adjust the width of the carousel here */}
-//      <Carousel
-//        showArrows={false}
-//        emulateTouch={true}
-//        showStatus={false}
-//        showThumbs={false}
-//        autoPlay={true}
-//        interval={3000}
-//        transitionTime={2000}
-//        infiniteLoop={true}
-//        stopOnHover={false}
-//      >
-//        <div className="grid grid-cols-3 gap-8" key="carousel-grid">
-//          {equbType
-//            .slice(currentIndex, currentIndex + pageSize)
-//            .map((equbItem) => (
-//              <Card
-//                key={equbItem._id}
-//                amount={equbItem.amount_of_deposit}
-//                equb_type_id={equbItem.equb_type_id}
-//                No_member={equbItem.total_Members}
-//                createdAt={equbItem.createdAt}
-//                equb_Group_id={equbItem._id}
-//              />
-//            ))}
-//        </div>
-//      </Carousel>
-//    </div>
-//    <button
-//      className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//      onClick={handlePrev}
-//    >
-//      Prev
-//    </button>
-//    <button
-//      className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//      onClick={handleNext}
-//    >
-//      Next
-//    </button>
-//  </div>;
