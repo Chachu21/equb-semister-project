@@ -1,25 +1,31 @@
+import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
 
   const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      //this is the demo will correct it soon
-      const response = await fetch("/api/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-      if (response.ok) {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/users/forgotpassword",
+        {
+          
+          email: email, // Pass values.email
+        
+        }
+      );
+      console.log(response.data);
+    
+      if (response) {
         // Password reset email sent successfully
         // You can display a success message to the user or redirect them to another page
         console.log("Password reset email sent successfully");
+        navigate("/resetPassword");
+
       } else {
         // Handle error
         console.error("Failed to send password reset email");

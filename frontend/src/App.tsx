@@ -14,6 +14,7 @@ import ManageGroups from "./components/admin/ManageGroups";
 import AccountDetail from "./components/admin/AccountDetail";
 import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
 import CreateGroup from "./components/UserDashboard/CreateGroup";
+import ResetPassword from "./Auth/ResetPassword";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
         </Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/admin" element={<AdminDashboard />}>
           <Route index element={<AdminContent />} />
           <Route path="/admin/manageuser" element={<UserManage />} />

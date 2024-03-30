@@ -24,11 +24,15 @@ const userSchema = mongoose.Schema(
     },
     imageUrl: {
       type: String,
-     
     },
     agreeTerms: {
       type: Boolean,
-      
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
     },
   },
   { timestamps: true }
