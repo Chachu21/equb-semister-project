@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
-
 // Define password rules regex
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
@@ -37,7 +36,7 @@ const basicSchema = yup.object().shape({
 });
 
 const Register = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   // useFormik hook for form handling
   const {
     values,
@@ -76,7 +75,7 @@ const Register = () => {
           }
         );
         console.log(response.data);
-       navigate("/login");
+        navigate("/login");
       } catch (error) {
         console.error("An error occurred:", errors);
       }

@@ -1,17 +1,33 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../Redux/store";
+import { logoutSuccess } from "../../Redux/Features/userSlice";
 
 const AdminHeaderLink = () => {
   const [search, setSearch] = useState(false);
   const [nnotification, setnnotification] = useState(false);
   const [Profile, setProfile] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const handlesearch = () => {
     setSearch(!search);
     setnnotification(false);
     setProfile(false);
   };
+
+  // for handling logout and redirect to the home page
+  const handleLogout = () => {
+    try {
+      dispatch(logoutSuccess());
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
   return (
     <>
       <ul className="ml-auto flex items-center">
@@ -370,9 +386,7 @@ const AdminHeaderLink = () => {
             <li>
               <form method="POST" action="">
                 <Link
-                  onClick={() => {
-                    setProfile(!Profile);
-                  }}
+                  onClick={handleLogout}
                   to={"#"}
                   role="menuitem"
                   className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"

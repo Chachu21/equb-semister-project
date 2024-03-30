@@ -23,6 +23,7 @@
     "mongoose": "^8.2.3",
     "nodemailer": "^6.9.13",
     "twilio": "^5.0.1",
+    "mongoose-paginate-v2": "^1.8.0",
     "validatorjs": "^3.22.1"
   }
 }

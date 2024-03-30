@@ -25,6 +25,7 @@ export const createUser = async (req, res) => {
       $or: [{ phone }, { email }],
     });
     if (existingUser) {
+      console.log(existingUser.phone_number, existingUser.email);
       return res.status(400).json({
         error: "User with this phone number or email already exists",
       });
@@ -45,7 +46,7 @@ export const createUser = async (req, res) => {
       imageUrl,
     });
     // Save the user to the database
-   const savedUser= await newUser.save();
+    const savedUser = await newUser.save();
     // Log the saved user details
     console.log("Saved user:", savedUser);
     // Send a success response
@@ -101,7 +102,8 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const deletedUser = await User.findByIdAndRemove(userId);
+    console.log(userId);
+    const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -112,15 +114,17 @@ export const deleteUser = async (req, res) => {
 };
 
 export const loginController = async function (req, res) {
-  const { phone_number, password } = req.body;
+  const { email, password, phone } = req.body;
 
   try {
     // Find the user based on the phone number
-    const user = await User.findOne({ phone_number });
+    const user = await User.findOne({
+      $or: [{ phone }, { email }],
+    });
 
     // Check if the user exists
     if (!user) {
-      return res.status(401).json({ error: "Invalid phone credentials" });
+      return res.status(401).json({ error: "Invalid  credentials" });
     }
 
     // Compare the password with the hashed password
@@ -128,13 +132,17 @@ export const loginController = async function (req, res) {
 
     // Check if the password is correct
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ error: "Invalid credentioals" });
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, phone_number }, "equb", {
-      expiresIn: "1m",
-    });
+    const token = jwt.sign(
+      { userId: user._id, email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     // Send the token in the response
     res.status(200).json({ user_id: user._id, token });
