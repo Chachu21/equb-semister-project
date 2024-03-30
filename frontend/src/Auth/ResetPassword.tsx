@@ -37,7 +37,7 @@ const ResetPassword: React.FC = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow-lg">
       <h2 className="text-2xl mb-4">Reset Password</h2>
-    <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block mb-1">New Password:</label>
           <input
@@ -49,7 +49,7 @@ const ResetPassword: React.FC = () => {
         </div>
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="w-full py-2 px-4 bg-[#008B8B] hover:bg-[#7da7a7] text-white rounded"
         >
           Reset Password
         </button>

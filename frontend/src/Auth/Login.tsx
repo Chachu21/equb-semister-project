@@ -96,7 +96,6 @@ const Login = () => {
           className="max-w-xl mx-auto bg-white shadow-sm rounded px-8 md:pt-20 pb-8 md:my-20"
         >
           <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
-
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -137,7 +136,6 @@ const Login = () => {
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
           </div>
-
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center mb-2 md:mb-0">
               <input
@@ -153,7 +151,7 @@ const Login = () => {
             </div>
             <Link
               to="/forgotpassword"
-              className="text-blue-500 text-sm md:text-base"
+              className="text-[#008B8B] text-sm md:text-base"
             >
               Forgot Password?
             </Link>
@@ -161,7 +159,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="w-full bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-4 rounded"
             disabled={isSubmitting}
           >
             Login
@@ -205,7 +203,7 @@ const Login = () => {
         <div className=" text-center py-4">
           <p>
             Don't have an account?{" "}
-            <Link to={"/register"} className="text-blue-500 font-semibold">
+            <Link to={"/register"} className="text-[#008B8B] font-semibold">
               Sign up
             </Link>
           </p>
