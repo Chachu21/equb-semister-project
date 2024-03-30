@@ -1,10 +1,10 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
-   const navigate = useNavigate();
+ 
   const [email, setEmail] = useState<string>("");
 
   const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,7 +24,7 @@ const ForgotPassword = () => {
         // Password reset email sent successfully
         // You can display a success message to the user or redirect them to another page
         console.log("Password reset email sent successfully");
-        navigate("/resetPassword");
+       
 
       } else {
         // Handle error

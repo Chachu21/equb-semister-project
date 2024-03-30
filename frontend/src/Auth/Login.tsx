@@ -1,4 +1,5 @@
 import axios from "axios";
+import  { useEffect } from "react";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,7 +24,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // useFormik hook for form handling
   const {
     values,
     errors,
@@ -42,26 +42,41 @@ const Login = () => {
     onSubmit: async (values, actions) => {
       try {
         const response = await axios.post(
-          //will corrected soon
           "http://localhost:5000/api/v1/users/login",
           {
-            email: values.email, // Pass values.email
-            password: values.password, // Pass values.password
+            email: values.email,
+            password: values.password,
+            rememberMe: values.rememberMe,
           }
         );
-        const userData = response.data; // Assuming response contains user data
-        dispatch(loginSuccess(userData)); // Dispatch loginSuccess action with user data
-        localStorage.setItem("user", JSON.stringify(userData));
+        const userData = response.data;
+
+        dispatch(loginSuccess(userData));
+        if (values.rememberMe) {
+          localStorage.setItem("user", JSON.stringify(userData));
+        } else {
+          localStorage.removeItem("user");
+        }
         navigate("/admin");
       } catch (error) {
-        console.error("An error occurred:", errors);
+        console.error("An error occurred:", error);
+        // Handle error by setting formik's errors object
+        // actions.setErrors({ submit: "An error occurred while logging in" });
       }
-      setTimeout(() => {
-        actions.resetForm();
-        actions.setSubmitting(false);
-      }, 1000);
+      // Reset form and set submitting state
+      actions.setSubmitting(false);
     },
   });
+  useEffect(() => {
+    // Check if user data exists in localStorage
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+      // Automatically log in user if data exists
+      const userData = JSON.parse(storedUserData);
+      dispatch(loginSuccess(userData));
+      navigate("/admin");
+    }
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center content-center mt-1 mb-20 md:mt-5">

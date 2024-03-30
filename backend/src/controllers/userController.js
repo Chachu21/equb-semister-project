@@ -113,6 +113,10 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+
+
+
+
 export const loginController = async function (req, res) {
   const { email, password, phone } = req.body;
 
@@ -136,13 +140,9 @@ export const loginController = async function (req, res) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign(
-      { userId: user._id, email },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
+    const token = jwt.sign({ userId: user._id, email }, "equb", {
+      expiresIn: "1m",
+    });
 
     // Send the token in the response
     res.status(200).json({ user_id: user._id, token });
@@ -150,6 +150,7 @@ export const loginController = async function (req, res) {
     res.status(500).json({ error: "An error occurred while logging in" });
   }
 };
+
 
 export const comparePasswords = async (password, hashedPassword) => {
   try {
