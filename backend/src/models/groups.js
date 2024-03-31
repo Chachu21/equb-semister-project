@@ -28,6 +28,12 @@ const groupSchema = new mongoose.Schema({
       ref: "User", // Reference the User model
     },
   ],
+  winners: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Reference the User model
+    },
+  ],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // Reference the User model

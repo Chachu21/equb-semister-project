@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
 
 interface User {
   name: string;
   email: string;
+  imageUrl: string;
 }
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const userData = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const userId = getUserIdFromLocalStorage();
-        const token = getTokenFromLocalStorage(); // Assuming you have a function to retrieve the token from localStorage
+        const userId = userData?._id;
+        const token = userData?.token;
         if (userId) {
           const config = {
             headers: {
@@ -21,9 +25,8 @@ const Profile: React.FC = () => {
               "Content-Type": "application/json",
             },
           };
-          console.log("dsfffffffffffffffff");
 
-          const response = await axios.get<User>(
+          const response = await axios.get(
             `http://localhost:5000/api/v1/users/${userId}`,
             config
           );
@@ -31,57 +34,17 @@ const Profile: React.FC = () => {
         } else {
           console.error("User ID not found in localStorage");
         }
-      } catch (error: any) {
-        if (error.response) {
-          console.error("Error fetching user profile:", error.response.data);
+      } catch (error) {
+        if (error) {
+          console.error("Error fetching user profile:", error);
         } else {
-          console.error("Error fetching user profile:", error.message);
+          console.error("Error fetching user profile:", error);
         }
       }
     };
 
     fetchUserProfile();
   }, []);
-
-  // Function to get user ID from localStorage
-  const getUserIdFromLocalStorage = (): string | null => {
-    try {
-      // Get user ID from localStorage
-      const userId = localStorage.getItem("user_id");
-      // Check if userId is not null or undefined
-      if (userId) {
-        // Return userId if found in localStorage
-        return userId;
-      } else {
-        // Return null if userId is not found in localStorage
-        return null;
-      }
-    } catch (error) {
-      console.error("Error getting user ID from localStorage:", error);
-      // Return null in case of any errors
-      return null;
-    }
-  };
-
-  // Function to get token from localStorage (assuming you have this function implemented)
-  const getTokenFromLocalStorage = (): string | null => {
-    try {
-      // Get token from localStorage
-      const token = localStorage.getItem("token");
-      // Check if token is not null or undefined
-      if (token) {
-        // Return token if found in localStorage
-        return token;
-      } else {
-        // Return null if token is not found in localStorage
-        return null;
-      }
-    } catch (error) {
-      console.error("Error getting token from localStorage:", error);
-      // Return null in case of any errors
-      return null;
-    }
-  };
 
   return (
     <section className="section main-section md:p-6 py-1 px-1">

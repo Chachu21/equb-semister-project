@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
 
 interface FormData {
   name: string;
@@ -12,9 +14,9 @@ interface FormData {
 }
 
 const CreateGroup: React.FC = () => {
-  const userData = localStorage.getItem("user");
-  const token = userData ? JSON.parse(userData).token : "";
+  const user = useSelector((state: RootState) => state.user.user);
 
+  console.log(user?.token);
   const initialValues: FormData = {
     name: "",
     types: "",
@@ -42,10 +44,12 @@ const CreateGroup: React.FC = () => {
         values,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
         }
       );
+      console.log("before checking response is exist");
+
       if (response) {
         toast.success("Successfully created group");
       }

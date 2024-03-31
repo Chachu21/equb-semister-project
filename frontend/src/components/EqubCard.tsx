@@ -28,9 +28,10 @@ const Card: React.FC<cardProps> = ({
   const [members, setMembers] = useState<number>(0);
   const [showModal, setShowModal] = useState(false);
   const isLogin = useSelector((state: RootState) => state.user.isLogin);
+  const user = useSelector((state: RootState) => state.user.user);
+  const token = user?.token;
+
   const navigate = useNavigate();
-  const userData = localStorage.getItem("user");
-  const token = userData ? JSON.parse(userData).token : "";
 
   const handleLogin = () => {
     // Redirect to the login page
