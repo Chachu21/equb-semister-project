@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/users.js";
- import crypto from "crypto";
- import nodemailer from "nodemailer";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 import sendSMS from "../config/sendSMS.js";
 
-const phoneNumber="+251943438385"
-const message="hey muller wellcome to my equb"
+const phoneNumber = "+251943438385";
+const message = "hey muller wellcome to my equb";
 // Create User
 export const createUser = async (req, res) => {
   const {
@@ -19,6 +19,9 @@ export const createUser = async (req, res) => {
     agreeTerms,
     imageUrl,
   } = req.body;
+
+  console.log(req.body);
+
   try {
     // Check if the user with the same phone number or email already exists
     const existingUser = await User.findOne({
@@ -43,7 +46,7 @@ export const createUser = async (req, res) => {
       bank_account_no,
       email,
       agreeTerms,
-      imageUrl,
+      imageUrl: Date.now() + `/${name}`,
     });
     // Save the user to the database
     const savedUser = await newUser.save();
@@ -70,14 +73,12 @@ export const getUsers = async (req, res) => {
 // Get User by ID
 export const getUserById = async (req, res) => {
   try {
-    const userData = req.params.id;
-    console.log("user param", userData.user_id);
-    const user = await User.findById(userId);
-    console.log(user);
+    const { id } = req.params;
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.json(user);
+    res.json({ name: user.name, email: user.email, imageUrl: user.imageUrl });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch User" });
   }
@@ -115,10 +116,6 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-
-
-
-
 export const loginController = async function (req, res) {
   const { email, password, phone } = req.body;
 
@@ -142,17 +139,20 @@ export const loginController = async function (req, res) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, email }, "equb", {
-      expiresIn: "1m",
-    });
+    const token = jwt.sign(
+      { userId: user._id, email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     // Send the token in the response
-    res.status(200).json({ user_id: user._id, token });
+    res.status(200).json({ _id: user._id, token });
   } catch (error) {
     res.status(500).json({ error: "An error occurred while logging in" });
   }
 };
-
 
 export const comparePasswords = async (password, hashedPassword) => {
   try {
@@ -168,11 +168,9 @@ export const logoutController = (req, res) => {
   res.status(200).json({ message: "Logout successful" });
 };
 
-// 
+//
 // Function to send password reset email
 const sendPasswordResetEmail = async (email, token) => {
-
-
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -189,7 +187,7 @@ const sendPasswordResetEmail = async (email, token) => {
       to: email,
       subject: "Password reset",
       // html: `<p>You have requested a password reset. Please follow <a href="${resetPasswordURL}">this link</a> to reset your password. This link will expire in 1 hour.</p>`,
-       html: `<p>You have requested a password reset. Please follow <a href="http://localhost:5173/resetPassword/${token}">this link</a> to reset your password. This link will expire in 1 hour.</p>`,
+      html: `<p>You have requested a password reset. Please follow <a href="http://localhost:5173/resetPassword/${token}">this link</a> to reset your password. This link will expire in 1 hour.</p>`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -224,11 +222,14 @@ export const forgotPassword = async (req, res) => {
     await sendPasswordResetEmail(email, token);
 
     // Send success response
-    return res.status(200).json({ message: "Password reset email sent successfully" });
+    return res
+      .status(200)
+      .json({ message: "Password reset email sent successfully" });
   } catch (error) {
     console.error("Error occurred while processing password reset:", error);
     return res.status(error.statusCode || 500).json({
-      error: error.message || "An error occurred while processing password reset",
+      error:
+        error.message || "An error occurred while processing password reset",
     });
   }
 };
@@ -264,12 +265,11 @@ export const resetPassword = async (req, res) => {
     return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     console.error("Error occurred while resetting password:", error);
-    return res.status(500).json({ error: "An error occurred while resetting password" });
+    return res
+      .status(500)
+      .json({ error: "An error occurred while resetting password" });
   }
 };
-
-
-
 
 // Route to handle the reset password link
 export const getResetPassword = async (req, res) => {

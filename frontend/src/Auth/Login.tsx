@@ -24,6 +24,17 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Check if user data exists in localStorage
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+      // Automatically log in user if data exists
+      const userData = JSON.parse(storedUserData);
+      dispatch(loginSuccess(userData));
+      navigate("/admin");
+    }
+  }, []);
+
   const {
     values,
     errors,
@@ -46,17 +57,17 @@ const Login = () => {
           {
             email: values.email,
             password: values.password,
-            rememberMe: values.rememberMe,
           }
         );
+
         const userData = response.data;
 
         dispatch(loginSuccess(userData));
+
         if (values.rememberMe) {
           localStorage.setItem("user", JSON.stringify(userData));
-        } else {
-          localStorage.removeItem("user");
         }
+        localStorage.setItem("user", JSON.stringify(userData));
         navigate("/admin");
       } catch (error) {
         console.error("An error occurred:", error);
@@ -67,16 +78,6 @@ const Login = () => {
       actions.setSubmitting(false);
     },
   });
-  useEffect(() => {
-    // Check if user data exists in localStorage
-    const storedUserData = localStorage.getItem("user");
-    if (storedUserData) {
-      // Automatically log in user if data exists
-      const userData = JSON.parse(storedUserData);
-      dispatch(loginSuccess(userData));
-      navigate("/admin");
-    }
-  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center content-center mt-1 mb-20 md:mt-5">
