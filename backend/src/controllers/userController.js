@@ -140,9 +140,13 @@ export const loginController = async function (req, res) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, email }, "equb", {
-      expiresIn: "1m",
-    });
+    const token = jwt.sign(
+      { userId: user._id, email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1m",
+      }
+    );
 
     // Send the token in the response
     res.status(200).json({ user_id: user._id, token });

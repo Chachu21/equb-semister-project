@@ -227,7 +227,7 @@ const Register = () => {
         )}
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="w-full bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-4 rounded"
           disabled={isSubmitting}
         >
           Sign Up
@@ -273,7 +273,7 @@ const Register = () => {
           {/* TODO
           we have to give the correct route here */}
           Already have an account?{" "}
-          <Link to={"/login"} className="text-blue-500 font-semibold">
+          <Link to={"/login"} className="text-[#008B8B] font-semibold">
             Login
           </Link>
         </p>
