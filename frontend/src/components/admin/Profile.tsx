@@ -1,4 +1,51 @@
-const Profile = () => {
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+
+interface User {
+  name: string;
+  email: string;
+  imageUrl: string;
+}
+
+const Profile: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const userData = useSelector((state: RootState) => state.user.user);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userId = userData?._id;
+        const token = userData?.token;
+        if (userId) {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          };
+
+          const response = await axios.get(
+            `http://localhost:5000/api/v1/users/${userId}`,
+            config
+          );
+          setUser(response.data);
+        } else {
+          console.error("User ID not found in localStorage");
+        }
+      } catch (error) {
+        if (error) {
+          console.error("Error fetching user profile:", error);
+        } else {
+          console.error("Error fetching user profile:", error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   return (
     <section className="section main-section md:p-6 py-1 px-1">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
@@ -34,7 +81,7 @@ const Profile = () => {
                         type="text"
                         autoComplete="on"
                         name="name"
-                        value="John Doe"
+                        placeholder="John Doe"
                         className="input"
                         required
                       />
@@ -52,7 +99,7 @@ const Profile = () => {
                         type="email"
                         autoComplete="on"
                         name="email"
-                        value="user@example.com"
+                        placeholder="user@example.com"
                         className="input"
                         required
                       />
@@ -96,7 +143,7 @@ const Profile = () => {
                 <input
                   type="text"
                   readOnly
-                  value="John Doe"
+                  value={user ? user.name : "John Doe"}
                   className="input is-static"
                 />
               </div>
@@ -108,7 +155,7 @@ const Profile = () => {
                 <input
                   type="text"
                   readOnly
-                  value="user@example.com"
+                  value={user ? user.email : "Doe@example.com"}
                   className="input is-static"
                 />
               </div>

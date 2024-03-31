@@ -6,12 +6,12 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 //
 
-
 dotenv.config();
 import createDatabase from "./config/dbConfig.js";
 import userRouter from "./routes/userRoute.js";
 import groupRouter from "./routes/groupRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
+import paymentRouter from "./routes/paymentRoute.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/group", groupRouter);
 app.use("/api/v1/comment", commentRouter);
+app.use("/api/v1/payment", paymentRouter);
 //connect to the database
 createDatabase();
 //localhost:3000/api/v1/users/signUp

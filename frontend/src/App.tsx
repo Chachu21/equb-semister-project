@@ -14,6 +14,9 @@ import ManageGroups from "./components/admin/ManageGroups";
 import AccountDetail from "./components/admin/AccountDetail";
 import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
 import CreateGroup from "./components/UserDashboard/CreateGroup";
+import Payment from "./components/payment/payment";
+import Pay from "./components/payment/pay";
+import Profile from "./components/admin/Profile";
 import ResetPassword from "./Auth/ResetPassword";
 
 const App = () => {
@@ -42,6 +45,9 @@ const App = () => {
           {/* <Route path="/admin/profile" element={<Profile />} /> */}
           <Route path="/admin/accountdetail" element={<AccountDetail />} />
           <Route path="/admin/createGroup" element={<CreateGroup />} />
+          <Route path="/admin/payment" element={<Payment />} />
+          <Route path="/admin/pay" element={<Pay />} />
+          <Route path="/admin/profile" element={<Profile />} />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />
