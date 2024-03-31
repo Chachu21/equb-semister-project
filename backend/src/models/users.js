@@ -24,10 +24,15 @@ const userSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      default: Date.now(),
     },
     agreeTerms: {
       type: Boolean,
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
     },
     groups: [
       {

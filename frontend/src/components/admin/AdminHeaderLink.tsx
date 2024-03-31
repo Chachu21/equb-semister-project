@@ -18,11 +18,10 @@ const AdminHeaderLink = () => {
     setProfile(false);
   };
 
-  // for handling logout and redirect to the home page
-  const handleLogout = () => {
+  const logoutHandler = async () => {
     try {
       dispatch(logoutSuccess());
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -384,10 +383,12 @@ const AdminHeaderLink = () => {
               </Link>
             </li> */}
             <li>
-              <form method="POST" action="">
+              <form method="POST" action="" onClick={logoutHandler}>
                 <Link
-                  onClick={handleLogout}
-                  to={"#"}
+                  onClick={() => {
+                    setProfile(!Profile);
+                  }}
+                  to="/login"
                   role="menuitem"
                   className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"
                 >
@@ -403,3 +404,6 @@ const AdminHeaderLink = () => {
 };
 
 export default AdminHeaderLink;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}
