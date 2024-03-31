@@ -6,7 +6,6 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 //
 
-
 dotenv.config();
 import createDatabase from "./config/dbConfig.js";
 import userRouter from "./routes/userRoute.js";
