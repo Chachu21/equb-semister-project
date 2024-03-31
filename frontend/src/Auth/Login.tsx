@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import logins from "../../public/logins.jpg";
 import { loginSuccess } from "../Redux/Features/userSlice";
+import { RootState } from "../Redux/store";
 
 // Define password rules regex
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
@@ -22,10 +24,10 @@ const basicSchema = yup.object().shape({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const isLogin: boolean = useSelector(
-  //   (state: RootState) => state.user.isLogin
-  // );
-  // const user: any = useSelector((state: RootState) => state.user.user);
+  const isLogin: boolean = useSelector(
+    (state: RootState) => state.user.isLogin
+  );
+  const user: any = useSelector((state: RootState) => state.user.user);
 
   // useFormik hook for form handling
   const {
@@ -57,8 +59,12 @@ const Login = () => {
         );
         const userData = response.data; // Assuming response contains user data
         dispatch(loginSuccess(userData)); // Dispatch loginSuccess action with user data
+
+        // Store the token in localStorage
+        localStorage.setItem("user", userData);
+
         console.log("Login successful");
-        console.log(response.data);
+        console.log(userData);
         navigate("/admin");
       } catch (error) {
         console.error("An error occurred:", errors);
@@ -71,6 +77,14 @@ const Login = () => {
       }, 1000);
     },
   });
+  console.log(user._id);
+
+  useEffect(() => {
+    if (user) {
+      // localStorage.setItem("user_id", JSON.stringify(user._id));
+      localStorage.setItem("isLogin", JSON.stringify(isLogin));
+    }
+  }, [user, isLogin]);
 
   return (
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center content-center mt-1 mb-20 md:mt-5">

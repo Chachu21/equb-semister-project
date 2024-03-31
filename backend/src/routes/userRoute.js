@@ -3,12 +3,15 @@ import {
   createUser,
   getUsers,
   getUserById,
+  // getUserProfile,
   updateUser,
   deleteUser,
   loginController,
   logoutController,
 } from "../controllers/userController.js";
 const userRouter = express.Router();
+
+// userRouter.get("/profile", getUserProfile);
 
 userRouter.get("/", getUsers);
 userRouter.post("/login", loginController);

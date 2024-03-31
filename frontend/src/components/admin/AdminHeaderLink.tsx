@@ -1,17 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiSearchLine } from "react-icons/ri";
+import { logoutSuccess } from "../../Redux/Features/userSlice";
+import { useDispatch } from "react-redux";
 
 const AdminHeaderLink = () => {
   const [search, setSearch] = useState(false);
   const [nnotification, setnnotification] = useState(false);
   const [Profile, setProfile] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handlesearch = () => {
     setSearch(!search);
     setnnotification(false);
     setProfile(false);
   };
+
+  const logoutHandler = async () => {
+    try {
+      dispatch(logoutSuccess());
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
   return (
     <>
       <ul className="ml-auto flex items-center">
@@ -368,12 +383,12 @@ const AdminHeaderLink = () => {
               </Link>
             </li> */}
             <li>
-              <form method="POST" action="">
+              <form method="POST" action="" onClick={logoutHandler}>
                 <Link
                   onClick={() => {
                     setProfile(!Profile);
                   }}
-                  to={"#"}
+                  to="/login"
                   role="menuitem"
                   className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"
                 >
@@ -389,3 +404,6 @@ const AdminHeaderLink = () => {
 };
 
 export default AdminHeaderLink;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}

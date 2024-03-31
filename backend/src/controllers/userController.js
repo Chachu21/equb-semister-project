@@ -65,8 +65,10 @@ export const getUsers = async (req, res) => {
 // Get User by ID
 export const getUserById = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userData = req.params.id;
+    console.log("user param", userData.user_id);
     const user = await User.findById(userId);
+    console.log(user);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -131,13 +133,9 @@ export const loginController = async function (req, res) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign(
-      { userId: user._id, email },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1m",
-      }
-    );
+    const token = jwt.sign({ userId: user._id, email }, "equb", {
+      expiresIn: "1m",
+    });
 
     // Send the token in the response
     res.status(200).json({ user_id: user._id, token });
@@ -156,6 +154,6 @@ export const comparePasswords = async (password, hashedPassword) => {
 
 export const logoutController = (req, res) => {
   // Clear user data from session
-  req.session.user = null;
+  req.user = null;
   res.status(200).json({ message: "Logout successful" });
 };
