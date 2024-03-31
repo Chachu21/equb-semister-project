@@ -5,10 +5,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../Redux/store";
 const AdminDashboard = () => {
   const isClicked = useSelector((state: RootState) => state.user.isClicked);
-  console.log(isClicked);
   return (
     <div className="flex text-gray-800 font-inter relative ">
-       <AdminSideBar />
+      <AdminSideBar />
       <div
         className={`w-full relative flex flex-col flex-1 bg-gray-200 min-h-screen transition-all ${
           isClicked ? "md:ml-0" : "md:w-[calc(100%-256px)]  md:ml-64"

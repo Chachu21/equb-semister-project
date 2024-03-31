@@ -1,7 +1,10 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { RootState } from "../Redux/store";
+import Modal from "./Model/JoinModel";
 
 interface cardProps {
   name: string;
@@ -23,9 +26,16 @@ const Card: React.FC<cardProps> = ({
   status,
 }) => {
   const [members, setMembers] = useState<number>(0);
+  const [showModal, setShowModal] = useState(false);
+  const isLogin = useSelector((state: RootState) => state.user.isLogin);
   const navigate = useNavigate();
-  const userStored = JSON.parse(localStorage.getItem("user_id") || "{}");
-  const user_id = userStored.user_id;
+  const userData = localStorage.getItem("user");
+  const token = userData ? JSON.parse(userData).token : "";
+
+  const handleLogin = () => {
+    // Redirect to the login page
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchSingleEqubgroup = async () => {
@@ -40,21 +50,35 @@ const Card: React.FC<cardProps> = ({
 
   const handleJoin = async () => {
     try {
-      if (!user_id) {
-        navigate("/Login");
+      if (!isLogin && !token) {
+        setShowModal(true);
         return;
       }
 
-      const joinResponse = await axios.get(
-        `http://localhost:5000/api/v1/group/join/${equb_Group_id}`
+      const joinResponse = await axios.post(
+        `http://localhost:5000/api/v1/group/join/${equb_Group_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      toast.success("Successfully joined group");
-      console.log(joinResponse.data);
-
-      // Add any additional logic based on the join response
+      if (joinResponse.status === 200) {
+        toast.success("Successfully joined group");
+      }
     } catch (error) {
-      console.error(error);
+      const axiosError = error as AxiosError<{ error: string }>;
+      if (
+        axiosError.response &&
+        axiosError.response.data &&
+        axiosError.response.data.error === "UserAlreadyJoined"
+      ) {
+        toast.warning("You are already a member of this group");
+      } else {
+        toast.error("Failed to join group");
+      }
     }
   };
 
@@ -69,24 +93,24 @@ const Card: React.FC<cardProps> = ({
       <div className="flex container mx-auto flex-col p-5 md:p-6 space-y-4 justify-between items-start h-[340px] md:w-[400px] w-full  bg-white text-center border border-gray-300 dark:bg-neutral-700">
         <div className="flex justify-between">
           <div className="flex flex-col justify-evenly items-start space-y-8">
-            <div className=" flex font-normal text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
-              <span className="text-normal text-[18px] mr-5">Name :</span>
+            <div className=" flex font-normal text-sm md:text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
+              <span className="text-normal  mr-5">Name :</span>
               <span className="font-pacifico">{name}</span>
             </div>
-            <div className=" flex font-normal text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
-              <span className="text-normal text-[18px] mr-5">type :</span>
+            <div className=" flex font-normal text-sm md:text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
+              <span className="text-normal mr-5">type :</span>
               {types}
             </div>
-            <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
+            <div className=" text-sm md:text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
               Members:
               <span className="ml-5 font-bold">
                 ( {members}/{No_member} )<span className="px-3">joined</span>
               </span>
             </div>
-            <div className=" text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
+            <div className=" text-sm md:text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
               Amount: <span className="ml-5 font-bold"> {amount} Birr</span>
             </div>
-            <div className="text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
+            <div className="text-sm md:text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
               <span>Created At:</span>
               <span className="ml-5 font-bold">{formattedCreatedAt}.</span>
             </div>
@@ -105,6 +129,11 @@ const Card: React.FC<cardProps> = ({
           Join Us
         </button>
       </div>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onLogin={handleLogin}
+      />
     </div>
   );
 };

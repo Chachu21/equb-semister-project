@@ -1,25 +1,32 @@
+import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+ const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
 
   const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      //this is the demo will correct it soon
-      const response = await fetch("/api/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-      if (response.ok) {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/users/forgotpassword",
+        {
+          
+          email: email, // Pass values.email
+        
+        }
+      );
+      console.log(response.data);
+    
+      if (response) {
         // Password reset email sent successfully
         // You can display a success message to the user or redirect them to another page
         console.log("Password reset email sent successfully");
+       setEmail("");
+       navigate("/")
+
       } else {
         // Handle error
         console.error("Failed to send password reset email");
@@ -53,7 +60,7 @@ const ForgotPassword = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold mb-4"
+            className="w-full bg-[#008B8B] hover:bg-[#7da7a7] text-white p-3 rounded-lg font-semibold mb-4"
           >
             Submit
           </button>
@@ -62,7 +69,7 @@ const ForgotPassword = () => {
       <div className="bg-gray-100 text-center py-4">
         <p className="text-gray-600">
           Remembered your password?{" "}
-          <Link to={"/login"} className="text-blue-500 font-semibold">
+          <Link to={"/login"} className="text-[#008B8B] font-semibold">
             Login now
           </Link>
         </p>

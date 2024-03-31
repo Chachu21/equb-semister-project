@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import logins from "../../public/logins.jpg";
 import { loginSuccess } from "../Redux/Features/userSlice";
-import { RootState } from "../Redux/store";
 
 // Define password rules regex
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
@@ -24,12 +23,7 @@ const basicSchema = yup.object().shape({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogin: boolean = useSelector(
-    (state: RootState) => state.user.isLogin
-  );
-  const user: any = useSelector((state: RootState) => state.user.user);
 
-  // useFormik hook for form handling
   const {
     values,
     errors,
@@ -46,45 +40,43 @@ const Login = () => {
     },
     validationSchema: basicSchema,
     onSubmit: async (values, actions) => {
-      console.log("submitting muller");
-
       try {
         const response = await axios.post(
-          //will corrected soon
           "http://localhost:5000/api/v1/users/login",
           {
-            email: values.email, // Pass values.email
-            password: values.password, // Pass values.password
+            email: values.email,
+            password: values.password,
+            rememberMe: values.rememberMe,
           }
         );
-        const userData = response.data; // Assuming response contains user data
-        dispatch(loginSuccess(userData)); // Dispatch loginSuccess action with user data
+        const userData = response.data;
 
-        // Store the token in localStorage
-        localStorage.setItem("user", userData);
-
-        console.log("Login successful");
-        console.log(userData);
+        dispatch(loginSuccess(userData));
+        if (values.rememberMe) {
+          localStorage.setItem("user", JSON.stringify(userData));
+        } else {
+          localStorage.removeItem("user");
+        }
         navigate("/admin");
       } catch (error) {
-        console.error("An error occurred:", errors);
+        console.error("An error occurred:", error);
+        // Handle error by setting formik's errors object
+        // actions.setErrors({ submit: "An error occurred while logging in" });
       }
-      console.log("values are :", values);
-      console.log("actions are  :", actions);
-      setTimeout(() => {
-        actions.resetForm();
-        actions.setSubmitting(false);
-      }, 1000);
+      // Reset form and set submitting state
+      actions.setSubmitting(false);
     },
   });
-  console.log(user._id);
-
   useEffect(() => {
-    if (user) {
-      // localStorage.setItem("user_id", JSON.stringify(user._id));
-      localStorage.setItem("isLogin", JSON.stringify(isLogin));
+    // Check if user data exists in localStorage
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+      // Automatically log in user if data exists
+      const userData = JSON.parse(storedUserData);
+      dispatch(loginSuccess(userData));
+      navigate("/admin");
     }
-  }, [user, isLogin]);
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center content-center mt-1 mb-20 md:mt-5">
@@ -104,7 +96,6 @@ const Login = () => {
           className="max-w-xl mx-auto bg-white shadow-sm rounded px-8 md:pt-20 pb-8 md:my-20"
         >
           <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
-
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -145,7 +136,6 @@ const Login = () => {
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
           </div>
-
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center mb-2 md:mb-0">
               <input
@@ -161,7 +151,7 @@ const Login = () => {
             </div>
             <Link
               to="/forgotpassword"
-              className="text-blue-500 text-sm md:text-base"
+              className="text-[#008B8B] text-sm md:text-base"
             >
               Forgot Password?
             </Link>
@@ -169,7 +159,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="w-full bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-4 rounded"
             disabled={isSubmitting}
           >
             Login
@@ -213,7 +203,7 @@ const Login = () => {
         <div className=" text-center py-4">
           <p>
             Don't have an account?{" "}
-            <Link to={"/register"} className="text-blue-500 font-semibold">
+            <Link to={"/register"} className="text-[#008B8B] font-semibold">
               Sign up
             </Link>
           </p>

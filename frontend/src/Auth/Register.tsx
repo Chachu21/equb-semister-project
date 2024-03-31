@@ -67,6 +67,7 @@ const Register = () => {
           //will corrected soon
           "http://localhost:5000/api/v1/users/signUp",
           {
+            name: values.name,
             email: values.email, // Pass values.email
             password: values.password, // Pass values.password
             phone: values.phone, // Pass values.email

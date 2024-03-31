@@ -17,6 +17,7 @@ import CreateGroup from "./components/UserDashboard/CreateGroup";
 import Payment from "./components/payment/payment";
 import Pay from "./components/payment/pay";
 import Profile from "./components/admin/Profile";
+import ResetPassword from "./Auth/ResetPassword";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
         </Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword/:token" element={<ResetPassword />} />
         <Route path="/admin" element={<AdminDashboard />}>
           <Route index element={<AdminContent />} />
           <Route path="/admin/manageuser" element={<UserManage />} />

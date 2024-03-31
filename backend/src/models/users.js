@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema(
     agreeTerms: {
       type: Boolean,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
     groups: [
       {
         type: mongoose.Schema.Types.ObjectId,

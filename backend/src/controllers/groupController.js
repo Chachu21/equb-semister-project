@@ -104,14 +104,14 @@ export const joinGroup = async (req, res) => {
     // Check if the user is already a member of the group
     const group = await Group.findById(groupId);
     if (!group) {
+      console.log("group not found");
       return res.status(404).json({ message: "Group not found" });
     }
 
     // Check if the user is already a member of the group
     if (group.members.includes(userId)) {
-      return res
-        .status(400)
-        .json({ message: "User is already a member of the group" });
+      console.log("user already in group");
+      return res.status(400).json({ error: "UserAlreadyJoined" });
     }
 
     // Add user to the group's members array
@@ -121,7 +121,7 @@ export const joinGroup = async (req, res) => {
 
     res.status(200).json({ message: "Joined group successfully" });
   } catch (err) {
-    console.error(err);
+    console.error("from server", err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
