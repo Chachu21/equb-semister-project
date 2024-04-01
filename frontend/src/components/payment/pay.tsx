@@ -38,7 +38,7 @@ const Pay: React.FC = () => {
           first_name: form.first_name,
           last_name: form.last_name,
           phone_number: form.phone_number,
-          tx_ref: `${form.first_name}-${Date.now()}`,
+          // tx_ref: `${form.first_name}-${Date.now()}`,
         },
         {
           headers: { "Content-Type": "application/json" },

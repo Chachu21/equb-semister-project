@@ -1,7 +1,6 @@
 import Payment from "../models/payments.js";
 import axios from "axios";
 import dotenv from "dotenv";
-
 dotenv.config();
 const CHAPA_AUTH_KEY =
   process.env.CHAPA_AUTH_KEY || "CHASECK_TEST-TzQrucAcnLoQiaxU5aTrO7klDliPULJn"; //Put Your Chapa Secret Key
@@ -10,6 +9,7 @@ const acceptPayment = async (req, res) => {
   const { amount, currency, email, fname, lname, phone_number, tx_ref } =
     req.body;
   console.log(tx_ref);
+  const CALLBACK_URL = "http://localhost:5000/api/v1/payment/verify-payment/";
   try {
     const header = {
       headers: {
@@ -17,6 +17,9 @@ const acceptPayment = async (req, res) => {
         "Content-Type": "application/json",
       },
     };
+
+    const TEXT_REF = "tx-myecommerce12345-" + Date.now();
+
     const body = {
       amount: amount,
       currency: currency,
@@ -24,8 +27,9 @@ const acceptPayment = async (req, res) => {
       first_name: fname,
       last_name: lname,
       phone_number: phone_number,
-      tx_ref: tx_ref,
+      tx_ref: TEXT_REF,
       return_url: "http://localhost:5173/",
+      callback_url: CALLBACK_URL + TEXT_REF,
     };
     let resp = "";
     await axios
@@ -48,6 +52,27 @@ const acceptPayment = async (req, res) => {
       message: e.message,
     });
   }
+};
+
+// verification endpoint
+const verifyPayment = async (req, res) => {
+  console.log("am inside verify payment");
+  // req header with chapa secret key
+  const config = {
+    headers: {
+      Authorization: `Bearer ${CHAPA_AUTH_KEY}`,
+    },
+  };
+  console.log(req.params.id);
+  console.log(config);
+  //verify the transaction
+  await axios
+    .get("https://api.chapa.co/v1/transaction/verify/" + req.params.id, config)
+    .then((response) => {
+      console.log("Payment was successfully verified");
+      console.log(response);
+    })
+    .catch((err) => console.log("Payment can't be verfied", err));
 };
 
 // Get all payments
@@ -75,4 +100,4 @@ const getAllPaymentsByUserId = async (req, res) => {
   }
 };
 
-export { acceptPayment, getAllPayments, getAllPaymentsByUserId };
+export { acceptPayment, verifyPayment, getAllPayments, getAllPaymentsByUserId };
