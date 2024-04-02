@@ -11,6 +11,11 @@ interface User {
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const userData = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
@@ -31,20 +36,77 @@ const Profile: React.FC = () => {
             config
           );
           setUser(response.data);
+          setName(response.data.name);
+          setEmail(response.data.email);
         } else {
           console.error("User ID not found in localStorage");
         }
       } catch (error) {
-        if (error) {
-          console.error("Error fetching user profile:", error);
-        } else {
-          console.error("Error fetching user profile:", error);
-        }
+        console.error("Error fetching user profile:", error);
       }
     };
 
     fetchUserProfile();
   }, []);
+
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const userId = userData?._id;
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const data = {
+        name,
+        email,
+      };
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/users/${userId}`,
+        data,
+        config
+      );
+      console.log("Profile updated successfully");
+      console.log(response);
+      // Optionally, you can show a success message to the user
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      // Optionally, you can show an error message to the user
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const userId = userData?._id;
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const data = {
+        password: newPassword,
+        confirmPassword: confirmPassword,
+      };
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/users/${userId}`,
+        data,
+        config
+      );
+      console.log("Password changed successfully");
+      console.log(response);
+
+      // Optionally, you can show a success message to the user
+    } catch (error) {
+      console.error("Error changing password:", error);
+      // Optionally, you can show an error message to the user
+    }
+  };
 
   return (
     <section className="section main-section md:p-6 py-1 px-1">
@@ -59,19 +121,7 @@ const Profile: React.FC = () => {
             </p>
           </header>
           <div className="card-content">
-            <form>
-              <div className="field">
-                <label className="label">Avatar</label>
-                <div className="field-body">
-                  <div className="field file">
-                    <label className="upload control">
-                      <a className="button blue">Upload</a>
-                      <input type="file" />
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <hr />
+            <form onSubmit={handleProfileUpdate}>
               <div className="field">
                 <label className="label">Name</label>
                 <div className="field-body">
@@ -81,7 +131,8 @@ const Profile: React.FC = () => {
                         type="text"
                         autoComplete="on"
                         name="name"
-                        placeholder="John Doe"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className="input"
                         required
                       />
@@ -99,7 +150,8 @@ const Profile: React.FC = () => {
                         type="email"
                         autoComplete="on"
                         name="email"
-                        placeholder="user@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="input"
                         required
                       />
@@ -173,13 +225,14 @@ const Profile: React.FC = () => {
           </p>
         </header>
         <div className="card-content">
-          <form>
+          <form onSubmit={handleChangePassword}>
             <div className="field">
               <label className="label">Current password</label>
               <div className="control">
                 <input
                   type="password"
-                  name="password_current"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   autoComplete="current-password"
                   className="input"
                   required
@@ -193,8 +246,9 @@ const Profile: React.FC = () => {
               <div className="control">
                 <input
                   type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   autoComplete="new-password"
-                  name="password"
                   className="input"
                   required
                 />
@@ -206,8 +260,9 @@ const Profile: React.FC = () => {
               <div className="control">
                 <input
                   type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   autoComplete="new-password"
-                  name="password_confirmation"
                   className="input"
                   required
                 />

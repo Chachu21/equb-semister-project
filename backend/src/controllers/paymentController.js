@@ -1,4 +1,5 @@
 import Payment from "../models/payments.js";
+import PaymentResponse from "../models/paymentResponse.js";
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
@@ -56,23 +57,35 @@ const acceptPayment = async (req, res) => {
 
 // verification endpoint
 const verifyPayment = async (req, res) => {
-  console.log("am inside verify payment");
   // req header with chapa secret key
   const config = {
     headers: {
       Authorization: `Bearer ${CHAPA_AUTH_KEY}`,
     },
   };
-  console.log(req.params.id);
-  console.log(config);
   //verify the transaction
-  await axios
-    .get("https://api.chapa.co/v1/transaction/verify/" + req.params.id, config)
-    .then((response) => {
-      console.log("Payment was successfully verified");
-      console.log(response);
-    })
-    .catch((err) => console.log("Payment can't be verfied", err));
+  try {
+    const response = await axios.get(
+      "https://api.chapa.co/v1/transaction/verify/" + req.params.id,
+      config
+    );
+    console.log("Payment was successfully verified");
+    console.log(response.data);
+
+    // Save the payment response to the database
+    const paymentResponse = new PaymentResponse({
+      txRef: req.params.id,
+      response: response.data,
+    });
+    await paymentResponse.save();
+
+    res
+      .status(200)
+      .json({ message: "Payment verified and saved successfully" });
+  } catch (error) {
+    console.log("Payment can't be verified", error);
+    res.status(500).json({ error: "Failed to verify payment" });
+  }
 };
 
 // Get all payments

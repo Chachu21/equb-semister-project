@@ -86,18 +86,28 @@ export const getUserById = async (req, res) => {
 
 // Update User
 export const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const updates = req.body;
+
   try {
-    const userId = req.params.id;
-    const userData = req.body;
-    const updatedUser = await User.findByIdAndUpdate(userId, userData, {
-      new: true,
-    });
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
+    // Check if the request includes both password and confirmPassword fields
+    if (updates.password && updates.confirmPassword) {
+      // Hash the new password
+
+      const hashedPassword = await bcrypt.hash(updates.password, 10);
+
+      // Update the user's password in the database
+      updates.password = hashedPassword;
     }
-    res.json(updatedUser);
+
+    // Update other user details
+    await User.findByIdAndUpdate(userId, updates);
+    res.status(200).json({ message: "User details updated successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update User" });
+    console.error("Error updating user details:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating user details" });
   }
 };
 

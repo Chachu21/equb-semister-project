@@ -39,6 +39,18 @@ export const createGroup = async (req, res) => {
   }
 };
 
+//get all groups
+export const getAllGroups = async (req, res) => {
+  try {
+    const groups = await Group.find();
+    console.log(groups);
+    res.json(groups);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // //get all groups
 // export const getGroups = async (req, resp) => {
 //   const { page = 1, limit = 10 } = req.query; // Default page and limit

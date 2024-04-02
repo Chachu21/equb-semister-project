@@ -2,8 +2,9 @@ import express from "express";
 import {
   createGroup,
   deleteGroup,
+  getAllGroups,
   getGroup,
-  getGroups,
+  // getGroups,
   joinGroup,
 } from "../controllers/groupController.js";
 import { verifyToken } from "../midleware/jwtMiddleware.js";
@@ -11,7 +12,8 @@ import { verifyToken } from "../midleware/jwtMiddleware.js";
 const groupRouter = express.Router();
 
 groupRouter.post("/create", verifyToken, createGroup);
-groupRouter.get("/get", getGroups);
+groupRouter.get("/get", getAllGroups);
+// groupRouter.get("/get", getGroups);
 groupRouter.get("/get/:id", getGroup);
 groupRouter.post("/join/:groupId", verifyToken, joinGroup);
 groupRouter.delete("/delete/:id", verifyToken, deleteGroup);

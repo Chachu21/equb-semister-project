@@ -39,6 +39,19 @@ const paymentSchema = new mongoose.Schema({
     ref: "EqubGroup",
     required: true,
   },
+  paymentResponse: {
+    // Payment verification response
+    status: {
+      type: String,
+      enum: ["pending", "verified", "failed"],
+      default: "pending",
+    },
+    data: {
+      type: Object,
+    },
+    // You can add more fields here like transaction ID, timestamps, etc.
+  },
+  // You can add more fields as needed
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);

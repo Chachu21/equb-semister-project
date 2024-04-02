@@ -48,6 +48,7 @@ const App = () => {
           <Route path="/admin/payment" element={<Payment />} />
           <Route path="/admin/pay" element={<Pay />} />
           <Route path="/admin/profile" element={<Profile />} />
+          <Route path="/admin/managegroups" element={<ManageGroups />} />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />

@@ -1,52 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import ManageGroupTables from "../UI/ManageGroupTables";
 import SearchUi from "../UI/SearchUi";
 
-const ManageGroups = ({}) => {
-  // Dummy data for equb groups
-  //will do the logic
-  const EqubGroups = [
-    {
-      id: "1",
-      period: "Weekly",
-      groupName: "derashEqub",
-      members: 5,
-      amount: 1000,
-      status: "Approved",
-    },
-    {
-      id: "2",
-      period: "Daily",
-      groupName: "fetanEqub",
-      members: 8,
-      amount: 1500,
-      status: "Pending",
-    },
-    {
-      id: "3",
-      period: "Monthly",
-      groupName: "yegnaEqub",
-      members: 10,
-      amount: 2000,
-      status: "Approved",
-    },
-    {
-      id: "4",
-      period: "5 days",
-      groupName: "FriendsEqub",
-      members: 10,
-      amount: 2000,
-      status: "Approved",
-    },
-    {
-      id: "5",
-      period: "Yearly",
-      groupName: "MullerEqub",
-      members: 10,
-      amount: 2000,
-      status: "Approved",
-    },
-  ];
+interface EqubGroup {
+  id: string;
+  period: string;
+  groupName: string;
+  members: number;
+  amount: number;
+  status: string;
+}
+
+const ManageGroups = () => {
+  const [equbGroups, setEqubGroups] = useState<EqubGroup[]>([]);
+  const [filteredGroup, setFilteredGroup] = useState<EqubGroup[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    // Fetch data from your backend API endpoint
+    axios
+      .get("http://localhost:5000/api/v1/groups")
+      .then((response) => {
+        setEqubGroups(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   const tableHead = [
     { id: "1", title: "ID" },
@@ -58,16 +39,11 @@ const ManageGroups = ({}) => {
     { id: "7", title: "Actions" },
   ];
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredGroup, setFilteredGroup] = useState([]);
-
   const handleSearch = (searchTerm: string) => {
-    console.log("Search term:", searchTerm); // Log the search term
     setSearchTerm(searchTerm);
-    const filteredResults: any = EqubGroups.filter((data) =>
+    const filteredResults = equbGroups.filter((data) =>
       data.period.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    console.log("Filtered results:", filteredResults); // Log the filtered results
     setFilteredGroup(filteredResults);
   };
 
@@ -77,7 +53,7 @@ const ManageGroups = ({}) => {
       <SearchUi handleSearch={handleSearch} search={"period"} />
       <ManageGroupTables
         header={tableHead}
-        equbGroups={filteredGroup.length > 0 ? filteredGroup : EqubGroups}
+        equbGroups={filteredGroup.length > 0 ? filteredGroup : equbGroups}
       />
     </div>
   );
