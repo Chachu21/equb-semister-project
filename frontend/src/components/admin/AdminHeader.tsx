@@ -13,7 +13,7 @@ const AdminHeader = () => {
           dispatch(menuBar());
         }}
         type="button"
-        className="text-lg text-gray-900 font-semibold sidebar-toggle"
+        className="text-lg text-gray-900 font-semibold "
       >
         <RiMenuFill />
       </button>

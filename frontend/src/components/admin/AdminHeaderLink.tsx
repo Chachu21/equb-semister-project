@@ -404,6 +404,3 @@ const AdminHeaderLink = () => {
 };
 
 export default AdminHeaderLink;
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}
