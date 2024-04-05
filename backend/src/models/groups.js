@@ -52,7 +52,7 @@ const groupSchema = new mongoose.Schema({
   createdOn: {
     type: Date,
     default: Date.now, // Use default for automatic creation
-  },
+  }
 });
 
 // Mongoose validation (optional)
@@ -64,6 +64,7 @@ groupSchema.pre("save", function (next) {
   }
   next(); // Continue with saving the document
 });
+
 
 groupSchema.plugin(mongoosePaginate);
 

@@ -25,7 +25,6 @@ userRouter.post("/signUp", createUser);
 userRouter.post("/forgotpassword", forgotPassword);
 userRouter.post("/resetPassword/:token", resetPassword);
 
-// $2a$10$TzOWSL9uZOuCFweAmAyKy.ngff9BHZKilcg28GiX3Q6mPMVPVzPmK;
 userRouter.put("/:id", updateUser);
 
 userRouter.delete("/:id", deleteUser);
