@@ -2,7 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* 
 @layer components {
   .field:not(:last-child) {
     @apply mb-3;
@@ -413,4 +413,4 @@ td.image-cell .image {
 
 .table-pagination {
   @apply px-6 py-3 border-t border-gray-100;
-}
+} */

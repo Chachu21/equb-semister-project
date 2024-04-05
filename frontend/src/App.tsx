@@ -18,6 +18,8 @@ import Payment from "./components/payment/payment";
 import Pay from "./components/payment/pay";
 import Profile from "./components/admin/Profile";
 import ResetPassword from "./Auth/ResetPassword";
+import ViewGroupDetails from "./components/UI/ViewGroupDetail";
+// import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 
 const App = () => {
   return (
@@ -37,6 +39,7 @@ const App = () => {
           <Route path="/admin/manageuser" element={<UserManage />} />
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
+
           <Route
             path="/admin/grouphistory"
             element={<UserGroupDetailHistory />}
@@ -48,6 +51,7 @@ const App = () => {
           <Route path="/admin/payment" element={<Payment />} />
           <Route path="/admin/pay" element={<Pay />} />
           <Route path="/admin/profile" element={<Profile />} />
+          <Route path="/admin//group-details" element={<ViewGroupDetails />} />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />
