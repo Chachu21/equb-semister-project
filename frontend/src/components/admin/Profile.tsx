@@ -16,7 +16,8 @@ const Profile: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const userData = useSelector((state: RootState) => state.user.user);
+  const [avatar, setAvatar] = useState<File | null>(null);
+  const userData: any = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -108,6 +109,13 @@ const Profile: React.FC = () => {
     }
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      setAvatar(selectedFile);
+    }
+  };
+
   return (
     <section className="section main-section md:p-6 py-1 px-1">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
@@ -123,6 +131,15 @@ const Profile: React.FC = () => {
           <div className="card-content">
             <form onSubmit={handleProfileUpdate}>
               <div className="field">
+                <label className="label">Avatar</label>
+                <div className="field-body">
+                  <div className="field file">
+                    <label className="upload control">
+                      <a className="button blue">Upload</a>
+                      <input type="file" onChange={handleFileUpload} />
+                    </label>
+                  </div>
+                </div>
                 <label className="label">Name</label>
                 <div className="field-body">
                   <div className="field">

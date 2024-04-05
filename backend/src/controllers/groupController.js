@@ -43,7 +43,7 @@ export const createGroup = async (req, res) => {
 export const getAllGroups = async (req, res) => {
   try {
     const groups = await Group.find();
-    console.log(groups);
+    // console.log(groups);
     res.json(groups);
   } catch (error) {
     console.error(error);

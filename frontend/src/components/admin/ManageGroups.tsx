@@ -5,8 +5,8 @@ import SearchUi from "../UI/SearchUi";
 
 interface EqubGroup {
   id: string;
-  period: string;
-  groupName: string;
+  types: string;
+  name: string;
   members: number;
   amount: number;
   status: string;
@@ -20,7 +20,7 @@ const ManageGroups = () => {
   useEffect(() => {
     // Fetch data from your backend API endpoint
     axios
-      .get("http://localhost:5000/api/v1/groups")
+      .get("http://localhost:5000/api/v1/group")
       .then((response) => {
         setEqubGroups(response.data);
       })
@@ -31,7 +31,7 @@ const ManageGroups = () => {
 
   const tableHead = [
     { id: "1", title: "ID" },
-    { id: "2", title: "Period" },
+    { id: "2", title: "Types" },
     { id: "3", title: "GroupName" },
     { id: "4", title: "Members" },
     { id: "5", title: "Amount" },
@@ -42,7 +42,7 @@ const ManageGroups = () => {
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
     const filteredResults = equbGroups.filter((data) =>
-      data.period.toLowerCase().includes(searchTerm.toLowerCase())
+      data.types.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredGroup(filteredResults);
   };

@@ -7,23 +7,20 @@ interface Header {
 
 interface equbGroups {
   id: string;
-  period: string;
-  groupName:string
+  types: string;
+  name: string;
   members: number;
   amount: number;
   status: string;
- 
 }
 
 interface TableProps {
   header: Header[];
   equbGroups: equbGroups[];
 }
-     
 
 const ManageGroupTables: React.FC<TableProps> = ({ header, equbGroups }) => {
- 
-//TODO  will implement the approve and reject button is clicked then status will change
+  //TODO  will implement the approve and reject button is clicked then status will change
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white divide-y divide-gray-200">
@@ -43,8 +40,8 @@ const ManageGroupTables: React.FC<TableProps> = ({ header, equbGroups }) => {
           {equbGroups.map((group) => (
             <tr key={group.id}>
               <td className="px-6 py-4 whitespace-nowrap">{group.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{group.period}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{group.groupName}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{group.types}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{group.name}</td>
               <td className="px-6 py-4 whitespace-nowrap">{group.members}</td>
               <td className="px-6 py-4 whitespace-nowrap">${group.amount}</td>
               <td

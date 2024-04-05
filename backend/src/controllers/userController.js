@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
@@ -85,22 +86,28 @@ export const getUserById = async (req, res) => {
 };
 
 // Update User
+cloudinary.config({
+  cloud_name: "du9xasziv",
+  api_key: "952796695462214",
+  api_secret: "TI6YeNLqVWAMglzJ5I1blKSJNBQ",
+});
+
 export const updateUser = async (req, res) => {
   const userId = req.params.id;
   const updates = req.body;
 
   try {
-    // Check if the request includes both password and confirmPassword fields
+    if (req.file) {
+      // If a file is uploaded, upload it to Cloudinary
+      const result = await cloudinary.v2.uploader.upload(req.file.path);
+      updates.imageUrl = result.secure_url;
+    }
+
     if (updates.password && updates.confirmPassword) {
-      // Hash the new password
-
       const hashedPassword = await bcrypt.hash(updates.password, 10);
-
-      // Update the user's password in the database
       updates.password = hashedPassword;
     }
 
-    // Update other user details
     await User.findByIdAndUpdate(userId, updates);
     res.status(200).json({ message: "User details updated successfully" });
   } catch (error) {
