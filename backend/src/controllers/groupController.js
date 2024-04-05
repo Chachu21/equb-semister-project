@@ -2,23 +2,56 @@ import Group from "../models/groups.js";
 import User from "../models/users.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
-//create a new group
+// //create a new group
+// export const createGroup = async (req, res) => {
+//   const { name, amount, member, types } = req.body;
+//   const createdBy = req.user;
+//   console.log(req.body);
+//   try {
+//     // Validate input (optional)
+//     if (!name || !amount || !types || !createdBy || !member) {
+//       return res.status(400).json({ message: "Missing required fields" });
+//     }
+
+//     // Validate existence of creator user
+//     const creator = await User.findById(createdBy);
+//     if (!creator) {
+//       return res
+//         .status(400)
+//         .json({ message: "user is not found, validate your account" });
+//     }
+
+//     const newGroup = new Group({
+//       name,
+//       amount,
+//       member,
+//       types,
+//       createdBy,
+//       members: [createdBy], // Add creator as a member
+//     });
+
+//     await newGroup.save();
+//     res
+//       .status(201)
+//       .json({ message: "Group created successfully", group: newGroup });
+//   } catch (err) {
+//     errorHandler(err, res, 5000);
+//   }
+// };
 export const createGroup = async (req, res) => {
   const { name, amount, member, types } = req.body;
   const createdBy = req.user;
-  console.log(req.body);
+
   try {
-    // Validate input (optional)
     if (!name || !amount || !types || !createdBy || !member) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Validate existence of creator user
     const creator = await User.findById(createdBy);
     if (!creator) {
       return res
         .status(400)
-        .json({ message: "user is not found, validate your account" });
+        .json({ message: "User not found, please validate your account" });
     }
 
     const newGroup = new Group({
@@ -27,20 +60,47 @@ export const createGroup = async (req, res) => {
       member,
       types,
       createdBy,
-      members: [createdBy], // Add creator as a member
+      members: [createdBy],
     });
 
     await newGroup.save();
+
+    // Categorize the group based on its status
+    switch (newGroup.status) {
+      case "completed":
+        await Group.updateOne(
+          { _id: newGroup._id },
+          { $addToSet: { completedGroups: newGroup._id } }
+        );
+        break;
+      case "unstarted":
+        await Group.updateOne(
+          { _id: newGroup._id },
+          { $addToSet: { unstartedGroups: newGroup._id } }
+        );
+        break;
+      case "pending":
+        await Group.updateOne(
+          { _id: newGroup._id },
+          { $addToSet: { pendingGroups: newGroup._id } }
+        );
+        break;
+      default:
+        break;
+    }
+
     res
       .status(201)
       .json({ message: "Group created successfully", group: newGroup });
   } catch (err) {
-    errorHandler(err, res, 5000);
+    errorHandler(err, res, 500);
   }
 };
 
-// //get all groups
+
+//get all groups
 // export const getGroups = async (req, resp) => {
+//   console.log("am at get all groups muller")
 //   const { page = 1, limit = 10 } = req.query; // Default page and limit
 
 //   try {
@@ -54,11 +114,21 @@ export const createGroup = async (req, res) => {
 
 //     res.status(200).json({ groups });
 //   } catch (err) {
-//     handleError(err, res);
+//     handleError(err, res.error);
 //   }
 // };
 
 //get single group by id
+// app.get("/api/v1/groups", async (req, res) => {
+//   try {
+//     const { status } = req.query;
+//     const groups = await Group.find({ status }); // Fetch groups by status
+//     res.json(groups);
+//   } catch (error) {
+//     console.error("Error fetching groups:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 export const getGroup = async (req, res) => {
   const { id } = req.params; // Extract group ID from request parameters
 
@@ -179,4 +249,4 @@ export const getGroups = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" }); // Catch any other potential errors
   }
-};
+ };
