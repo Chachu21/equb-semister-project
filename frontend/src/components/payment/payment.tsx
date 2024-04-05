@@ -1,81 +1,100 @@
-const payment = () => {
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+const Payment = () => {
   return (
-    <section className="section main-section md:p-6 py-1 px-1">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">
-              <span className="icon">
-                <i className="mdi mdi-account-circle"></i>
-              </span>
-              Adding withdrawal payment method
-            </p>
-          </header>
-          <div className="card-content">
-            <form>
-              <div className="field">
-                <label className="label">Bank name</label>
-                <div className="field-body">
-                  <div className="field">
-                    <div className="control">
-                      <input
-                        type="text"
-                        autoComplete="on"
-                        name="name"
-                        placeholder="Commerical bank of ethiopia"
-                        className="input "
-                        required
-                      />
-                    </div>
-                    <p className="help">Required. Bank name</p>
-                  </div>
-                </div>
+    <div className="bg-gray-200 container mx-auto overflow-x-hidden h-full md:max-w-3xl flex flex-col items-center justify-center">
+      <div className="flex flex-col justify-center items-center bg-white px-5 py-20 space-y-5">
+        <p className="text-2xl">Adding withdrawal payment method</p>
+        <div className="card-content">
+          <Formik
+            initialValues={{
+              bankName: "",
+              accountHolderName: "",
+              accountNumber: "",
+            }}
+            validationSchema={Yup.object({
+              bankName: Yup.string().required("Bank name is required"),
+              accountHolderName: Yup.string().required(
+                "Account holder name is required"
+              ),
+              accountNumber: Yup.number().required(
+                "Account number is required"
+              ),
+            })}
+            onSubmit={(values, { setSubmitting }) => {
+              // You can handle form submission here
+              console.log(values);
+              setSubmitting(false);
+            }}
+          >
+            <Form className="flex flex-col space-y-5 w-full">
+              <div className="flex flex-col space-y-1">
+                <label htmlFor="bankName" className="font-semibold">
+                  Bank name
+                </label>
+                <Field
+                  type="text"
+                  autoComplete="on"
+                  name="bankName"
+                  placeholder="Commercial bank of Ethiopia"
+                  className="px-3 py-2 border border-gray-400 rounded w-full max-w-full focus:border-gray-100 focus:ring focus:outline-none bg-white"
+                />
+                <ErrorMessage
+                  name="bankName"
+                  component="div"
+                  className="text-red-500"
+                />
               </div>
-              <div className="field">
-                <label className="label">Account holder name</label>
-                <div className="field-body">
-                  <div className="field">
-                    <div className="control">
-                      <input
-                        type="text"
-                        name="email"
-                        placeholder="abebe alemu kebede"
-                        className="input"
-                        required
-                      />
-                    </div>
-                    <p className="help">Required. account holder name</p>
-                  </div>
-                </div>
+              <div className="flex flex-col space-y-1">
+                <label htmlFor="accountHolderName" className="font-semibold">
+                  Account holder name
+                </label>
+                <Field
+                  type="text"
+                  name="accountHolderName"
+                  placeholder="Abebe Alemu Kebede"
+                  className="px-3 py-2 border border-gray-400 rounded w-full max-w-full focus:border-gray-100 focus:ring focus:outline-none bg-white"
+                />
+                <ErrorMessage
+                  name="accountHolderName"
+                  component="div"
+                  className="text-red-500"
+                />
               </div>
-              <hr />
-              <div className="field">
-                <label className="label">Add Account Number</label>
-                <div className="control">
-                  <input
-                    type="password"
-                    placeholder="1000119219665"
-                    autoComplete="current-password"
-                    className="input"
-                    required
-                  />
-                </div>
-                <p className="help">Required. account number</p>
+              <div className="flex flex-col space-y-1">
+                <label htmlFor="accountNumber" className="font-semibold">
+                  Account Number
+                </label>
+                <Field
+                  type="number"
+                  name="accountNumber"
+                  placeholder="1000119219665"
+                  autoComplete=""
+                  className="px-3 py-2 border border-gray-400 rounded w-full max-w-full focus:border-gray-100 focus:ring focus:outline-none bg-white"
+                />
+                <ErrorMessage
+                  name="accountNumber"
+                  component="div"
+                  className="text-red-500"
+                />
               </div>
-              <hr />
-              <div className="field">
-                <div className="control">
-                  <button type="submit" className="button green">
-                    save
+              <div className="flex">
+                <div className="">
+                  <button
+                    type="submit"
+                    className="bg-green-500 w-fit px-8 py-1 rounded"
+                  >
+                    Save
                   </button>
                 </div>
               </div>
-            </form>
-          </div>
+            </Form>
+          </Formik>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default payment;
+export default Payment;

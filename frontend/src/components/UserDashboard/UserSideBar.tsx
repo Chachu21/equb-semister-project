@@ -89,9 +89,12 @@ const UserSideBar = () => {
         <span className="text-gray-400 font-bold">manage your account</span>
 
         {LinkComponent.map((links) => (
-          <li className="mb-1 group" onClick={handleCloseSideBar}>
+          <li
+            key={links.id}
+            className="mb-1 group"
+            onClick={handleCloseSideBar}
+          >
             <Link
-              key={links.id}
               to={links.path}
               className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
             >

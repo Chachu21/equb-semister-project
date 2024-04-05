@@ -19,13 +19,14 @@ const port = process.env.PORT;
 app.use(cors());
 app.use(express.json());
 
+//connect to the database
+createDatabase();
 // Define your routes here
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/group", groupRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/payment", paymentRouter);
-//connect to the database
-createDatabase();
+
 //localhost:3000/api/v1/users/signUp
 // Start the server
 http: app.listen(port, () => {

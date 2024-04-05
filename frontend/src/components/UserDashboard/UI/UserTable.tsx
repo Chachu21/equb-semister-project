@@ -1,5 +1,3 @@
-import React from "react";
-
 const UserTable = () => {
   return (
     <div className="bg-gray-500 text-white">
