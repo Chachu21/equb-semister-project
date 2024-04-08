@@ -1,66 +1,66 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-const groupSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true, // Remove leading/trailing whitespace
-  },
-  amount: {
-    type: Number,
-    required: true,
-    min: 0, // Ensure positive amount
-  },
-  types: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  member: {
-    type: Number,
-    required: true,
-    min: 0, // Ensure positive amount
-  },
-  members: [
-    {
+const groupSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true, // Remove leading/trailing whitespace
+    },
+    amount: {
+      type: Number,
+      required: true,
+      min: 0, // Ensure positive amount
+    },
+    types: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    member: {
+      type: Number,
+      required: true,
+      min: 0, // Ensure positive amount
+    },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Reference the User model
+      },
+    ],
+    winners: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Reference the User model
+      },
+    ],
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Reference the User model
+      required: true,
     },
-  ],
-  winners: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference the User model
+    status: {
+      type: String,
+      required: true,
+      enum: ["pending", "started", "completed"], // Use enum for valid values
+      default: "pending",
     },
-  ],
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference the User model
-    required: true,
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    startDate: {
+      type: Date,
+      default: Date.now, // Use default for automatic creation
+    },
+    completedDate: {
+      type: Date,
+    },
   },
-  status: {
-    type: String,
-    required: true,
-    enum: ["pending", "started", "completed"], // Use enum for valid values
-    default: "pending",
-  },
-  isCompleted: {
-    type: Boolean,
-    default: false,
-  },
-  createdOn: {
-    type: Date,
-    default: Date.now, // Use default for automatic creation
-  },
-  startDate: {
-    type: Date,
-    default: Date.now, // Use default for automatic creation
-  },
-  completedDate: {
-    type: Date,
-  },
-});
+
+  { timestamps: true }
+);
 
 // Mongoose validation (optional)
 groupSchema.pre("save", function (next) {

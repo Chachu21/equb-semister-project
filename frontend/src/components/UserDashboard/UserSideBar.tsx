@@ -42,6 +42,12 @@ const LinkComponent = [
     path: "/userDashboard/setting",
     icon: <RiSettings3Line className="mr-3 text-xl" />,
   },
+  {
+    id: 7,
+    name: "sendRequest",
+    path: "/userDashboard/userRequest",
+    icon: <RiSettings3Line className="mr-3 text-xl" />,
+  },
 ];
 
 const UserSideBar = () => {

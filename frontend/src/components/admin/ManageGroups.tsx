@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ManageGroupTables from "../UI/ManageGroupTables";
 import SearchUi from "../UI/SearchUi";
+import Tables from "../UI/Tables";
+
+interface GroupData {
+  _id: string;
+  period: string;
+  groupName: string;
+  member: string;
+  Amount: Number;
+  status: string;
+}
 
 interface EqubGroup {
   _id: string;
@@ -34,10 +44,9 @@ const ManageGroups = () => {
     { id: "1", title: "ID" },
     { id: "2", title: "Types" },
     { id: "3", title: "GroupName" },
-    { id: "4", title: "Members" },
+    { id: "4", title: "Member" },
     { id: "5", title: "Amount" },
     { id: "6", title: "Status" },
-    { id: "7", title: "Actions" },
   ];
 
   const handleSearch = (searchTerm: string) => {
@@ -58,7 +67,7 @@ const ManageGroups = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
       <SearchUi handleSearch={handleSearch} search={"period"} />
-      <ManageGroupTables
+      <Tables
         header={tableHead}
         equbGroups={filteredGroup.length > 0 ? filteredGroup : equbGroups}
         onGroupDeleted={handleGroupDeleted} // Pass the handler to child component

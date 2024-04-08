@@ -23,6 +23,7 @@ import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
 import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
+import SendRequest from "./components/UserDashboard/UI/SendRequest";
 
 const App = () => {
   return (
@@ -58,6 +59,8 @@ const App = () => {
         <Route path="/userDashboard" element={<UserDashboard />}>
           <Route path="/userDashboard" index element={<Equb />} />
           <Route path="/userDashboard/create" element={<CreateGroup />} />
+          <Route path="/userDashboard/userRequest" element={<SendRequest />} />
+
           <Route
             path="/userDashboard/transactions"
             element={<UserTransaction />}

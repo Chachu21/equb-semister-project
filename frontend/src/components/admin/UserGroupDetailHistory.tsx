@@ -74,7 +74,7 @@ const UserGroupDetailHistory: React.FC = () => {
         UserGroupDetailHistory
       </h1>
       <SearchUi handleSearch={handleSearch} search={"status"} />
-      <UserGroupManageTables
+      <Tables
         header={header}
         userGroupManageData={
           filteredUserGroup.length > 0 ? filteredUserGroup : userGroups
