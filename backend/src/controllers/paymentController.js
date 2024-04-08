@@ -4,7 +4,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 const CHAPA_AUTH_KEY =
-  process.env.CHAPA_AUTH_KEY || "CHASECK_TEST-TzQrucAcnLoQiaxU5aTrO7klDliPULJn"; //Put Your Chapa Secret Key
+  process.env.CHAPA_AUTH_KEY; //Put Your Chapa Secret Key
 
 const acceptPayment = async (req, res) => {
   const { amount, currency, email, fname, lname, phone_number, tx_ref } =
@@ -37,6 +37,7 @@ const acceptPayment = async (req, res) => {
       .post("https://api.chapa.co/v1/transaction/initialize", body, header)
       .then((response) => {
         resp = response;
+        console.log("something happen ", response);
       })
       .catch((error) => {
         console.log(error.response.data); // Prints the error response data
@@ -46,6 +47,7 @@ const acceptPayment = async (req, res) => {
           message: error,
         });
       });
+    console.log("dsjhfkjasdkdfj", resp.data);
     res.status(200).json(resp.data);
   } catch (e) {
     res.status(400).json({

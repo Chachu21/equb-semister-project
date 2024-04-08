@@ -1,0 +1,108 @@
+import {
+  RiDashboard2Line,
+  RiSettings3Line,
+  RiSecurePaymentFill,
+  RiCloseFill,
+} from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { AppDispatch, RootState } from "../../Redux/store";
+import { menuBar } from "../../Redux/Features/userSlice";
+import { FaUserGroup } from "react-icons/fa6";
+import { GrTransaction } from "react-icons/gr";
+
+const LinkComponent = [
+  {
+    id: 1,
+    name: "Dashboard",
+    path: "/equbCreatorDashboard",
+    icon: <RiDashboard2Line className="mr-3 text-xl" />,
+  },
+  {
+    id: 2,
+    name: "Create Group",
+    path: "/equbCreatorDashboard/create",
+    icon: <FaUserGroup className="mr-3 text-xl" />,
+  },
+  {
+    id: 3,
+    name: "Requests",
+    path: "/equbCreatorDashboard/requests",
+    icon: <GrTransaction className="mr-3 text-xl" />,
+  },
+  {
+    id: 4,
+    name: "Groups",
+    path: "/equbCreatorDashboard/manageGroups",
+    icon: <RiSecurePaymentFill className="mr-3 text-xl" />,
+  },
+  {
+    id: 5,
+    name: "Settings",
+    path: "/equbCreatorDashboard/setting",
+    icon: <RiSettings3Line className="mr-3 text-xl" />,
+  },
+];
+
+const EqubCreatorSideBar = () => {
+  const isClicked = useSelector((state: RootState) => state.user.isClicked);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const screenWidth = window.innerWidth;
+
+  const handleCloseSideBar = () => {
+    console.log(screenWidth);
+
+    if (screenWidth < 640) {
+      dispatch(menuBar());
+    }
+  };
+
+  return (
+    <aside
+      className={`fixed left-0 top-0 w-64 h-full bg-[#f8f4f3] p-4 z-50 transform ${
+        isClicked ? "-translate-x-full" : "translate-x-0"
+      } `}
+    >
+      <div className="flex justify-between items-center">
+        <Link
+          to="/admin"
+          className="items-center pb-4 border-b border-b-gray-800"
+        >
+          <h2 className="font-bold text-2xl">
+            Equb
+            <span className="bg-[#008B8B] text-white px-2 rounded-md">
+              creator
+            </span>
+          </h2>
+        </Link>
+        <button
+          type="button"
+          onClick={() => dispatch(menuBar())}
+          className="md:hidden block w-fit bg-white p-1 text-gray-900 text-2xl font-semibold"
+        >
+          <RiCloseFill />
+        </button>
+      </div>
+
+      <ul className="mt-4 space-y-5">
+        <span className="text-gray-400 font-bold">manage your account</span>
+
+        {LinkComponent.map((links) => (
+          <li className="mb-1 group" onClick={handleCloseSideBar}>
+            <Link
+              key={links.id}
+              to={links.path}
+              className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
+            >
+              {links.icon}
+              <span className="text-sm">{links.name}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  );
+};
+
+export default EqubCreatorSideBar;

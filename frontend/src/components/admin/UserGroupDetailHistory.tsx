@@ -1,133 +1,71 @@
-import  { useState } from 'react'
-import SearchUi from '../UI/SearchUi';
-import UserGroupManageTables from '../UI/UserGroupManageTables';
+import React, { useState, useEffect } from "react";
+import SearchUi from "../UI/SearchUi";
+import UserGroupManageTables from "../UI/UserGroupManageTables";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
 
-const UserGroupDetailHistory = () => {
-  const header = [
+interface Header {
+  id: string;
+  title: string;
+}
+
+interface UserGroupManageData {
+  _id: string;
+  status: string;
+  name: string;
+  types: string;
+  startDate: string;
+  completedDate: string;
+  member: string;
+  amount: string;
+}
+
+const UserGroupDetailHistory: React.FC = () => {
+  const header: Header[] = [
     { id: "1", title: "Status" },
     { id: "2", title: "GroupName" },
     { id: "3", title: "GroupDuration" },
     { id: "4", title: "startedDate" },
     { id: "5", title: "CompletedDate" },
     { id: "6", title: "GroupSize" },
-    { id: "7", title: "Payment Method" },
+    { id: "7", title: "Amount" },
     { id: "8", title: "Action" },
   ];
 
-  const userGroupManageData = [
-    {
-      id: "1",
-      status: "completed",
-      GroupName: "DerashEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "2024-02-20",
-      GroupSize: "10",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "2",
-      status: "notStarted",
-      GroupName: "DerashEqub",
-      GroupDuration: "Monthly",
-      startedDate: "-",
-      CompletedDate: "-",
-      GroupSize: "13",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "3",
-      status: "completed",
-      GroupName: "FetanEqub",
-      GroupDuration: "yearly",
-      startedDate: "2024-02-20",
-      CompletedDate: "2024-02-20",
-      GroupSize: "4",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "4",
-      status: "progress",
-      GroupName: "FriendsEqub",
-      GroupDuration: "Yearly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "24",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "5",
-      status: "started",
-      GroupName: "mullerEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "6",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "6",
-      status: "completed",
-      GroupName: "natiEqub",
-      GroupDuration: "monthly",
-      startedDate: "2024-02-20",
-      CompletedDate: "2024-02-20",
-      GroupSize: "9",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "7",
-      status: "progress",
-      GroupName: "chaleEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "10",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "8",
-      status: "progress",
-      GroupName: "gebreEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "12",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "9",
-      status: "progress",
-      GroupName: "DerashEqub",
-      GroupDuration: "yaerly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "7",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "10",
-      status: "progress",
-      GroupName: "fetanEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "11",
-      paymentMethod: "telebirr",
-    },
-
-    // Add more transactions as needed
-  ];
-
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredUserGroup, setFilteredUsergroup] = useState([]);
+  const [filteredUserGroup, setFilteredUsergroup] = useState<
+    UserGroupManageData[]
+  >([]);
+  const [userGroups, setUserGroups] = useState<UserGroupManageData[]>([]);
+  const userData: any = useSelector((state: RootState) => state.user.user);
+
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+      try {
+        const userId = userData?._id; // Replace with the actual user ID
+        const response = await axios.get<UserGroupManageData[]>(
+          `http://localhost:5000/api/v1/group/userJoinedGroups/${userId}`
+        );
+        setUserGroups(response.data);
+      } catch (error) {
+        console.error("Error fetching user's joined groups:", error);
+      }
+    };
+
+    fetchUserGroups();
+  }, []);
 
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
-    const filteredResults: any = userGroupManageData.filter((data) =>
+    const filteredResults = userGroups.filter((data) =>
       data.status.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredUsergroup(filteredResults);
+  };
+
+  const handleDelete = () => {
+    console.log("Deleting");
   };
 
   return (
@@ -139,11 +77,12 @@ const UserGroupDetailHistory = () => {
       <UserGroupManageTables
         header={header}
         userGroupManageData={
-          filteredUserGroup.length > 0 ? filteredUserGroup : userGroupManageData
+          filteredUserGroup.length > 0 ? filteredUserGroup : userGroups
         }
+        handleDelete={handleDelete}
       />
     </div>
   );
 };
 
-export default UserGroupDetailHistory
+export default UserGroupDetailHistory;

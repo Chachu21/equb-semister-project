@@ -159,6 +159,20 @@ export const getGroup = async (req, res) => {
   }
 };
 
+// Controller method to fetch groups joined by the logged-in user
+export const getUserJoinedGroups = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    console.log(userId);
+    // Find groups where the logged-in user's ID is present in the members array
+    const userGroups = await Group.find({ members: userId }).exec();
+    res.status(200).json(userGroups);
+  } catch (error) {
+    console.error("Error fetching user's joined groups:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 //delete single group by id
 export const deleteGroup = async (req, res) => {
   const { id } = req.params; // Extract group ID from request parameters
@@ -262,4 +276,4 @@ export const getGroups = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" }); // Catch any other potential errors
   }
- };
+};

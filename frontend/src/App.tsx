@@ -22,6 +22,7 @@ import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 // import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
+import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/admin/manageuser" element={<UserManage />} />
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
+          <Route path="/admin/pay" element={<Pay />} />
 
           <Route
             path="/admin/grouphistory"
@@ -76,6 +78,17 @@ const App = () => {
           <Route path="/userDashboard/pay" element={<Pay />} />
           <Route path="/userDashboard/profile" element={<Profile />} />
           <Route path="/userDashboard/setting" element={<AccountDetail />} />
+        </Route>
+        <Route path="/equbCreatorDashboard" element={<EqubCreatorDashboard />}>
+          <Route
+            path="/equbCreatorDashboard/create"
+            index
+            element={<CreateGroup />}
+          />
+          <Route
+            path="/equbCreatorDashboard/manageGroups"
+            element={<ManageGroups />}
+          />
         </Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />} />

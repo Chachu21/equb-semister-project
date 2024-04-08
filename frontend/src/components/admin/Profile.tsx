@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
+import { toast } from "react-toastify";
 
 interface User {
   name: string;
@@ -17,6 +18,7 @@ const Profile: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const userData: any = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
@@ -102,6 +104,10 @@ const Profile: React.FC = () => {
       console.log("Password changed successfully");
       console.log(response);
 
+      if (response) {
+        toast.success("Successfully changed password");
+      }
+
       // Optionally, you can show a success message to the user
     } catch (error) {
       console.error("Error changing password:", error);
@@ -114,6 +120,10 @@ const Profile: React.FC = () => {
       const selectedFile = e.target.files[0];
       setAvatar(selectedFile);
     }
+  };
+
+  const toggleChangePassword = () => {
+    setShowChangePassword(!showChangePassword);
   };
 
   return (
@@ -232,71 +242,78 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="card">
-        <header className="card-header">
-          <p className="card-header-title">
-            <span className="icon">
-              <i className="mdi mdi-lock"></i>
-            </span>
-            Change Password
-          </p>
-        </header>
-        <div className="card-content">
-          <form onSubmit={handleChangePassword}>
-            <div className="field">
-              <label className="label">Current password</label>
-              <div className="control">
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  autoComplete="current-password"
-                  className="input"
-                  required
-                />
+      {!showChangePassword && (
+        <button className="button green" onClick={toggleChangePassword}>
+          Change Password
+        </button>
+      )}
+      {showChangePassword && (
+        <div className="card">
+          <header className="card-header">
+            <p className="card-header-title">
+              <span className="icon">
+                <i className="mdi mdi-lock"></i>
+              </span>
+              Change Password
+            </p>
+          </header>
+          <div className="card-content">
+            <form onSubmit={handleChangePassword}>
+              <div className="field">
+                <label className="label">Current password</label>
+                <div className="control">
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    autoComplete="current-password"
+                    className="input"
+                    required
+                  />
+                </div>
+                <p className="help">Required. Your current password</p>
               </div>
-              <p className="help">Required. Your current password</p>
-            </div>
-            <hr />
-            <div className="field">
-              <label className="label">New password</label>
-              <div className="control">
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  autoComplete="new-password"
-                  className="input"
-                  required
-                />
+              <hr />
+              <div className="field">
+                <label className="label">New password</label>
+                <div className="control">
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                    className="input"
+                    required
+                  />
+                </div>
+                <p className="help">Required. New password</p>
               </div>
-              <p className="help">Required. New password</p>
-            </div>
-            <div className="field">
-              <label className="label">Confirm password</label>
-              <div className="control">
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  autoComplete="new-password"
-                  className="input"
-                  required
-                />
+              <div className="field">
+                <label className="label">Confirm password</label>
+                <div className="control">
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    autoComplete="new-password"
+                    className="input"
+                    required
+                  />
+                </div>
+                <p className="help">Required. New password one more time</p>
               </div>
-              <p className="help">Required. New password one more time</p>
-            </div>
-            <hr />
-            <div className="field">
-              <div className="control">
-                <button type="submit" className="button green">
-                  Submit
-                </button>
+              <hr />
+              <div className="field">
+                <div className="control">
+                  <button type="submit" className="button green">
+                    Submit
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

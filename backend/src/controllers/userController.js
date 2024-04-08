@@ -86,21 +86,20 @@ export const getUserById = async (req, res) => {
 };
 
 // Update User
-cloudinary.config({
-  cloud_name: "du9xasziv",
-  api_key: "952796695462214",
-  api_secret: "TI6YeNLqVWAMglzJ5I1blKSJNBQ",
-});
 
 export const updateUser = async (req, res) => {
   const userId = req.params.id;
   const updates = req.body;
 
   try {
-    if (req.file) {
-      // If a file is uploaded, upload it to Cloudinary
-      const result = await cloudinary.v2.uploader.upload(req.file.path);
-      updates.imageUrl = result.secure_url;
+    // if (req.file) {
+    //   // If a file is uploaded, upload it to Cloudinary
+    //   const result = await cloudinary.v2.uploader.upload(req.file.path);
+    //   updates.imageUrl = result.secure_url;
+    // }
+
+    if (updates.password !== updates.confirmPassword) {
+      return res.status(400).json({ error: "Passwords do not match" });
     }
 
     if (updates.password && updates.confirmPassword) {
@@ -115,6 +114,32 @@ export const updateUser = async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while updating user details" });
+  }
+};
+
+cloudinary.config({
+  cloud_name: "du9xasziv",
+  api_key: "952796695462214",
+  api_secret: "TI6YeNLqVWAMglzJ5I1blKSJNBQ",
+});
+
+export const uploadImage = async (req, res) => {
+  try {
+    console.log(req.file);
+    // Check if file exists
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "equb",
+    });
+
+    // Send the Cloudinary URL in the response
+    res.json({ imageUrl: result.secure_url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error uploading image to Cloudinary" });
   }
 };
 
