@@ -26,12 +26,11 @@ const SearchUi: React.FC<Props> = ({ handleSearch,search }) => {
         value={searchTerm}
         onChange={handleChange}
         placeholder={`Search by ${search}`}
-       
         className="block w-48 sm:w-auto shadow-sm border-gray-300 rounded-md px-3 py-2 focus:outline-none"
       />
       <button
         onClick={() => handleSearch(searchTerm)}
-        className="flex items-center justify-center px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+        className="flex items-center justify-center px-3 py-2 bg-[#008B8B] text-white rounded-md hover:bg-[#235c5c] focus:outline-none focus:bg-[#3a7777]"
       >
         <HiSearch className="w-5 h-5" /> {/* Using the search icon */}
       </button>

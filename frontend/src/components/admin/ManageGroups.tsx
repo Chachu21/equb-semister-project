@@ -1,11 +1,110 @@
-import { useState } from "react";
-import ManageGroupTables from "../UI/ManageGroupTables";
+// import { useState } from "react";
+// import ManageGroupTables from "../UI/ManageGroupTables";
+// import SearchUi from "../UI/SearchUi";
+
+// const ManageGroups = ({}) => {
+//   // Dummy data for equb groups
+//   //will do the logic
+//   const EqubGroups = [
+//     {
+//       id: "1",
+//       period: "Weekly",
+//       groupName: "derashEqub",
+//       members: 5,
+//       amount: 1000,
+//       status: "Approved",
+//     },
+//     {
+//       id: "2",
+//       period: "Daily",
+//       groupName: "fetanEqub",
+//       members: 8,
+//       amount: 1500,
+//       status: "Pending",
+//     },
+//     {
+//       id: "3",
+//       period: "Monthly",
+//       groupName: "yegnaEqub",
+//       members: 10,
+//       amount: 2000,
+//       status: "Approved",
+//     },
+//     {
+//       id: "4",
+//       period: "5 days",
+//       groupName: "FriendsEqub",
+//       members: 10,
+//       amount: 2000,
+//       status: "Approved",
+//     },
+//     {
+//       id: "5",
+//       period: "Yearly",
+//       groupName: "MullerEqub",
+//       members: 10,
+//       amount: 2000,
+//       status: "Approved",
+//     },
+//   ];
+
+//   const tableHead = [
+//     { id: "1", title: "ID" },
+//     { id: "2", title: "Period" },
+//     { id: "3", title: "GroupName" },
+//     { id: "4", title: "Members" },
+//     { id: "5", title: "Amount" },
+//     { id: "6", title: "Status" },
+//     { id: "7", title: "Actions" },
+//   ];
+
+//   const [searchTerm, setSearchTerm] = useState<string>("");
+//   const [filteredGroup, setFilteredGroup] = useState([]);
+
+//   const handleSearch = (searchTerm: string) => {
+//     console.log("Search term:", searchTerm); // Log the search term
+//     setSearchTerm(searchTerm);
+//     const filteredResults: any = EqubGroups.filter((data) =>
+//       data.period.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     console.log("Filtered results:", filteredResults); // Log the filtered results
+//     setFilteredGroup(filteredResults);
+//   };
+
+//   return (
+//     <div className="container mx-auto px-4 py-8">
+//       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
+//       <SearchUi handleSearch={handleSearch} search={"period"} />
+//       <ManageGroupTables
+//         header={tableHead}
+//         equbGroups={filteredGroup.length > 0 ? filteredGroup : EqubGroups}
+//       />
+//     </div>
+//   );
+// };
+
+// export default ManageGroups;
+import axios from "axios";
+import { useState, useEffect } from "react";
 import SearchUi from "../UI/SearchUi";
+import Tables from "../UI/Tables";
+
+interface GroupData {
+  _id: string;
+  period: string;
+  groupName: string;
+  member: string;
+  Amount: Number;
+  status:string
+  
+}
+
+
 
 const ManageGroups = ({}) => {
   // Dummy data for equb groups
   //will do the logic
-  const EqubGroups = [
+  const datas = [
     {
       id: "1",
       period: "Weekly",
@@ -52,19 +151,51 @@ const ManageGroups = ({}) => {
     { id: "1", title: "ID" },
     { id: "2", title: "Period" },
     { id: "3", title: "GroupName" },
-    { id: "4", title: "Members" },
+    { id: "4", title: "Member" },
     { id: "5", title: "Amount" },
     { id: "6", title: "Status" },
-    { id: "7", title: "Actions" },
   ];
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredGroup, setFilteredGroup] = useState([]);
+  const [tableData, setTableData] = useState<GroupData[]>([]);
+
+
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<GroupData[]>(
+          "http://localhost:5000/api/v1/group/get"
+        );
+
+        
+        console.log("response from groups are muller  :", response.data.searchResult[0]);
+        
+        setTableData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Extract only necessary fields from tableData
+    const filteredData = tableData.map(
+      ({ _id, period, groupName, member, Amount, status }) => ({
+        _id,
+        period,
+        groupName,
+        member,
+        Amount,
+        status,
+      })
+    );
 
   const handleSearch = (searchTerm: string) => {
     console.log("Search term:", searchTerm); // Log the search term
     setSearchTerm(searchTerm);
-    const filteredResults: any = EqubGroups.filter((data) =>
+    const filteredResults: any = filteredData.filter((data) =>
       data.period.toLowerCase().includes(searchTerm.toLowerCase())
     );
     console.log("Filtered results:", filteredResults); // Log the filtered results
@@ -75,9 +206,10 @@ const ManageGroups = ({}) => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
       <SearchUi handleSearch={handleSearch} search={"period"} />
-      <ManageGroupTables
+      <Tables
         header={tableHead}
-        equbGroups={filteredGroup.length > 0 ? filteredGroup : EqubGroups}
+        //datas={filteredGroup.length > 0 ? filteredGroup : datas}
+        datas={filteredGroup.length > 0 ? filteredGroup : filteredData}
       />
     </div>
   );

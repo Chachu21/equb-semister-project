@@ -18,7 +18,7 @@ const acceptPayment = async (req, res) => {
       },
     };
 
-    const TEXT_REF = "tx-myecommerce12345-" + Date.now();
+    const TEXT_REF = {fname} + Date.now();
 
     const body = {
       amount: amount,

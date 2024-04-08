@@ -22,6 +22,7 @@ import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 // import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
+import SendRequest from "./components/UserDashboard/UI/SendRequest";
 
 const App = () => {
   return (
@@ -50,11 +51,13 @@ const App = () => {
           {/* <Route path="/admin/profile" element={<Profile />} /> */}
           <Route path="/admin/accountdetail" element={<AccountDetail />} />
           <Route path="/admin/profile" element={<Profile />} />
-          <Route path="/admin//group-details" element={<ViewGroupDetails />} />
+          <Route path="/admin/group-details" element={<ViewGroupDetails />} />
         </Route>
         <Route path="/userDashboard" element={<UserDashboard />}>
           <Route path="/userDashboard" index element={<Equb />} />
           <Route path="/userDashboard/create" element={<CreateGroup />} />
+          <Route path="/userDashboard/userRequest" element={<SendRequest />} />
+         
           <Route
             path="/userDashboard/transactions"
             element={<UserTransaction />}
