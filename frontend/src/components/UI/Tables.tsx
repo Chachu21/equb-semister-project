@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 interface Header {
   id: string;
   title: string;
@@ -11,7 +11,7 @@ type TableRow<T> = {
 interface TableProps<T> {
   header: Header[];
   datas: TableRow<T>[];
-  onDelete: (userId: string) => void;
+  onDelete: (Id: string) => void;
 }
 
 const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
@@ -21,12 +21,12 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
   const [itemsPerPage] = useState<number>(5);
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const handleDelete = async (userId: string) => {
+  const handleDelete = async (Id: string) => {
     const isConfirmed = window.confirm(
       "Are you sure you want to delete this user?"
     );
     if (isConfirmed) {
-      onDelete(userId);
+      onDelete(Id);
     }
   };
   // logic for paginations

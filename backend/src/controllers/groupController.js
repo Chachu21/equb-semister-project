@@ -109,39 +109,6 @@ export const getAllGroups = async (req, res) => {
   }
 };
 
-// //get all groups
-
-//get all groups
-// export const getGroups = async (req, resp) => {
-//   console.log("am at get all groups muller")
-//   const { page = 1, limit = 10 } = req.query; // Default page and limit
-
-//   try {
-//     const options = {
-//       page: parseInt(page),
-//       limit: parseInt(limit),
-//       sort: { createdOn: -1 }, // Optional: sort by creation date descending
-//     };
-
-//     const groups = await Group.paginate({}, options); // Empty query {} for all groups
-
-//     res.status(200).json({ groups });
-//   } catch (err) {
-//     handleError(err, res.error);
-//   }
-// };
-
-//get single group by id
-// app.get("/api/v1/groups", async (req, res) => {
-//   try {
-//     const { status } = req.query;
-//     const groups = await Group.find({ status }); // Fetch groups by status
-//     res.json(groups);
-//   } catch (error) {
-//     console.error("Error fetching groups:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
 export const getGroup = async (req, res) => {
   const { id } = req.params; // Extract group ID from request parameters
 
@@ -158,20 +125,39 @@ export const getGroup = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" }); // Handle internal errors
   }
 };
+ // Import Group model or adjust as per your file structure
 
-// Controller method to fetch groups joined by the logged-in user
 export const getUserJoinedGroups = async (req, res) => {
+  console.log("At getUserJoinedGroups controller");
   try {
     const userId = req.params.id;
-    console.log(userId);
+
     // Find groups where the logged-in user's ID is present in the members array
     const userGroups = await Group.find({ members: userId }).exec();
+    console.log("User groups:", userGroups);
     res.status(200).json(userGroups);
   } catch (error) {
     console.error("Error fetching user's joined groups:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// Controller method to fetch groups joined by the logged-in user
+// export const getUserJoinedGroups = async (req, res) => {
+//   console.log("am at getUserJoinedGroups controller");
+//   try {
+//     const userId = req.params.id;
+   
+    
+//     // Find groups where the logged-in user's ID is present in the members array
+//     const userGroups = await Group.find({ members: userId }).exec();
+//     console.log("user groups kkkkkkkkkkkkk");
+//     res.status(200).json(userGroups);
+//   } catch (error) {
+//     console.error("Error fetching user's joined groups:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 //delete single group by id
 export const deleteGroup = async (req, res) => {
@@ -196,7 +182,7 @@ export const deleteGroup = async (req, res) => {
 export const joinGroup = async (req, res) => {
   const { groupId } = req.params; // Extract group ID from request parameters
   const userId = req.user; // Assuming user ID is decoded from JWT token
-
+  
   try {
     // Check if the user is already a member of the group
     const group = await Group.findById(groupId);
