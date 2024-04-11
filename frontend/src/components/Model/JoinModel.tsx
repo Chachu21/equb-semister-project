@@ -1,18 +1,16 @@
-import React from "react";
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onLogin }) => {
+const Modal = ({ isOpen, onClose, onLogin }: ModalProps) => {
   return (
     <div
       className={`fixed z-50 inset-0 overflow-y-auto ${isOpen ? "" : "hidden"}`}
     >
       <div className="flex container mx-auto items-center justify-center min-h-screen">
-        <div className="fixed inset-0 bg-black opacity-80"></div>
+        <div className="fixed inset-0 bg-black opacity-80" />
         <div className="relative flex flex-col items-center space-y-14 px-5  md:space-y-20 bg-gray-100 rounded-lg  w-full md:max-w-2xl h-[40vh]">
           <span
             className="absolute top-0 right-5 cursor-pointer hover:text-red-500 bg-white text-5xl"

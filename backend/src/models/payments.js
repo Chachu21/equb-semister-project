@@ -11,7 +11,6 @@ const paymentSchema = new mongoose.Schema({
   },
   phone_number: {
     type: String,
-    required: true,
   },
   fname: {
     type: String,
@@ -29,14 +28,29 @@ const paymentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    required: true,
+  },
+  reference: {
+    type: String,
+    required: true,
+  },
+  round: {
+    type: Number,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
+  verified_at: {
+    type: Date,
+    required: true,
+  },
   equbGroup: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "EqubGroup",
+    ref: "Group",
     required: true,
   },
 });

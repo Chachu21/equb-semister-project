@@ -15,13 +15,15 @@ import AccountDetail from "./components/admin/AccountDetail";
 import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
 import CreateGroup from "./components/UserDashboard/CreateGroup";
 import Payment from "./components/payment/payment";
-import Pay from "./components/payment/pay";
+// import Pay from "./components/payment/pay";
 import Profile from "./components/admin/Profile";
 import ResetPassword from "./Auth/ResetPassword";
 import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 // import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
+import Main from "./components/UserDashboard/userContent/main";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
+import Settings from "./components/UserDashboard/Settings";
 
 const App = () => {
   return (
@@ -52,32 +54,20 @@ const App = () => {
           <Route path="/admin/profile" element={<Profile />} />
           <Route path="/admin//group-details" element={<ViewGroupDetails />} />
         </Route>
+        {/* for user Dashboard */}
         <Route path="/userDashboard" element={<UserDashboard />}>
-          <Route path="/userDashboard" index element={<Equb />} />
+          <Route path="/userDashboard" index element={<Main />} />
+          <Route path="/userDashboard/groups" element={<Equb />} />
           <Route path="/userDashboard/create" element={<CreateGroup />} />
           <Route
             path="/userDashboard/transactions"
             element={<UserTransaction />}
           />
           <Route path="/userDashboard/payment" element={<Payment />} />
-          <Route path="/userDashboard/pay" element={<Pay />} />
+          {/* <Route path="/userDashboard/pay" element={<Pay />} /> */}
           <Route path="/userDashboard/profile" element={<Profile />} />
-          <Route path="/userDashboard/setting" element={<AccountDetail />} />
+          <Route path="/userDashboard/setting" element={<Settings />} />
         </Route>
-        <Route path="/userDashboard" element={<UserDashboard />}>
-          <Route path="/userDashboard" index element={<Equb />} />
-          <Route path="/userDashboard/create" element={<CreateGroup />} />
-          <Route
-            path="/userDashboard/transactions"
-            element={<UserTransaction />}
-          />
-          <Route path="/userDashboard/payment" element={<Payment />} />
-          <Route path="/userDashboard/pay" element={<Pay />} />
-          <Route path="/userDashboard/profile" element={<Profile />} />
-          <Route path="/userDashboard/setting" element={<AccountDetail />} />
-        </Route>
-        <Route path="/admindashboard" element={<AdminDashboard />}></Route>
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
       </Routes>
     </div>
   );

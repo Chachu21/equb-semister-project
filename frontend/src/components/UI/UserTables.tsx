@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-interface Header {
-  id: string;
-  title: string;
-}
-
+import Tables from "./Tables"; // Import the Tables component
 interface UserData {
   _id: string;
   name: string;
@@ -14,21 +9,14 @@ interface UserData {
   updatedAt: string;
 }
 
-interface TableProps {
-  header: Header[];
-  Users: UserData[];
-}
-
-const UserTables: React.FC<TableProps> = ({ header, Users }) => {
+const UserTables: React.FC = () => {
+  const [users, setUsers] = useState<UserData[]>([]);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [editedUser, setEditedUser] = useState<UserData | null>(null);
-  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
-  const [users, setUsers] = useState<UserData[]>([]); // State to store the updated user list
 
-  const formatDateString = (dateString: string) => {
-    const date = new Date(dateString);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-  };
+  useEffect(() => {
+    fetchUsers(); // Fetch users on component mount
+  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -40,27 +28,22 @@ const UserTables: React.FC<TableProps> = ({ header, Users }) => {
     }
   };
 
-  useEffect(() => {
-    fetchUsers(); // Fetch users on component mount
-  }, []);
-
-  const handleEdit = (userId: string) => {
-    setEditingUserId(userId);
-    setEditedUser(users.find((user) => user._id === userId) || null);
-    console.log("Editing user with ID:", userId);
+  const formatDateString = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (editedUser) {
-      setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
-    }
+  const handleEdit = (userId: string) => {
+    console.log("Editing user with ID:", userId);
+    setEditingUserId(userId);
+    setEditedUser(users.find((user) => user._id === userId) || null);
   };
 
   const handleSaveEdit = async (userId: string) => {
     if (editedUser && userId) {
       try {
         const response = await axios.put(
-          `http://localhost:5000/api/v1/users/${userId}`,
+          `http://localhost:5000/api/v1/users/update/${userId}`,
           editedUser
         );
         console.log("User updated successfully:", response.data);
@@ -79,114 +62,82 @@ const UserTables: React.FC<TableProps> = ({ header, Users }) => {
     setEditingUserId(null);
     setEditedUser(null);
   };
- const handleDelete = async (userId: string) => {
-   const isConfirmed = window.confirm(
-     "Are you sure you want to delete this user?"
-   );
-   if (isConfirmed) {
-     setDeletingUserId(userId);
-     try {
-       const response = await axios.delete(
-         `http://localhost:5000/api/v1/users/${userId}`
-       );
-       console.log("User deleted successfully:", response.data);
-       fetchUsers(); // Fetch the updated user list after deletion
-     } catch (error) {
-       console.error("Failed to delete user:", error);
-     }
-   }
- };
-   return (
-     <div className="overflow-x-auto">
-       <table className="min-w-full bg-white divide-y divide-gray-200">
-         <thead className="bg-gray-50">
-           <tr>
-             {header.map((item) => (
-               <th
-                 key={item.id}
-                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-               >
-                 {item.title}
-               </th>
-             ))}
-             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-               Actions
-             </th>
-           </tr>
-         </thead>
-         <tbody className="bg-white divide-y divide-gray-200">
-           {users.map((data) => (
-             <tr key={data._id}>
-               <td className="px-6 py-4 whitespace-nowrap">{data._id}</td>
-               <td className="px-6 py-4 whitespace-nowrap">
-                 {editingUserId === data._id ? (
-                   <input
-                     type="text"
-                     name="name"
-                     value={editedUser?.name || ""}
-                     onChange={handleInputChange}
-                   />
-                 ) : (
-                   data.name
-                 )}
-               </td>
-               <td className="px-6 py-4 whitespace-nowrap">
-                 {editingUserId === data._id ? (
-                   <input
-                     type="text"
-                     name="email"
-                     value={editedUser?.email || ""}
-                     onChange={handleInputChange}
-                   />
-                 ) : (
-                   data.email
-                 )}
-               </td>
-               <td className="px-6 py-4 whitespace-nowrap">
-                 {formatDateString(data.createdAt)}
-               </td>
-               <td className="px-6 py-4 whitespace-nowrap">
-                 {formatDateString(data.updatedAt)}
-               </td>
-               <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                 {editingUserId === data._id ? (
-                   <>
-                     <button
-                       onClick={() => handleSaveEdit(data._id)}
-                       className="text-green-600 hover:text-green-900 pr-1"
-                     >
-                       Save
-                     </button>
-                     <button
-                       onClick={handleCancelEdit}
-                       className="text-gray-600 hover:text-gray-900"
-                     >
-                       Cancel
-                     </button>
-                   </>
-                 ) : (
-                   <>
-                     <button
-                       onClick={() => handleEdit(data._id)}
-                       className="text-indigo-600 hover:text-indigo-900 pr-1"
-                     >
-                       Edit
-                     </button>
-                     <button
-                       onClick={() => handleDelete(data._id)}
-                       className="text-red-600 hover:text-red-900"
-                     >
-                       Delete
-                     </button>
-                   </>
-                 )}
-               </td>
-             </tr>
-           ))}
-         </tbody>
-       </table>
-     </div>
-   );
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (editedUser) {
+  //     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+  //   }
+  // };
+  const handleDelete = async (userId: string) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
+    if (isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `http://localhost:5000/api/v1/users/delete/${userId}`
+        );
+        console.log("User deleted successfully:", response.data);
+        fetchUsers(); // Fetch the updated user list after deletion
+      } catch (error) {
+        console.error("Failed to delete user:", error);
+      }
+    }
+  };
+
+  const headers = {
+    _id: "ID",
+    name: "Name",
+    email: "Email",
+    createdAt: "Created At",
+    updatedAt: "Updated At",
+    actions: "Actions", // Added actions column header
+  };
+
+  return (
+    <div>
+      <Tables
+        header={headers}
+        data={users.map((user) => ({
+          ...user,
+          createdAt: formatDateString(user.createdAt),
+          updatedAt: formatDateString(user.updatedAt),
+          actions:
+            editingUserId === user._id ? (
+              <>
+                <button
+                  onClick={() => handleSaveEdit(user._id)}
+                  className="text-green-600 hover:text-green-900 pr-1"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleEdit(user._id)}
+                  className="text-indigo-600 hover:text-indigo-900 pr-1"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(user._id)}
+                  className="text-red-600 hover:text-red-900"
+                >
+                  Delete
+                </button>
+              </>
+            ),
+        }))}
+      />
+    </div>
+  );
 };
 
 export default UserTables;

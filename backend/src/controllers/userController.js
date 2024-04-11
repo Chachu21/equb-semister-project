@@ -4,21 +4,14 @@ import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import sendSMS from "../config/sendSMS.js";
-
 const phoneNumber = "+251943438385";
 const message = "hey muller wellcome to my equb";
+import cloudinary from "../utils/cloudinary.js";
+import { error } from "console";
+
 // Create User
 export const createUser = async (req, res) => {
-  const {
-    name,
-    phone,
-    address,
-    password,
-    bank_account_no,
-    email,
-    agreeTerms,
-    imageUrl,
-  } = req.body;
+  const { name, phone, password, email, agreeTerms } = req.body;
 
   console.log(req.body);
 
@@ -35,25 +28,20 @@ export const createUser = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user object
     const newUser = new User({
       name,
       phone,
-      address,
-      password: hashedPassword,
-      bank_account_no,
+      password,
       email,
       agreeTerms,
-      imageUrl: Date.now() + `/${name}`,
     });
-    // Save the user to the database
     const savedUser = await newUser.save();
-    // Log the saved user details
-    console.log("Saved user:", savedUser);
     // Send a success response
-    res.status(201).json({ message: "User created successfully" });
+    console.log(savedUser);
+    res.status(201).json({ message: "your account created successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "An error occurred while signing up" });
@@ -78,28 +66,68 @@ export const getUserById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.json({ name: user.name, email: user.email, imageUrl: user.imageUrl });
+    res.status(200).json({ user });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch User" });
   }
 };
+//for updating users information
+// export const updateUser = async (req, res) => {
+//   const { updates } = req.body; // Assume updates is an object containing optional fields for updates
+//   try {
+//     const userId = req.params.id;
+//     let updateData = {};
 
-// Update User
-export const updateUser = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const userData = req.body;
-    const updatedUser = await User.findByIdAndUpdate(userId, userData, {
-      new: true,
-    });
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update User" });
-  }
-};
+//     // Check if user exists
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     // Check if the incoming data is the same as the existing data
+//     const isSameData = Object.keys(updates).every(
+//       (key) => user[key] === updates[key]
+//     );
+
+//     if (isSameData) {
+//       return res.status(400).json({ error: "No changes were made" });
+//     }
+
+//     // Iterate through the updates and add them to updateData
+//     for (const key in updates) {
+//       // Exclude password updates
+//       if (key !== "password") {
+//         updateData[key] = updates[key];
+//       }
+//     }
+
+//     // If image URL is provided, upload it to cloudinary
+//     if (updates.imageUrl) {
+//       const result = await cloudinary.uploader.upload(updates.imageUrl, {
+//         upload_preset: "profile",
+//       });
+//       updateData.imageUrl = {
+//         public_id: result.public_id,
+//         url: result.secure_url,
+//       };
+//     }
+
+//     // Update the user
+//     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+//       new: true,
+//     });
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     // Send success response with updated user data
+//     res.json(updatedUser);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Failed to update User" });
+//   }
+// };
 
 // Delete User
 export const deleteUser = async (req, res) => {
@@ -115,27 +143,33 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ error: "Failed to delete User" });
   }
 };
-
 export const loginController = async function (req, res) {
-  const { email, password, phone } = req.body;
+  const { email, phone, password } = req.body;
+  // Extract password from request body
+  console.log(req.body);
 
   try {
-    // Find the user based on the phone number
+    // Find the user based on the phone number or email
     const user = await User.findOne({
       $or: [{ phone }, { email }],
-    });
-
+    }).select("+password");
     // Check if the user exists
     if (!user) {
-      return res.status(401).json({ error: "Invalid  credentials" });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    // Check if password is provided
+    if (!password) {
+      return res.status(400).json({ error: "Password is required" });
+    }
+    console.log("somthing happened");
     // Compare the password with the hashed password
-    const isPasswordValid = await comparePasswords(password, user.password);
+    const isPasswordValid = await user.comparePassword(password, user.password); // Use extracted password
 
+    console.log(isPasswordValid);
     // Check if the password is correct
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid credentioals" });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     // Generate a JWT token
@@ -148,25 +182,31 @@ export const loginController = async function (req, res) {
     );
 
     // Send the token in the response
-    res.status(200).json({ _id: user._id, token });
+    res.status(200).json({
+      _id: user._id,
+      token,
+      role: user.role,
+      message: "successfully logged in",
+    });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "An error occurred while logging in" });
   }
 };
 
-export const comparePasswords = async (password, hashedPassword) => {
-  try {
-    return await bcrypt.compare(password, hashedPassword);
-  } catch (error) {
-    throw error;
-  }
-};
+// export const comparePasswords = async (password, hashedPassword) => {
+//   try {
+//     return await bcrypt.compare(password, hashedPassword);
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
-export const logoutController = (req, res) => {
-  // Clear user data from session
-  req.user = null;
-  res.status(200).json({ message: "Logout successful" });
-};
+// export const logoutController = (req, res) => {
+//   // Clear user data from session
+//   req.user = null;
+//   res.status(200).json({ message: "Logout successful" });
+// };
 
 //
 // Function to send password reset email
@@ -298,5 +338,78 @@ export const getResetPassword = async (req, res) => {
     return res
       .status(500)
       .json({ error: "An error occurred while handling password reset link" });
+  }
+};
+
+//for testing purposes
+export const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { updates } = req.body;
+    // console.log("updates", updates);
+    const updateData = {};
+    // Check if user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update user data excluding the image fields
+    Object.keys(updates).forEach((key) => {
+      if (key !== "password") {
+        updateData[key] = updates[key];
+      }
+    });
+
+    //Upload and update image fields if provided
+    if (updates.imageUrl) {
+      const isSameData = Object.keys(updates.imageUrl).every(
+        (key) => user.imageUrl[key] === updates.imageUrl[key]
+      );
+      if (isSameData) {
+        //sending some message for user profile image is already exsist
+        return res
+          .status(404)
+          .json({ error: "your profile image is already exsist" });
+      }
+      const imageUrl = await uploadImageToCloudinary(updates.imageUrl);
+      updateData.imageUrl = imageUrl;
+    }
+    //for uploading id image to cloudinary
+    if (updates.frontImage && updates.backImage) {
+      const frontUrl = await uploadImageToCloudinary(updates.frontImage);
+      const backUrl = await uploadImageToCloudinary(updates.back);
+
+      updateData.ID = { front: frontUrl, back: backUrl };
+    }
+
+    // Update the user
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    // Send success response with updated user data
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Failed to update user" });
+  }
+};
+
+// Function to upload image to Cloudinary
+const uploadImageToCloudinary = async (imageData) => {
+  // console.log("imageData:", imageData);
+  try {
+    const result = await cloudinary.uploader.upload(imageData, {
+      upload_preset: "profile",
+    });
+    console.log(result);
+    return { public_id: result.public_id, url: result.secure_url };
+  } catch (error) {
+    console.error("Error uploading image to Cloudinary:", error);
+    throw new Error("Failed to upload image to Cloudinary");
   }
 };

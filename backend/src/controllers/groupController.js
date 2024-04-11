@@ -73,10 +73,10 @@ export const createGroup = async (req, res) => {
           { $addToSet: { completedGroups: newGroup._id } }
         );
         break;
-      case "unstarted":
+      case "started":
         await Group.updateOne(
           { _id: newGroup._id },
-          { $addToSet: { unstartedGroups: newGroup._id } }
+          { $addToSet: { started: newGroup._id } }
         );
         break;
       case "pending":
@@ -96,7 +96,6 @@ export const createGroup = async (req, res) => {
     errorHandler(err, res, 500);
   }
 };
-
 
 //get all groups
 // export const getGroups = async (req, resp) => {
@@ -249,4 +248,76 @@ export const getGroups = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" }); // Catch any other potential errors
   }
- };
+};
+
+// for update group by inserting user in to winners list by removing on group members array
+export const winnersList = async (req, res) => {
+  const { id } = req.params;
+  const group = await Group.findById(id);
+  if (!group) {
+    return res.status(404).json({ message: "Group not found" });
+  }
+
+  //if group exist remove single member from members array and add to winners list
+  const { userId } = req.body; // Extract user ID from request body
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const indexInMembers = group.members.indexOf(userId);
+  const indexInWinners = group.winners.indexOf(userId);
+  if (indexInMembers > -1) {
+    if (indexInWinners === -1) {
+      // Remove user from members array and add to winners list
+      group.members.splice(indexInMembers, 1);
+      group.winners.push(userId);
+      group.save();
+      return res.status(200).json({ message: "User added to winners list" });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "User is already in winners list" });
+    }
+  } else {
+    return res.status(400).json({ message: "User not in group" });
+  }
+};
+export const getGroupByUserId = async (req, res) => {
+  try {
+    const userId = req.user;
+
+    // Check if user is already in the database
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if user is already in a group
+    const group = await Group.find({ members: { $in: [userId] } });
+    if (!group || group.length === 0) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Counting groups based on status
+    const pendingGroups = group.filter((gr) => gr.status === "pending").length;
+    const completedGroups = group.filter(
+      (gr) => gr.status === "completed"
+    ).length;
+    const startedGroups = group.filter((gr) => gr.status === "started").length;
+
+    return res.status(200).json({
+      message: "User is already in a group",
+      group,
+      count: {
+        no_pending: pendingGroups,
+        no_started: startedGroups,
+        no_completed: completedGroups,
+      },
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

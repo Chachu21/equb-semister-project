@@ -1,7 +1,7 @@
 import {
   RiDashboard2Line,
   RiSettings3Line,
-  RiSecurePaymentFill,
+  // RiSecurePaymentFill,
   RiCloseFill,
 } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "../../Redux/store";
 import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
+import lucky from "../../../public/lucky.png";
 
 const LinkComponent = [
   {
@@ -18,10 +19,11 @@ const LinkComponent = [
     path: "/userDashboard",
     icon: <RiDashboard2Line className="mr-3 text-xl" />,
   },
+
   {
     id: 2,
-    name: "Create Group",
-    path: "/userDashboard/create",
+    name: "Groups",
+    path: "/userDashboard/groups",
     icon: <FaUserGroup className="mr-3 text-xl" />,
   },
   {
@@ -30,17 +32,23 @@ const LinkComponent = [
     path: "/userDashboard/transactions",
     icon: <GrTransaction className="mr-3 text-xl" />,
   },
-  {
-    id: 4,
-    name: "payment",
-    path: "/userDashboard/payment",
-    icon: <RiSecurePaymentFill className="mr-3 text-xl" />,
-  },
+  // {
+  //   id: 4,
+  //   name: "payment",
+  //   path: "/userDashboard/payment",
+  //   icon: <RiSecurePaymentFill className="mr-3 text-xl" />,
+  // },
   {
     id: 5,
-    name: "Settings",
+    name: "Account details",
     path: "/userDashboard/setting",
     icon: <RiSettings3Line className="mr-3 text-xl" />,
+  },
+  {
+    id: 6,
+    name: "winner selection",
+    path: "/userDashboard/winner",
+    icon: <img src={lucky} className="mr-3 w-5 h-5" />,
   },
 ];
 
@@ -51,8 +59,6 @@ const UserSideBar = () => {
   const screenWidth = window.innerWidth;
 
   const handleCloseSideBar = () => {
-    console.log(screenWidth);
-
     if (screenWidth < 640) {
       dispatch(menuBar());
     }
@@ -66,7 +72,7 @@ const UserSideBar = () => {
     >
       <div className="flex justify-between items-center">
         <Link
-          to="/admin"
+          to="/userDashboard"
           className="items-center pb-4 border-b border-b-gray-800"
         >
           <h2 className="font-bold text-2xl">

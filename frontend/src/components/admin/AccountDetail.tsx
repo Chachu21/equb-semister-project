@@ -1,26 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { usersType } from "../../types/usersType";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+import userData from "../../API/getUser";
 
 const AccountDetail: React.FC = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    city: "",
-    bankAccountNumber: "",
-    id: null,
-    collateral: null,
-  });
+  const [formData, setFormData] = useState<usersType>();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
+  const user = useSelector((state: RootState) => state.user.user);
+  const userId = user?._id;
+
+  useEffect(() => {
+    if (userId) {
+      const fetchUserData = async () => {
+        const user = await userData(userId);
+        if (user) {
+          setFormData(user);
+        }
+      };
+      fetchUserData();
+    }
+  }, [userId]);
+
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { id, value } = e.target;
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [id]: value,
+  //   }));
+  // };
 
   const nextPage = () => {
     setStep((prevStep) => prevStep + 1);
@@ -34,17 +43,17 @@ const AccountDetail: React.FC = () => {
     e.preventDefault();
     console.log("Submitting form:", formData);
     // Your submission logic here
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      address: "",
-      city: "",
-      bankAccountNumber: "",
-      id: null,
-      collateral: null,
-    });
+    // setFormData({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   phoneNumber: "",
+    //   address: "",
+    //   city: "",
+    //   bankAccountNumber: "",
+    //   id: null,
+    //   collateral: null,
+    // });
     setStep(1); // Reset back to the first step
   };
 
@@ -70,8 +79,8 @@ const AccountDetail: React.FC = () => {
                 type="text"
                 id="firstName"
                 placeholder="Enter your First Name"
-                value={formData.firstName}
-                onChange={handleChange}
+                value={formData?.name.split(" ")[0]}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -86,8 +95,8 @@ const AccountDetail: React.FC = () => {
                 type="text"
                 id="lastName"
                 placeholder="Enter your Last Name"
-                value={formData.lastName}
-                onChange={handleChange}
+                value={formData?.name.split(" ")[1]}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -102,8 +111,8 @@ const AccountDetail: React.FC = () => {
                 type="email"
                 id="email"
                 placeholder="Enter your Email"
-                value={formData.email}
-                onChange={handleChange}
+                value={formData?.email}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -118,8 +127,8 @@ const AccountDetail: React.FC = () => {
                 type="text"
                 id="phoneNumber"
                 placeholder="Enter your Phone Number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
+                value={formData?.phone}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
               <button
@@ -145,8 +154,8 @@ const AccountDetail: React.FC = () => {
                 type="text"
                 id="address"
                 placeholder="Enter your Address"
-                value={formData.address}
-                onChange={handleChange}
+                value={formData?.address}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -161,8 +170,8 @@ const AccountDetail: React.FC = () => {
                 type="text"
                 id="city"
                 placeholder="Enter your City"
-                value={formData.city}
-                onChange={handleChange}
+                value={formData?.city}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -177,8 +186,8 @@ const AccountDetail: React.FC = () => {
                 type="text"
                 id="bankAccountNumber"
                 placeholder="Enter your Bank Account Number"
-                value={formData.bankAccountNumber}
-                onChange={handleChange}
+                value={formData?.bank_account.account_no}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -187,12 +196,12 @@ const AccountDetail: React.FC = () => {
                 htmlFor="id"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                ID
+                ID Front
               </label>
               <input
                 type="file"
                 id="id"
-                onChange={handleChange}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
@@ -201,12 +210,12 @@ const AccountDetail: React.FC = () => {
                 htmlFor="collateral"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                Collateral
+                ID Back
               </label>
               <input
                 type="file"
                 id="collateral"
-                onChange={handleChange}
+                onChange={() => {}}
                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
               />
               <div className="flex justify-between">

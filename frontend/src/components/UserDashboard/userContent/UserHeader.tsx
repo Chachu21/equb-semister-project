@@ -1,19 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiMenuFill } from "react-icons/ri";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../Redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../Redux/store";
 import { logoutSuccess, menuBar } from "../../../Redux/Features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { usersType } from "../../../types/usersType";
+import axios, { AxiosError } from "axios";
+import profileImage from "../../../../public/307ce493-b254-4b2d-8ba4-d12c080d6651.jpg";
+import { toast } from "react-toastify";
 
 const UserHeader = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const [Profile, setProfile] = useState(false);
+  const [Users, setUser] = useState<usersType>();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user.user);
+  const id = user?._id;
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/get/${id}`
+        );
+        setUser(response.data.user);
+      } catch (error) {
+        const axiosError = error as AxiosError<{ error: string }>;
+        if (axiosError) {
+          if (axiosError.code === "ERR_NETWORK") {
+            toast.error("your interent is not stable");
+          }
+        }
+      }
+    };
+    fetchUserProfile();
+  }, [id]);
 
   const logoutHandler = async () => {
     try {
       dispatch(logoutSuccess());
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +73,7 @@ const UserHeader = () => {
                 <div className="p-1 bg-white rounded-full focus:outline-none focus:ring">
                   <img
                     className="w-8 h-8 rounded-full"
-                    src="https://laravelui.spruko.com/tailwind/ynex/build/assets/images/faces/9.jpg"
+                    src={Users?.imageUrl ? Users.imageUrl.url : profileImage}
                     alt=""
                   />
                   <div className="top-0 left-7 absolute w-3 h-3 bg-lime-400 border-2 border-white rounded-full animate-ping"></div>
@@ -56,9 +82,11 @@ const UserHeader = () => {
               </div>
               <div className="p-2 md:block text-left">
                 <h2 className="text-sm font-semibold text-gray-800">
-                  John Doe
+                  {Users?.name.split(" ")[0]}
                 </h2>
-                <p className="text-xs text-gray-500">User</p>
+                <p className="text-xs text-gray-500 capitalize">
+                  {Users?.role}
+                </p>
               </div>
             </button>
             <ul
@@ -73,7 +101,7 @@ const UserHeader = () => {
                   onClick={() => {
                     setProfile(!Profile);
                   }}
-                  to="/admin/profile"
+                  to="/userDashboard/profile"
                   className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-gray-500 hover:bg-gray-50"
                 >
                   Profile

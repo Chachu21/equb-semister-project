@@ -8,22 +8,19 @@ interface Header {
 interface equbGroups {
   id: string;
   period: string;
-  groupName:string
+  groupName: string;
   members: number;
   amount: number;
   status: string;
- 
 }
 
 interface TableProps {
   header: Header[];
   equbGroups: equbGroups[];
 }
-     
 
 const ManageGroupTables: React.FC<TableProps> = ({ header, equbGroups }) => {
- 
-//TODO  will implement the approve and reject button is clicked then status will change
+  //TODO  will implement the approve and reject button is clicked then status will change
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white divide-y divide-gray-200">

@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ interface cardProps {
   status: string;
 }
 
-const Card: React.FC<cardProps> = ({
+const Card = ({
   name,
   amount,
   No_member,
@@ -24,7 +24,7 @@ const Card: React.FC<cardProps> = ({
   types,
   equb_Group_id,
   status,
-}) => {
+}: cardProps) => {
   const [members, setMembers] = useState<number>(0);
   const [showModal, setShowModal] = useState(false);
   const isLogin = useSelector((state: RootState) => state.user.isLogin);
