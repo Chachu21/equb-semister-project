@@ -14,6 +14,8 @@ const initialState: groupsType = {
   isCompleted: false,
   winners: [],
   createdBy: "",
+  round: 0,
+  rounds: [],
 };
 
 const groupSlice = createSlice({
