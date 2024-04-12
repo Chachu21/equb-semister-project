@@ -1,11 +1,9 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchUi from "../UI/SearchUi";
 import Tables from "../UI/Tables";
 import { RootState } from "../../Redux/store";
 import { useSelector } from "react-redux";
-
 
 interface UserData {
   _id: string;
@@ -19,8 +17,7 @@ const UserManage = () => {
   const [tableData, setTableData] = useState<UserData[]>([]);
   const [filteredUser, setFilteredUser] = useState<UserData[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const userData: any = useSelector((state: RootState) => state.user.user);
-
+  const userData = useSelector((state: RootState) => state.user.user);
 
   const formatDateString = (dateString: string) => {
     const date = new Date(dateString);
@@ -53,8 +50,6 @@ const UserManage = () => {
     })
   );
 
-
-
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
     const filteredResults = filteredData.filter((data) =>
@@ -62,9 +57,8 @@ const UserManage = () => {
     );
     setFilteredUser(filteredResults);
   };
-  
+
   const handleDelete = async (userId: string) => {
-    
     try {
       const token = userData?.token;
       const config = {
@@ -73,8 +67,11 @@ const UserManage = () => {
           "Content-Type": "application/json",
         },
       };
-      
-      await axios.delete(`http://localhost:5000/api/v1/users/${userId}`,config);
+
+      await axios.delete(
+        `http://localhost:5000/api/v1/users/${userId}`,
+        config
+      );
       setTableData(tableData.filter((user) => user._id !== userId));
       setFilteredUser(filteredUser.filter((user) => user._id !== userId));
     } catch (error) {

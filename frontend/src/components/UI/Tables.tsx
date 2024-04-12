@@ -1,20 +1,49 @@
-interface TableProps<T extends Record<string, any>> {
-  header: { [key: string]: string };
-  data: T[];
+import { useState } from "react";
+interface Header {
+  id: string;
+  title: string;
 }
 
-const Tables = <T extends Record<string, any>>({
-  header,
-  data,
-}: TableProps<T>) => {
+type TableRow<T> = {
+  [K in keyof T]: string | number | boolean | Date | null | undefined;
+};
+
+interface TableProps<T> {
+  header: Header[];
+  datas: TableRow<T>[];
+  onDelete: (Id: string) => void;
+}
+
+const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
+  //set current page is by default 1
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  //set nubber of table list in single page is 6
+  const [itemsPerPage] = useState<number>(5);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const handleDelete = async (Id: string) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
+    if (isConfirmed) {
+      onDelete(Id);
+    }
+  };
+  // logic for paginations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datas.slice(indexOfFirstItem, indexOfLastItem);
   return (
-    <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-[16px] text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
+        <thead className="bg-gray-50">
           <tr>
-            {Object.keys(header).map((key) => (
-              <th key={key} scope="col" className="px-6 py-3">
-                {header[key]}
+            {header.map((item) => (
+              <th
+                key={item.id}
+                className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md"
+              >
+                {item.title}
               </th>
             ))}
             <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
@@ -22,17 +51,23 @@ const Tables = <T extends Record<string, any>>({
             </th>
           </tr>
         </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr
-              key={index}
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-            >
-              {Object.keys(header).map((key) => (
-                <td key={key} className="px-6 py-4">
-                  {item[key]}
+        <tbody className="bg-white divide-y divide-gray-200">
+          {currentItems.map((data, index) => (
+            <tr key={index}>
+              {Object.values(data).map((value, index) => (
+                <td key={index} className="px-6 py-4 whitespace-nowrap">
+                  {String(value)}
                 </td>
               ))}
+
+              <td>
+                <button
+                  onClick={() => handleDelete(data.id)}
+                  className="text-red-600 hover:text-red-900"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

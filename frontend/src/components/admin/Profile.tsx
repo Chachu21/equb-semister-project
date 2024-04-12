@@ -143,80 +143,6 @@ const Profile: React.FC = () => {
     setShowChangePassword(!showChangePassword);
   };
 
-  const handleProfileUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const userId = userData?._id;
-      const token = userData?.token;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const data = {
-        name,
-        email,
-      };
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/users/${userId}`,
-        data,
-        config
-      );
-      console.log("Profile updated successfully");
-      console.log(response);
-      // Optionally, you can show a success message to the user
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      // Optionally, you can show an error message to the user
-    }
-  };
-
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const userId = userData?._id;
-      const token = userData?.token;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const data = {
-        password: newPassword,
-        confirmPassword: confirmPassword,
-      };
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/users/${userId}`,
-        data,
-        config
-      );
-      console.log("Password changed successfully");
-      console.log(response);
-
-      if (response) {
-        toast.success("Successfully changed password");
-      }
-
-      // Optionally, you can show a success message to the user
-    } catch (error) {
-      console.error("Error changing password:", error);
-      // Optionally, you can show an error message to the user
-    }
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      setAvatar(selectedFile);
-    }
-  };
-
-  const toggleChangePassword = () => {
-    setShowChangePassword(!showChangePassword);
-  };
-
   return (
     <section className="section main-section md:p-6 py-1 px-1 container mx-auto">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
@@ -241,6 +167,9 @@ const Profile: React.FC = () => {
                     </label>
                   </div>
                 </div>
+              </div>
+              <hr />
+              <div className="field">
                 <label className="label">Name</label>
                 <div className="field-body">
                   <div className="field">
@@ -271,6 +200,7 @@ const Profile: React.FC = () => {
                         autoComplete="on"
                         onChange={handleChange}
                         name="email"
+                        placeholder="user@example.com"
                         className="input"
                         required
                       />

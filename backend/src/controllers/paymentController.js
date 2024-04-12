@@ -1,5 +1,4 @@
 import Payment from "../models/payments.js";
-import PaymentResponse from "../models/paymentResponse.js";
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();

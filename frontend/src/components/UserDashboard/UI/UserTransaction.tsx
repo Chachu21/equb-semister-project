@@ -5,21 +5,20 @@ import Tables from "../../UI/Tables";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 
-const transactionHeader = {
-  _id: "id",
-  fname: "fname",
-  lname: "lname",
-  user: "User id",
-  email: "email ",
-  equbGroup: "group id",
-  round: "round",
-  amount: "amount",
-  currency: "currency",
-  status: "status",
-  reference: "reference",
-  tx_ref: "tx_ref",
-  verified_at: "Verified At",
-};
+const transactionHeader = [
+  { id: "1", title: "id" },
+  { id: "2", title: "fname" },
+  { id: "3", title: "lname" },
+  { id: "4", title: "User id" },
+  { id: "5", title: "email" },
+  { id: "6", title: "group id" },
+  { id: "7", title: "round" },
+  { id: "8", title: "amount" },
+  { id: "9", title: "currency" },
+  { id: "10", title: "reference" },
+  { id: "11", title: "tx_ref" },
+  { id: "12", title: "verified At" },
+];
 
 const UserTransaction = () => {
   const [transaction, setTransaction] = useState<transactionsType[]>([]);
@@ -36,7 +35,11 @@ const UserTransaction = () => {
 
   return (
     <div className="mt-20 container">
-      <Tables header={transactionHeader} data={transaction} />
+      <Tables
+        header={transactionHeader}
+        datas={transaction}
+        onDelete={() => {}}
+      />
     </div>
   );
 };

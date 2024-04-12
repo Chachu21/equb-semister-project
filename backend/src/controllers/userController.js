@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { v2 as cloudinary } from "cloudinary";
 import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
@@ -8,7 +7,6 @@ import sendSMS from "../config/sendSMS.js";
 const phoneNumber = "+251943438385";
 const message = "hey muller wellcome to my equb";
 import cloudinary from "../utils/cloudinary.js";
-import { error } from "console";
 
 // Create User
 export const createUser = async (req, res) => {
@@ -409,4 +407,3 @@ const uploadImageToCloudinary = async (imageData) => {
     throw new Error("Failed to upload image to Cloudinary");
   }
 };
-
