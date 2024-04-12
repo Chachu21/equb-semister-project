@@ -18,15 +18,10 @@ const UserTables: React.FC = () => {
     fetchUsers(); // Fetch users on component mount
   }, []);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/v1/users");
-      setUsers(response.data);
-      console.log("Users fetched successfully");
-    } catch (error) {
-      console.error("Failed to fetch users:", error);
-    }
-  };
+  // logic for paginations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
 
   const formatDateString = (dateString: string) => {
     const date = new Date(dateString);

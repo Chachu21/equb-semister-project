@@ -1,4 +1,5 @@
 import Payment from "../models/payments.js";
+import PaymentResponse from "../models/paymentResponse.js";
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
@@ -69,6 +70,7 @@ const acceptPayment = async (req, res) => {
     )
       .then((response) => {
         resp = response;
+        console.log("something happen ", response);
       })
       .catch((error) => {
         console.log("error is :::", error);
@@ -80,6 +82,7 @@ const acceptPayment = async (req, res) => {
           text: "error from catch with 400",
         });
       });
+    console.log("dsjhfkjasdkdfj", resp.data);
     res.status(200).json(resp.data);
   } catch (e) {
     res.status(400).json({

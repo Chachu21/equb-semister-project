@@ -6,29 +6,27 @@ interface Header {
 }
 
 interface UserGroupManageData {
-  id: string;
+  _id: string;
   status: string;
-  GroupName: string;
-  GroupDuration: string;
-  startedDate: string;
-  CompletedDate: string;
-  GroupSize: string;
-  paymentMethod: string;
+  name: string;
+  types: string;
+  startDate: string;
+  completedDate: string;
+  member: string;
+  amount: string;
 }
 
 interface TableProps {
   header: Header[];
   userGroupManageData: UserGroupManageData[];
+  handleDelete: () => void;
 }
 
 const UserGroupManageTables: React.FC<TableProps> = ({
   header,
   userGroupManageData,
+  handleDelete,
 }) => {
-  const handleDelete = () => {
-    console.log("Deleting");
-  };
-
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -47,7 +45,7 @@ const UserGroupManageTables: React.FC<TableProps> = ({
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {userGroupManageData.map((data) => (
-            <tr key={data.id} className="">
+            <tr key={data._id} className="">
               <td className="px-6 py-4 whitespace-nowrap">
                 <span
                   className={`inline-block h-2 w-2 rounded-full ${
@@ -60,19 +58,17 @@ const UserGroupManageTables: React.FC<TableProps> = ({
                 ></span>
                 <span className="text-sm">{data.status}</span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">{data.GroupName}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.types}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {data.GroupDuration}
+                {data.startDate}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {data.startedDate}
+                {data.completedDate}
               </td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.member}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {data.CompletedDate}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">{data.GroupSize}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {data.paymentMethod}
+                {data.amount}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button
@@ -91,4 +87,3 @@ const UserGroupManageTables: React.FC<TableProps> = ({
 };
 
 export default UserGroupManageTables;
-``;

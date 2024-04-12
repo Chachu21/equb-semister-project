@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
@@ -77,7 +78,6 @@ export const getUserById = async (req, res) => {
 //   try {
 //     const userId = req.params.id;
 //     let updateData = {};
-
 //     // Check if user exists
 //     const user = await User.findById(userId);
 //     if (!user) {
@@ -409,3 +409,4 @@ const uploadImageToCloudinary = async (imageData) => {
     throw new Error("Failed to upload image to Cloudinary");
   }
 };
+

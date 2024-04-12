@@ -2,7 +2,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer components {
   .field:not(:last-child) {
     @apply mb-3;
@@ -189,9 +188,9 @@
   @apply bg-white border border-gray-100 rounded;
 }
 
-.card.has-table .card-content {
+/* .card.has-table .card-content {
   @apply p-0;
-}
+} */
 
 .card-content {
   @apply p-6;

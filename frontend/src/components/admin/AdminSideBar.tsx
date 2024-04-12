@@ -14,13 +14,15 @@ import { menuBar } from "../../Redux/Features/userSlice";
 const AdminSideBar = () => {
   const isClicked = useSelector((state: RootState) => state.user.isClicked);
   const dispatch = useDispatch<AppDispatch>();
+    const screenWidth = window.innerWidth;
 
-  const handleCloseSideBar = () => {
-    console.log(isClicked);
+    const handleCloseSideBar = () => {
+      console.log(screenWidth);
 
-    dispatch(menuBar());
-    console.log(isClicked);
-  };
+      if (screenWidth < 640) {
+        dispatch(menuBar());
+      }
+    };
 
   return (
     <aside
@@ -70,36 +72,18 @@ const AdminSideBar = () => {
         <span className="text-gray-400 font-bold">Equb Groups</span>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
-            to="/admin/createGroup"
+            to="/admin/managegroups"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle"
           >
             <RiGroupLine className="mr-3 text-xl" />
             <span className="text-sm">Manage Groups</span>
             <i className="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
           </Link>
-          <ul className="pl-7 mt-2 hidden group-[.selected]:block">
-            <li className="mb-4">
-              <Link
-                to=""
-                className="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3"
-              >
-                All
-              </Link>
-            </li>
-            <li className="mb-4">
-              <Link
-                to=""
-                className="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3"
-              >
-                Categories
-              </Link>
-            </li>
-          </ul>
         </li>
         <span className="text-gray-400 font-bold">PERSONAL</span>
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
-            to=""
+            to="managegroups"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
           >
             <RiNotification4Line className="mr-3 text-xl" />
@@ -136,7 +120,7 @@ const AdminSideBar = () => {
           </Link>
         </li>
         {/* ///////////////// */}
-        <li onClick={handleCloseSideBar} className="mb-1 group">
+        {/* <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
             to="pay"
             className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
@@ -147,7 +131,7 @@ const AdminSideBar = () => {
               5
             </span>
           </Link>
-        </li>
+        </li> */}
         {/* ///////////////// */}
         <li onClick={handleCloseSideBar} className="mb-1 group">
           <Link
