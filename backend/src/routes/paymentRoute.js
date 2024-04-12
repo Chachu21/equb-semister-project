@@ -10,7 +10,7 @@ import express from "express";
 const paymentRouter = express.Router();
 
 paymentRouter.post("/accept-payment", verifyToken, acceptPayment);
-paymentRouter.get("/verify-payment/:id/:userId/:groupId", verifyPayment);
+paymentRouter.get("/verify-payment/:id/:userId/:groupId/:round", verifyPayment);
 paymentRouter.get("/", getAllPayments);
 paymentRouter.get("/get/:userId", getAllPaymentsByUserId);
 

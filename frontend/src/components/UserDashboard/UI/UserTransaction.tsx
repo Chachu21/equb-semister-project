@@ -12,6 +12,7 @@ const transactionHeader = {
   user: "User id",
   email: "email ",
   equbGroup: "group id",
+  round: "round",
   amount: "amount",
   currency: "currency",
   status: "status",

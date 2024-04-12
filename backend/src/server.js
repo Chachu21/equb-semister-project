@@ -18,14 +18,14 @@ import adminUpaideAnnouncement from "./utils/announcementAndcheckUpaidMember.js"
 
 const app = express();
 const port = process.env.PORT;
+//connect to the database
+createDatabase();
 // Middleware
 app.use(cors());
 // Increase the limit for request payload size
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-//connect to the database
-createDatabase();
 // Define your routes here
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/group", groupRouter);

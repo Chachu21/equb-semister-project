@@ -132,7 +132,7 @@ export const getGroup = async (req, res) => {
   const { id } = req.params; // Extract group ID from request parameters
 
   try {
-    const group = await Group.findById(id); // Use findById to find by ID
+    const group = await Group.findById(id).populate("members"); // Use findById to find by ID
 
     if (!group) {
       return res.status(404).json({ message: "Group not found" }); // Handle not found case
@@ -141,7 +141,7 @@ export const getGroup = async (req, res) => {
     res.status(200).json({ group }); // Return the retrieved group
   } catch (err) {
     console.error(err); // Log the error for debugging
-    res.status(500).json({ message: "Internal Server Error" }); // Handle internal errors
+    res.status(500).json({ message: err.message }); // Send the specific error message
   }
 };
 
@@ -163,31 +163,34 @@ export const deleteGroup = async (req, res) => {
   }
 };
 
-// for  joining the group
-
 export const joinGroup = async (req, res) => {
   const { groupId } = req.params; // Extract group ID from request parameters
   const userId = req.user; // Assuming user ID is decoded from JWT token
 
   try {
-    // Check if the user is already a member of the group
-    const group = await Group.findById(groupId);
+    // 1. Check if the user is already a member of the group
+    const group = await Group.findById(groupId).populate("members"); // Populate members with userId
+
     if (!group) {
-      console.log("group not found");
+      console.log("Group not found");
       return res.status(404).json({ message: "Group not found" });
     }
 
-    // Check if the user is already a member of the group
-    if (group.members.includes(userId)) {
-      console.log("user already in group");
+    // 2. Check if the user is already a member of the group (using populated userIds)
+    if (group.members.some((member) => member === userId)) {
+      console.log("User already in group");
       return res.status(400).json({ error: "UserAlreadyJoined" });
     }
 
-    // Add user to the group's members array
-    await Group.findByIdAndUpdate(groupId, {
-      $addToSet: { members: userId }, // Add user ID to the members array (avoids duplicates)
-    });
+    // 3. Add user to the group's members array
+    group.members.push(userId); // Directly update the document (triggers middleware)
 
+    // 4. Save the updated group document
+    const updateddata = await group.save(); // This will trigger the middleware
+    if (!updateddata) {
+      throw new Error("Failed to save EqubGroup");
+    }
+    console.log(updateddata);
     res.status(200).json({ message: "Joined group successfully" });
   } catch (err) {
     console.error("from server", err);

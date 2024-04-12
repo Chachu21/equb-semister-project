@@ -146,7 +146,6 @@ export const deleteUser = async (req, res) => {
 export const loginController = async function (req, res) {
   const { email, phone, password } = req.body;
   // Extract password from request body
-  console.log(req.body);
 
   try {
     // Find the user based on the phone number or email
@@ -162,11 +161,8 @@ export const loginController = async function (req, res) {
     if (!password) {
       return res.status(400).json({ error: "Password is required" });
     }
-    console.log("somthing happened");
     // Compare the password with the hashed password
     const isPasswordValid = await user.comparePassword(password, user.password); // Use extracted password
-
-    console.log(isPasswordValid);
     // Check if the password is correct
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -378,7 +374,7 @@ export const updateUser = async (req, res) => {
     //for uploading id image to cloudinary
     if (updates.frontImage && updates.backImage) {
       const frontUrl = await uploadImageToCloudinary(updates.frontImage);
-      const backUrl = await uploadImageToCloudinary(updates.back);
+      const backUrl = await uploadImageToCloudinary(updates.backImage);
 
       updateData.ID = { front: frontUrl, back: backUrl };
     }

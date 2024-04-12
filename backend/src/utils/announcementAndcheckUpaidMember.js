@@ -7,6 +7,8 @@ import User from "../models/users.js";
 import Group from "../models/groups.js";
 
 async function announceUnpaidMembersBeforeWinnerSelection(group) {
+  console.log(group);
+  console.log("object announce");
   try {
     const overdueMembers = [];
     const today = new Date();
@@ -15,18 +17,22 @@ async function announceUnpaidMembersBeforeWinnerSelection(group) {
     winnerSelectionDate.setDate(
       winnerSelectionDate.getDate() + group.roundDuration
     );
-
+    console.log("winnerSelectionDate: ", winnerSelectionDate);
     // Calculate the payment interval and subtract it from the winner selection date
     const paymentIntervalInMillis = group.paymentInterval * 24 * 60 * 60 * 1000;
     const announcementDate = new Date(
       winnerSelectionDate.getTime() - paymentIntervalInMillis
     );
-
+    const isSameDate = (dateA, dateB) =>
+      dateA.toISOString() === dateB.toISOString();
+    console.log("announcementDate: ", announcementDate);
     // Proceed with overdue check only if today is the announcement date
-    if (today.toDateString() === announcementDate.toDateString()) {
+    if (isSameDate(today, announcementDate)) {
+      console.log("inside if ");
       for (const member of group.members) {
         const userId = member;
         const userData = await User.findById(userId);
+        console.log(userData);
         if (!userData) continue;
 
         // Find payments for this user and group with status "started"
@@ -35,7 +41,7 @@ async function announceUnpaidMembersBeforeWinnerSelection(group) {
           groupId: group._id,
           status: "started",
         });
-
+        console.log(payments);
         // Check if member has any payments
         if (!payments.length) continue; // Skip members without payments
 
@@ -55,7 +61,7 @@ async function announceUnpaidMembersBeforeWinnerSelection(group) {
         } has overdue payments from: ${overdueMembers.join(
           ", "
         )} before winner selection!`;
-
+        console.log(message);
         // Save notification to the database
         const notification = new Notification({
           message,
@@ -66,7 +72,7 @@ async function announceUnpaidMembersBeforeWinnerSelection(group) {
       }
     }
   } catch (error) {
-    console.error(
+    console.log(
       "Error announcing unpaid members before winner selection:",
       error.message
     );
@@ -75,25 +81,36 @@ async function announceUnpaidMembersBeforeWinnerSelection(group) {
 
 const adminUpaideAnnouncement = async () => {
   try {
-    // Find all groups that are started
     const groups = await Group.find({ status: "started" });
-    // Iterate through each group
+    // console.log(groups);
     for (const group of groups) {
-      // Calculate the payment interval in milliseconds
-      const paymentIntervalInMillis =
-        group.paymentInterval * 24 * 60 * 60 * 1000;
-
-      // Calculate the announcement time by subtracting payment interval from winner selection time
-      const winnerSelectionDate = new Date(group.startDate);
-      winnerSelectionDate.setDate(
-        winnerSelectionDate.getDate() + group.roundDuration
-      );
-      const announcementDate = new Date(
-        winnerSelectionDate.getTime() - paymentIntervalInMillis
+      const currentDateTime = new Date();
+      const threeMinutesLater = new Date(
+        currentDateTime.getTime() + 3 * 60 * 1000
       );
 
-      // Schedule the announcement using cron expression
-      cron.schedule(announcementDate, () =>
+      // Ensure all components of the cron pattern are valid numbers
+      const seconds = isNaN(threeMinutesLater.getSeconds())
+        ? "*"
+        : threeMinutesLater.getSeconds();
+      const minutes = isNaN(threeMinutesLater.getMinutes())
+        ? "*"
+        : threeMinutesLater.getMinutes();
+      const hours = isNaN(threeMinutesLater.getHours())
+        ? "*"
+        : threeMinutesLater.getHours();
+      const dayOfMonth = isNaN(threeMinutesLater.getDate())
+        ? "*"
+        : threeMinutesLater.getDate();
+      const month = isNaN(threeMinutesLater.getMonth() + 1)
+        ? "*"
+        : threeMinutesLater.getMonth() + 1;
+
+      // Construct the cron pattern
+      const cronPattern = `${seconds} ${minutes} ${hours} ${dayOfMonth} ${month} *`;
+      console.log(cronPattern);
+      // Schedule announcementOfUser function to run on the calculated announcement date
+      cron.schedule(cronPattern, () =>
         announceUnpaidMembersBeforeWinnerSelection(group)
       );
     }

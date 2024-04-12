@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 
 interface FormState {
-  amount: string;
+  amount: number;
   currency: string;
   email: string;
   first_name: string;
@@ -15,13 +15,15 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   group_id: string;
+  round: number;
+  amount: number;
 }
 
-const Pay = ({ isOpen, onClose, group_id }: ModalProps) => {
+const Pay = ({ isOpen, onClose, group_id, round, amount }: ModalProps) => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const [form, setForm] = useState<FormState>({
-    amount: "",
+    amount: amount,
     currency: "",
     email: "",
     first_name: "",
@@ -41,13 +43,14 @@ const Pay = ({ isOpen, onClose, group_id }: ModalProps) => {
       const res = await axios.post(
         "http://localhost:5000/api/v1/payment/accept-payment",
         {
-          amount: form.amount,
+          amount: amount,
           currency: form.currency,
           email: form.email,
           first_name: form.first_name,
           last_name: form.last_name,
           phone_number: form.phone_number,
           group_id: group_id,
+          round: round,
         },
         {
           headers: {
@@ -65,7 +68,7 @@ const Pay = ({ isOpen, onClose, group_id }: ModalProps) => {
       }
 
       setForm({
-        amount: "",
+        amount: amount,
         currency: "",
         email: "",
         first_name: "",
@@ -137,6 +140,7 @@ const Pay = ({ isOpen, onClose, group_id }: ModalProps) => {
                         type="text"
                         name="amount"
                         value={form.amount}
+                        readOnly
                         placeholder="amount"
                       />
                     </div>

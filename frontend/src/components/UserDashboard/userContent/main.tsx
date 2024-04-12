@@ -1,6 +1,6 @@
 import UserDashboardMainCard from "../UI/UserDashboardMainCard";
 import UserTransaction from "../UI/UserTransaction";
-import LuckIdentifier from "./LuckIdentifier";
+// import LuckIdentifier from "./LuckIdentifier";
 
 const main = () => {
   return (
@@ -10,7 +10,8 @@ const main = () => {
         <div className="w-full">
           <UserTransaction />
         </div>
-        <LuckIdentifier />
+        <p>in this part shows the details of each group</p>
+        {/* <LuckIdentifier /> */}
       </div>
     </div>
   );

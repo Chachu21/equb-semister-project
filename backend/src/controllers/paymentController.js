@@ -37,12 +37,13 @@ const acceptPayment = async (req, res) => {
     last_name,
     phone_number,
     group_id,
+    round,
   } = req.body;
   console.log("request body", req.body);
 
   const TEXT_REF = `${first_name}${Date.now()}`;
   console.log("text reference", TEXT_REF);
-  const CALLBACK_URL = `http://localhost:5000/api/v1/payment/verify-payment/${TEXT_REF}/${userId}/${group_id}`;
+  const CALLBACK_URL = `http://localhost:5000/api/v1/payment/verify-payment/${TEXT_REF}/${userId}/${group_id}/${round}`;
   try {
     const header = {
       headers: {
@@ -94,6 +95,7 @@ const verifyPayment = async (req, res) => {
   const tx_ref = req.params.id;
   const group_id = req.params.groupId;
   const user_id = req.params.userId;
+  const round = req.params.round;
   console.log("params", req.params);
   // req header with chapa secret key
   const config = {
@@ -125,6 +127,7 @@ const verifyPayment = async (req, res) => {
       verified_at: new Date(), // Add verified_at field with current date/time
       user: user_id,
       equbGroup: group_id,
+      round: round,
     });
 
     // Save the transaction

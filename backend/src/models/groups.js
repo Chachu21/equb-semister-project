@@ -184,7 +184,7 @@ const groupSchema = new mongoose.Schema({
   },
   roundDuration: {
     type: Number,
-    required: true,
+    // required: true,
     min: 0,
   },
   startDate: {
@@ -195,6 +195,11 @@ const groupSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
+  },
+  round: {
+    type: Number,
+    required: true,
+    default: 1,
   },
   members: [
     {
@@ -216,7 +221,6 @@ const groupSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["pending", "started", "completed"],
     default: "pending",
   },
   isCompleted: {
@@ -225,11 +229,11 @@ const groupSchema = new mongoose.Schema({
   },
   createdOn: {
     type: Date,
-    default: Date.now.toString(),
+    default: Date.now(),
   },
   paymentInterval: {
     type: Number,
-    required: true,
+    // required: true,
   },
   contributions: [contributionSchema],
   rounds: [roundSchema],
@@ -238,7 +242,10 @@ const groupSchema = new mongoose.Schema({
 // Mongoose validation (optional)
 groupSchema.pre("save", function (next) {
   // Add custom validation logic here if needed
-  // Example: Ensure group amount is a whole number
+  console.log(
+    "checking pre save of amount is whole number",
+    Number.isInteger(this.amount)
+  );
   if (!Number.isInteger(this.amount)) {
     throw new Error("Amount must be a whole number");
   }
@@ -246,8 +253,13 @@ groupSchema.pre("save", function (next) {
 });
 
 groupSchema.pre("save", async function (next) {
+  console.log("i am inside pre save of updatting start date and round by one");
   // Update start date for the next round after the first winner is selected
-  if (this.rounds.length > 0 && this.rounds[this.rounds.length - 1].winner) {
+
+  if (
+    this.rounds.length > 0 &&
+    this.rounds[this.rounds.length - 1].winner === this.round <= this.member
+  ) {
     // Calculate the start date for the next round based on the round duration
     const lastRoundWinnerSelectionDate =
       this.rounds[this.rounds.length - 1].winnerSelection_date;
@@ -257,8 +269,22 @@ groupSchema.pre("save", async function (next) {
     );
 
     this.startDate = nextRoundStartDate;
+    this.round = this.round + 1;
   }
-
+  console.log("start date", this.startDate);
+  console.log("round", this.round);
+  next(); // Continue saving the group
+});
+// Pre-save hook to update status to "started" (if needed)
+groupSchema.pre("save", function (next) {
+  if (
+    this.isModified("members") &&
+    this.members.length === this.member &&
+    this.status !== "started"
+  ) {
+    this.startDate = new Date();
+    this.status = "started";
+  }
   next(); // Continue saving the group
 });
 groupSchema.pre("save", async function (next) {
@@ -276,6 +302,9 @@ groupSchema.pre("save", async function (next) {
 
 // Virtual property to check if the group is fully completed
 groupSchema.virtual("isFullyCompleted").get(function () {
+  console.log(
+    "i am in side virtual for checking members size and member are equal"
+  );
   return (
     this.members.length === this.member && this.winners.length === this.member
   );
@@ -283,15 +312,16 @@ groupSchema.virtual("isFullyCompleted").get(function () {
 
 // Mongoose post hook to update isCompleted property after saving
 groupSchema.post("save", async function (doc) {
+  console.log("for updatting of is completed properties");
   if (doc.isFullyCompleted) {
     doc.updateOne({ isCompleted: true }).exec(); // Update isCompleted to true
   }
 });
-
 groupSchema.methods.startGroupIfNeeded = async function () {
+  console.log("inside startgroupifneeded function");
+
   if (this.status === "pending" && this.members.length === this.member) {
     this.status = "started";
-    await this.save();
     console.log("Group started:", this._id);
 
     const startedMessage = `Congratulations! The ${this.name} equb has started.`;
@@ -313,11 +343,14 @@ groupSchema.methods.startGroupIfNeeded = async function () {
           .then(() => console.log(`SMS sent to ${phoneNumber}`))
           .catch((error) => console.error(`SMS sending error: ${error}`));
       });
+
+    // Do not call this.save() here
   }
 };
 
 // New method for winner selection (optional)
 groupSchema.methods.selectWinner = async function () {
+  console.log("i am in side select winner function");
   if (this.status === "started" && !this.rounds.find((round) => round.winner)) {
     // Filter members who haven't won yet
     const eligibleMembers = await Promise.all(
@@ -350,7 +383,7 @@ groupSchema.methods.selectWinner = async function () {
       const currentRound = this.rounds[this.rounds.length - 1]; // Assuming latest round
       currentRound.winner = winnerId;
       currentRound.winnerSelection_date = Date.now();
-      await this.save(); // Update group schema with winner information
+      // await this.save(); // Update group schema with winner information
 
       // Retrieve winner details for notification
       const winner = await User.findById(winnerId);
@@ -364,7 +397,7 @@ groupSchema.methods.selectWinner = async function () {
 
       // Update winners array to include the newly selected winner
       this.winners.push(winnerId);
-      await this.save(); // Update winners array in group schema
+      // await this.save(); // Update winners array in group schema
     } else {
       console.log(
         "No eligible members found for winner selection in group:",
