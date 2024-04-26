@@ -2,10 +2,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-<<<<<<< .merge_file_AUj2Bo
-
-=======
->>>>>>> .merge_file_yoyq7w
 @layer components {
   .field:not(:last-child) {
     @apply mb-3;
@@ -348,8 +344,6 @@
     @apply absolute top-0 left-0 w-full h-full opacity-0 outline-none cursor-pointer -z-10;
   }
 }
-<<<<<<< .merge_file_AUj2Bo
-=======
 /* table {
   @apply w-full;
 }
@@ -418,4 +412,3 @@ td.image-cell .image {
 /* .table-pagination {
   @apply px-6 py-3 border-t border-gray-100;
 }   */
->>>>>>> .merge_file_yoyq7w
