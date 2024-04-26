@@ -38,9 +38,12 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
       <table className="min-w-full bg-white divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            {Object.keys(header).map((key) => (
-              <th key={key} scope="col" className="px-6 py-3">
-                {header[key]}
+            {header.map((item) => (
+              <th
+                key={item.id}
+                className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md"
+              >
+                {item.title}
               </th>
             ))}
             <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
@@ -59,7 +62,7 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
 
               <td>
                 <button
-                  onClick={() => handleDelete(data._id)}
+                  onClick={() => handleDelete(data.id)}
                   className="text-red-600 hover:text-red-900"
                 >
                   Delete
