@@ -149,10 +149,10 @@ const Form = () => {
         setStep(STEPS.CONFIRMED);
         toast.success(`Successfully updated your information`);
       }
+    } catch (error) {
       toast.warning(
         "account name and your bank account holder name is not same"
       );
-    } catch (error) {
       console.error("Error uploading images:", error);
       // Handle error if the conversion or upload fails
       // You can display an error message to the user or handle it as needed

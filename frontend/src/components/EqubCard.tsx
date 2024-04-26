@@ -77,8 +77,8 @@ const Card = ({
         axiosError.response.data.error === "UserAlreadyJoined"
       ) {
         toast.warning("You are already a member of this group");
-      } else {
-        toast.error("Failed to join group");
+      } else if (axiosError.response?.status === 400) {
+        toast.warn(axiosError.response.data.error);
       }
     }
   };

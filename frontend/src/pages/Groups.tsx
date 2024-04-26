@@ -39,7 +39,7 @@ const Equb = () => {
             },
           }
         );
-
+        console.log(response.data.searchResult);
         setEqubType(response.data.searchResult);
         setTotalPages(response.data.totalPages);
       } catch (error) {

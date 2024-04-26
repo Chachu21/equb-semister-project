@@ -89,7 +89,11 @@ const EqubCreatorSideBar = () => {
         <span className="text-gray-400 font-bold">manage your account</span>
 
         {LinkComponent.map((links) => (
-          <li className="mb-1 group" onClick={handleCloseSideBar}>
+          <li
+            key={links.id}
+            className="mb-1 group"
+            onClick={handleCloseSideBar}
+          >
             <Link
               key={links.id}
               to={links.path}

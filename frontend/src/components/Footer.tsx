@@ -95,8 +95,8 @@ const Footer = () => {
             <div>
               <h2 className="text-xl font-medium mb-4">Reach Us</h2>
               <ul className="flex flex-col items-center p-2 gap-8">
-                {Icons.map((icon) => (
-                  <li key={icon.id}>
+                {Icons.map((icon, index) => (
+                  <li key={index}>
                     {/* social media links must be corrected */}
                     <Link to={icon.url} className="hover:text-[#008B8B]">
                       {icon.icon}

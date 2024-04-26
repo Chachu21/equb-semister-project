@@ -12,7 +12,7 @@ import cloudinary from "../utils/cloudinary.js";
 export const createUser = async (req, res) => {
   const { name, phone, password, email, agreeTerms } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   try {
     // Check if the user with the same phone number or email already exists
@@ -39,7 +39,7 @@ export const createUser = async (req, res) => {
     });
     const savedUser = await newUser.save();
     // Send a success response
-    console.log(savedUser);
+    // console.log(savedUser);
     res.status(201).json({ message: "your account created successfully" });
   } catch (error) {
     console.log(error);
@@ -76,6 +76,7 @@ export const getUserById = async (req, res) => {
 //   try {
 //     const userId = req.params.id;
 //     let updateData = {};
+
 //     // Check if user exists
 //     const user = await User.findById(userId);
 //     if (!user) {

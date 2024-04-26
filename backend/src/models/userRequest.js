@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const EqubSchema = new mongoose.Schema(
+const RequestSchema = new mongoose.Schema(
   {
     equbType: {
       type: String,
@@ -21,6 +21,6 @@ const EqubSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Request = mongoose.model("Request", EqubSchema);
+const Request = mongoose.model("Request", RequestSchema);
 
 export default Request;

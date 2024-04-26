@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { groupsType } from "../../../types/groupType";
 import pendingImage from "../../../../public/assets/pending.jpg";
@@ -9,7 +9,7 @@ import Pay from "../../payment/pay";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 
-const UserDashboardMainCard: React.FC = () => {
+const UserDashboardMainCard = () => {
   const [isclicked, setIsClicked] = useState(false);
   const [group, setGroup] = useState<groupsType[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -36,16 +36,13 @@ const UserDashboardMainCard: React.FC = () => {
             },
           }
         );
-        console.log("from group ", response.data.group);
         setGroup(response.data.group);
         setStatusCounts(response.data.count);
 
         // Fetch member data for each group
         const groupWithMemberData = await Promise.all(
           response.data.group.map(async (group: groupsType) => {
-            const memberData: groupsType[] = await fetchMemberData(
-              group.members
-            );
+            const memberData = await fetchMemberData(group.members);
             return { ...group, members: memberData };
           })
         );
@@ -78,11 +75,9 @@ const UserDashboardMainCard: React.FC = () => {
   const fetchMemberData = async (memberIds: string[]) => {
     try {
       const memberPromises = memberIds.map(async (memberId) => {
-        console.log(memberId);
         const response = await axios.get(
           `http://localhost:5000/api/v1/users/get/${memberId}`
         );
-        console.log("from fetch member data", response.data.user);
         return response.data.user; // Assuming the user data is under the 'user' property
       });
       const memberData = await Promise.all(memberPromises);

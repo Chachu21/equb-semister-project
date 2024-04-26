@@ -3,6 +3,7 @@ import {
   createUser,
   getUsers,
   getUserById,
+  // getUserProfile,
   updateUser,
   deleteUser,
   loginController,

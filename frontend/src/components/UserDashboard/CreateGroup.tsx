@@ -1,27 +1,30 @@
-import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   name: string;
   types: string;
   amount: number;
   member: number;
+  roundDuration: number;
+  paymentInterval: number;
 }
 
-const CreateGroup: React.FC = () => {
+const CreateGroup = () => {
+  const naviagte = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
-
-  console.log(user?.token);
   const initialValues: FormData = {
     name: "",
     types: "",
     amount: 0,
     member: 0,
+    roundDuration: 0,
+    paymentInterval: 0,
   };
 
   const validationSchema = Yup.object().shape({
@@ -35,10 +38,25 @@ const CreateGroup: React.FC = () => {
       .required("Number of members is required")
       .positive("Number of members must be positive")
       .min(3, "member must be greater than or equal to 3"),
+    roundDuration: Yup.number()
+      .required("Number of members must be greater than or equal to 0.5")
+      .positive("number must be positive")
+      .min(
+        1,
+        "the duration of equb from selecting winner to next selection winner is  must be greater than or equal to 1day"
+      ),
   });
 
   const handleSubmit = async (values: FormData) => {
     try {
+      if (values.types === "daily") {
+        values.paymentInterval = 1;
+      } else if (values.types === "weekly") {
+        values.paymentInterval = 2;
+      } else if (values.types === "monthly") {
+        values.paymentInterval = 3;
+      }
+      console.log(values);
       const response = await axios.post(
         "http://localhost:5000/api/v1/group/create",
         values,
@@ -52,6 +70,8 @@ const CreateGroup: React.FC = () => {
 
       if (response) {
         toast.success("Successfully created group");
+        // naviagte to manage group
+        naviagte("/equbCreatorDashboard/manageGroups");
       }
       console.log(response.data);
     } catch (error) {
@@ -59,13 +79,12 @@ const CreateGroup: React.FC = () => {
       toast.error("Failed to create group. Please try again later.");
     }
   };
-
   return (
     <>
       <div className="bg-gray-200 container mx-auto overflow-x-hidden h-full md:max-w-3xl flex flex-col items-center justify-center">
         <div className="flex flex-col justify-center items-center bg-white px-5 py-20 space-y-5">
           <span className="text-2xl text-center font-semibold text-sky-950">
-            create your equb group by filling the following form
+            Create your equb group by filling the following form
           </span>
           <Formik
             initialValues={initialValues}
@@ -74,7 +93,7 @@ const CreateGroup: React.FC = () => {
           >
             {() => (
               <Form className="flex flex-col space-y-3 md:space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-20 gap-5  ">
+                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-20 gap-5">
                   <div className="space-y-2 flex flex-col">
                     <label htmlFor="name">Name</label>
                     <Field
@@ -92,11 +111,15 @@ const CreateGroup: React.FC = () => {
                   <div className="space-y-2 flex flex-col">
                     <label htmlFor="types">Equb type</label>
                     <Field
-                      type="text"
+                      as="select"
                       name="types"
-                      placeholder="Please add type"
                       className="border border-gray-400 p-3 rounded-lg"
-                    />
+                    >
+                      <option value="">Select</option>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </Field>
                     <ErrorMessage
                       name="types"
                       component="div"
@@ -133,6 +156,20 @@ const CreateGroup: React.FC = () => {
                       className="text-red-500"
                     />
                   </div>
+                </div>
+                <div className="space-y-2 flex flex-col">
+                  <label htmlFor="roundDuration">RoundDuration</label>
+                  <Field
+                    type="number"
+                    name="roundDuration"
+                    placeholder="Please add roundDuration"
+                    className="border border-gray-400 p-3 rounded-lg"
+                  />
+                  <ErrorMessage
+                    name="roundDuration"
+                    component="div"
+                    className="text-red-500"
+                  />
                 </div>
                 <button
                   type="submit"

@@ -1,14 +1,13 @@
-
 import { useState, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-interface RouteParams {
-  token: string;
-}
+// interface RouteParams {
+//   token: string;
+// }
 
 const ResetPassword: React.FC = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { token } = useParams<any>();
   const [password, setPassword] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
@@ -24,10 +23,9 @@ const ResetPassword: React.FC = () => {
       );
       setMessage(response.data.message);
       //clear password
-      setPassword('')
+      setPassword("");
       //navigate to login
-         navigate("/login");
-
+      navigate("/login");
     } catch (error) {
       setMessage("An error occurred while resetting password");
       console.error("Error resetting password:", error);

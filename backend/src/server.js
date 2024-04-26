@@ -18,6 +18,7 @@ import userScheduleAnnouncement from "./utils/userAnnouncement.js";
 import adminUpaideAnnouncement from "./utils/announcementAndcheckUpaidMember.js";
 
 import requestRouter from "./routes/requestRoutes.js";
+import winnerSelection from "./utils/automticSelectWinner.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -37,8 +38,10 @@ app.use("/api/v1/payment", paymentRouter);
 
 //for user announcements
 userScheduleAnnouncement();
-
+//for admin  about unpaid announcements
 adminUpaideAnnouncement();
+//for winner announcements
+winnerSelection();
 //localhost:3000/api/v1/users/signUp
 // Start the server
 http: app.listen(port, () => {

@@ -29,6 +29,7 @@ const UserTransaction = () => {
         `http://localhost:5000/api/v1/payment/get/${user_id}`
       );
       setTransaction(response.data);
+      console.log(response.data);
     };
     fetchTransaction();
   }, [user_id]);

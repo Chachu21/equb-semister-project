@@ -23,8 +23,8 @@ import UserDashboard from "./pages/UserDashboard";
 import Main from "./components/UserDashboard/userContent/main";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
 import Settings from "./components/UserDashboard/Settings";
-import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
 import SendRequest from "./components/UserDashboard/UI/SendRequest";
+import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
 // import Pay from "./components/payment/pay";
 
 const App = () => {

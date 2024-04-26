@@ -91,7 +91,7 @@ const Login = () => {
                 : userData.role === "user"
                 ? "/userDashboard"
                 : userData.role === "creator"
-                ? "/creatorDashboard"
+                ? "/equbCreatorDashboard"
                 : "/"
             );
           }

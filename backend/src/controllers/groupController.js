@@ -1,47 +1,11 @@
 import Group from "../models/groups.js";
 import User from "../models/users.js";
 import { errorHandler } from "../utils/errorHandler.js";
-
-// //create a new group
-// export const createGroup = async (req, res) => {
-//   const { name, amount, member, types } = req.body;
-//   const createdBy = req.user;
-//   console.log(req.body);
-//   try {
-//     // Validate input (optional)
-//     if (!name || !amount || !types || !createdBy || !member) {
-//       return res.status(400).json({ message: "Missing required fields" });
-//     }
-
-//     // Validate existence of creator user
-//     const creator = await User.findById(createdBy);
-//     if (!creator) {
-//       return res
-//         .status(400)
-//         .json({ message: "user is not found, validate your account" });
-//     }
-
-//     const newGroup = new Group({
-//       name,
-//       amount,
-//       member,
-//       types,
-//       createdBy,
-//       members: [createdBy], // Add creator as a member
-//     });
-
-//     await newGroup.save();
-//     res
-//       .status(201)
-//       .json({ message: "Group created successfully", group: newGroup });
-//   } catch (err) {
-//     errorHandler(err, res, 5000);
-//   }
-// };
 export const createGroup = async (req, res) => {
-  const { name, amount, member, types } = req.body;
+  const { name, amount, member, types, paymentInterval, roundDuration } =
+    req.body;
   const createdBy = req.user;
-
+  console.log(req.body);
   try {
     if (!name || !amount || !types || !createdBy || !member) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -61,6 +25,8 @@ export const createGroup = async (req, res) => {
       types,
       createdBy,
       members: [createdBy],
+      paymentInterval,
+      roundDuration,
     });
 
     await newGroup.save();
@@ -98,17 +64,36 @@ export const createGroup = async (req, res) => {
 };
 
 //get all groups
-export const getAllGroups = async (req, res) => {
-  try {
-    const groups = await Group.find();
-    // console.log(groups);
-    res.json(groups);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
+// export const getGroups = async (req, resp) => {
+//   console.log("am at get all groups muller")
+//   const { page = 1, limit = 10 } = req.query; // Default page and limit
 
+//   try {
+//     const options = {
+//       page: parseInt(page),
+//       limit: parseInt(limit),
+//       sort: { createdOn: -1 }, // Optional: sort by creation date descending
+//     };
+
+//     const groups = await Group.paginate({}, options); // Empty query {} for all groups
+
+//     res.status(200).json({ groups });
+//   } catch (err) {
+//     handleError(err, res.error);
+//   }
+// };
+
+//get single group by id
+// app.get("/api/v1/groups", async (req, res) => {
+//   try {
+//     const { status } = req.query;
+//     const groups = await Group.find({ status }); // Fetch groups by status
+//     res.json(groups);
+//   } catch (error) {
+//     console.error("Error fetching groups:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 export const getGroup = async (req, res) => {
   const { id } = req.params; // Extract group ID from request parameters
 
@@ -125,39 +110,6 @@ export const getGroup = async (req, res) => {
     res.status(500).json({ message: err.message }); // Send the specific error message
   }
 };
- // Import Group model or adjust as per your file structure
-
-export const getUserJoinedGroups = async (req, res) => {
-  console.log("At getUserJoinedGroups controller");
-  try {
-    const userId = req.params.id;
-
-    // Find groups where the logged-in user's ID is present in the members array
-    const userGroups = await Group.find({ members: userId }).exec();
-    console.log("User groups:", userGroups);
-    res.status(200).json(userGroups);
-  } catch (error) {
-    console.error("Error fetching user's joined groups:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-// Controller method to fetch groups joined by the logged-in user
-// export const getUserJoinedGroups = async (req, res) => {
-//   console.log("am at getUserJoinedGroups controller");
-//   try {
-//     const userId = req.params.id;
-   
-    
-//     // Find groups where the logged-in user's ID is present in the members array
-//     const userGroups = await Group.find({ members: userId }).exec();
-//     console.log("user groups kkkkkkkkkkkkk");
-//     res.status(200).json(userGroups);
-//   } catch (error) {
-//     console.error("Error fetching user's joined groups:", error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
 
 //delete single group by id
 export const deleteGroup = async (req, res) => {
@@ -180,18 +132,26 @@ export const deleteGroup = async (req, res) => {
 export const joinGroup = async (req, res) => {
   const { groupId } = req.params; // Extract group ID from request parameters
   const userId = req.user; // Assuming user ID is decoded from JWT token
-  
   try {
-    // 1. Check if the user is already a member of the group
-    const group = await Group.findById(groupId).populate("members"); // Populate members with userId
+    // 1. Check if the group exists
+    const group = await Group.findById(groupId); // Populate members with userId
+
+    const userGroupsCount = await Group.countDocuments({ members: userId });
+
+    // Check if the user has already joined the maximum number of groups (2 in this case)
+    if (userGroupsCount >= 3) {
+      return res.status(400).json({
+        error: "User has already joined the maximum number of groups",
+      });
+    }
 
     if (!group) {
       console.log("Group not found");
       return res.status(404).json({ message: "Group not found" });
     }
 
-    // 2. Check if the user is already a member of the group (using populated userIds)
-    if (group.members.some((member) => member === userId)) {
+    // 2. Check if the user is already a member of the group
+    if (group.members.includes(userId)) {
       console.log("User already in group");
       return res.status(400).json({ error: "UserAlreadyJoined" });
     }
@@ -200,11 +160,12 @@ export const joinGroup = async (req, res) => {
     group.members.push(userId); // Directly update the document (triggers middleware)
 
     // 4. Save the updated group document
-    const updateddata = await group.save(); // This will trigger the middleware
-    if (!updateddata) {
+    const updatedGroup = await group.save(); // This will trigger the middleware
+
+    if (!updatedGroup) {
       throw new Error("Failed to save EqubGroup");
     }
-    console.log(updateddata);
+
     res.status(200).json({ message: "Joined group successfully" });
   } catch (err) {
     console.error("from server", err);
@@ -217,8 +178,8 @@ export const joinGroup = async (req, res) => {
 export const getGroups = async (req, res) => {
   try {
     const { types, amount, member, page = 1, pageSize = 10 } = req.query; // Set defaults for page and pageSize
-
-    const conditions = [];
+    const status = "pending";
+    const conditions = [{ status: status }];
 
     if (types) {
       // Allow searching by multiple types (if applicable)
@@ -336,5 +297,26 @@ export const getGroupByUserId = async (req, res) => {
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Controller function to get groups by creator ID
+export const getGroupsByCreatorId = async (req, res) => {
+  const creatorId = req.user;
+
+  // Check if user is already in the database
+
+  const user = await User.findOne({ _id: creatorId });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  try {
+    // Query groups where createdBy matches the provided creator ID
+    const groups = await Group.find({ createdBy: creatorId });
+    res.status(200).json({ groups });
+  } catch (error) {
+    console.error("Error fetching groups by creator ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

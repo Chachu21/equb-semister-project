@@ -1,117 +1,3 @@
-// import mongoose from "mongoose";
-// import mongoosePaginate from "mongoose-paginate-v2";
-// import sendSMS from "../config/sendSMS.js";
-// import User from "./users.js";
-// const groupSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//     required: true,
-//     trim: true, // Remove leading/trailing whitespace
-//   },
-//   amount: {
-//     type: Number,
-//     required: true,
-//     min: 0, // Ensure positive amount
-//   },
-//   types: {
-//     type: String,
-//     required: true,
-//     trim: true,
-//   },
-//   member: {
-//     type: Number,
-//     required: true,
-//     min: 0, // Ensure positive amount
-//   },
-//   members: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User", // Reference the User model
-//     },
-//   ],
-//   winners: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User", // Reference the User model
-//     },
-//   ],
-//   createdBy: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User", // Reference the User model
-//     required: true,
-//   },
-//   status: {
-//     type: String,
-//     required: true,
-//     enum: ["pending", "started", "completed"], // Use enum for valid values
-//     default: "pending",
-//   },
-//   isCompleted: {
-//     type: Boolean,
-//     default: false,
-//   },
-//   createdOn: {
-//     type: Date,
-//     default: Date.now.toString(), // Use default for automatic creation
-//   },
-// });
-
-// // Mongoose validation (optional)
-// groupSchema.pre("save", function (next) {
-//   // Add custom validation logic here if needed
-//   // Example: Ensure group amount is a whole number
-//   if (!Number.isInteger(this.amount)) {
-//     throw new Error("Amount must be a whole number");
-//   }
-//   next(); // Continue with saving the document
-// });
-
-// // Virtual property to check if the group is fully completed
-// groupSchema.virtual("isFullyCompleted").get(function () {
-//   return this.members.length === 0 && this.winners.length === this.member;
-// });
-
-// // Mongoose post hook to update isCompleted property after saving
-// groupSchema.post("save", async function (doc) {
-//   await this.startGroupIfNeeded();
-//   if (doc.isFullyCompleted) {
-//     doc.updateOne({ isCompleted: true }).exec(); // Update isCompleted to true
-//   }
-// });
-
-// groupSchema.methods.startGroupIfNeeded = async function () {
-//   if (this.status === "pending" && this.members.length === this.member) {
-//     this.status = "started";
-//     await this.save();
-//     console.log("Group started:", this._id);
-
-//     const startedMessage = `Congratulations! The ${this.name} equb has started.`;
-
-//     // Retrieve phone numbers of all group members
-//     const memberPhonePromises = this.members.map(async (user_id) => {
-//       const user = await User.findById(user_id);
-//       return user ? user.phone : null;
-//     });
-
-//     // Await all promises to resolve
-//     const memberPhoneNumbers = await Promise.all(memberPhonePromises);
-
-//     // Filter out null values and send SMS to each member
-//     memberPhoneNumbers
-//       .filter((phone) => phone)
-//       .forEach((phoneNumber) => {
-//         sendSMS(phoneNumber, startedMessage);
-//       });
-//   }
-// };
-
-// groupSchema.plugin(mongoosePaginate);
-
-// const Group = mongoose.model("Group", groupSchema);
-// export default Group;
-
-//with google bard
-
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import sendSMS from "../config/sendSMS.js"; // Assuming SMS sending function
@@ -199,7 +85,7 @@ const groupSchema = new mongoose.Schema({
   round: {
     type: Number,
     required: true,
-    default: 1,
+    default: 0,
   },
   members: [
     {
@@ -284,6 +170,7 @@ groupSchema.pre("save", function (next) {
   ) {
     this.startDate = new Date();
     this.status = "started";
+    this.round = 1;
   }
   next(); // Continue saving the group
 });

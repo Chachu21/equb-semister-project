@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ManageGroupTables from "../UI/ManageGroupTables";
 import SearchUi from "../UI/SearchUi";
 import Tables from "../UI/Tables";
 import { useSelector } from "react-redux";
@@ -19,40 +18,43 @@ const ManageGroups = () => {
   const [equbGroups, setEqubGroups] = useState<EqubGroup[]>([]);
   const [filteredGroup, setFilteredGroup] = useState<EqubGroup[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const userData: any = useSelector((state: RootState) => state.user.user);
-
+  const userData = useSelector((state: RootState) => state.user.user);
+  const user_id = userData?._id;
+  const token = userData?.token;
+  console.log("use id", user_id);
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/group/get/creator/${user_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("groups form manage group", response.data.groups);
+        setEqubGroups(response.data.groups);
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkk", response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
     fetchData();
-  }, []);
+  }, [user_id, token]);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/v1/group");
-      setEqubGroups(response.data);
-      console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkk",response.data);
-      
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-
- // Extract only necessary fields from tableData
- const filteredData = equbGroups.map(
-   ({ _id,
-   types,
-   name,
-   member,
-   amount,
-   status }) => ({
-   _id,
-   types,
-   name,
-   member,
-   amount,
-   status
-   })
- );
+  // Extract only necessary fields from tableData
+  const filteredData = equbGroups.map(
+    ({ _id, types, name, member, amount, status }) => ({
+      _id,
+      types,
+      name,
+      member,
+      amount,
+      status,
+    })
+  );
 
   const tableHead = [
     { id: "1", title: "ID" },
@@ -71,42 +73,47 @@ const ManageGroups = () => {
     setFilteredGroup(filteredResults);
   };
 
+  const handleDelete = async (groupId: string) => {
+    try {
+      console.log("groupId is", groupId);
 
-const handleDelete = async (groupId: string) => {
-  try {
-    console.log("groupId is", groupId);
-
-    const token = userData?.token;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    };
-    await axios.delete(`http://localhost:5000/api/v1/group/${groupId}`, config);
-    // If successful, call the parent component handler to update the state
-    // onGroupDeleted(groupToDelete!);
-    console.log("Group deleted successfully");
-         setEqubGroups(equbGroups.filter((group) => group._id !== groupId));
-         setFilteredGroup(filteredGroup.filter((group) => group._id !== groupId));
-  } catch (error) {
-    console.error("Error deleting group:", error);
-  } 
-};
-
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      await axios.delete(
+        `http://localhost:5000/api/v1/group/delete/${groupId}`,
+        config
+      );
+      // If successful, call the parent component handler to update the state
+      // onGroupDeleted(groupToDelete!);
+      console.log("Group deleted successfully");
+      setEqubGroups(equbGroups.filter((group) => group._id !== groupId));
+      setFilteredGroup(filteredGroup.filter((group) => group._id !== groupId));
+    } catch (error) {
+      console.error("Error deleting group:", error);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
-      <SearchUi handleSearch={handleSearch} search={"period"} />
+      <SearchUi
+        handleSearch={() => {
+          handleSearch(searchTerm);
+        }}
+        search={"period"}
+      />
       <Tables
         header={tableHead}
         datas={filteredGroup.length > 0 ? filteredGroup : filteredData}
         onDelete={handleDelete}
-              />
+      />
     </div>
   );
 };
 
 export default ManageGroups;
-
