@@ -1,149 +1,128 @@
-import  { useState } from 'react'
-import SearchUi from '../UI/SearchUi';
-import UserGroupManageTables from '../UI/UserGroupManageTables';
+import React, { useState, useEffect } from "react";
+import SearchUi from "../UI/SearchUi";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+import Tables from "../UI/Tables";
 
-const UserGroupDetailHistory = () => {
-  const header = [
-    { id: "1", title: "Status" },
-    { id: "2", title: "GroupName" },
-    { id: "3", title: "GroupDuration" },
-    { id: "4", title: "startedDate" },
-    { id: "5", title: "CompletedDate" },
-    { id: "6", title: "GroupSize" },
-    { id: "7", title: "Payment Method" },
-    { id: "8", title: "Action" },
-  ];
+interface Header {
+  id: string;
+  title: string;
+}
 
-  const userGroupManageData = [
-    {
-      id: "1",
-      status: "completed",
-      GroupName: "DerashEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "2024-02-20",
-      GroupSize: "10",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "2",
-      status: "notStarted",
-      GroupName: "DerashEqub",
-      GroupDuration: "Monthly",
-      startedDate: "-",
-      CompletedDate: "-",
-      GroupSize: "13",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "3",
-      status: "completed",
-      GroupName: "FetanEqub",
-      GroupDuration: "yearly",
-      startedDate: "2024-02-20",
-      CompletedDate: "2024-02-20",
-      GroupSize: "4",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "4",
-      status: "progress",
-      GroupName: "FriendsEqub",
-      GroupDuration: "Yearly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "24",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "5",
-      status: "started",
-      GroupName: "mullerEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "6",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "6",
-      status: "completed",
-      GroupName: "natiEqub",
-      GroupDuration: "monthly",
-      startedDate: "2024-02-20",
-      CompletedDate: "2024-02-20",
-      GroupSize: "9",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "7",
-      status: "progress",
-      GroupName: "chaleEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "10",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "8",
-      status: "progress",
-      GroupName: "gebreEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "12",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "9",
-      status: "progress",
-      GroupName: "DerashEqub",
-      GroupDuration: "yaerly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "7",
-      paymentMethod: "Credit Card",
-    },
-    {
-      id: "10",
-      status: "progress",
-      GroupName: "fetanEqub",
-      GroupDuration: "Weekly",
-      startedDate: "2024-02-20",
-      CompletedDate: "-",
-      GroupSize: "11",
-      paymentMethod: "telebirr",
-    },
-
-    // Add more transactions as needed
-  ];
-
+interface datas {
+  _id: string;
+  status: string;
+  name: string;
+  types: string;
+  members: string;
+  winners: string;
+  createdAt: string;
+  updatedAT: string;
+  member: string;
+  amount: string;
+  isCompleted: boolean;
+}
+const UserGroupDetailHistory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredUserGroup, setFilteredUsergroup] = useState([]);
+  const [filteredUserGroup, setFilteredUsergroup] = useState<datas[]>([]);
+  const [userGroups, setUserGroups] = useState<datas[]>([]);
+  const userData: any = useSelector((state: RootState) => state.user.user);
 
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+      try {
+        const userId = userData?._id; // Replace with the actual user ID
+        const response = await axios.get<datas[]>(
+          `http://localhost:5000/api/v1/group/userJoinedGroups/${userId}`
+        );
+        setUserGroups(response.data);
+
+        console.log("groupInfor", response.data);
+
+        console.log("response", response);
+      } catch (error) {
+        console.error("Error fetching user's joined groups:", error);
+      }
+    };
+
+    fetchUserGroups();
+  }, []);
+
+  // Extract only necessary fields from tableData
+  const filteredData = userGroups.map(
+    ({
+      _id,
+      name,
+      member,
+      members,
+      winners,
+      amount,
+      status,
+      isCompleted,
+    }) => ({
+      _id,
+      status,
+      name,
+      members,
+      winners,
+      amount,
+       member,
+      isCompleted,
+    })
+  );
+
+  const header: Header[] = [
+    { id: "1", title: "GroupId" },
+    { id: "2", title: "Status" },
+    { id: "3", title: "GroupName" },
+    { id: "4", title: "members" },
+    { id: "5", title: "winners" },
+    { id: "6", title: "amount" },
+    { id: "7", title: "GroupSize" },
+    { id: "8", title: "iscompleted" },
+  ];
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
-    const filteredResults: any = userGroupManageData.filter((data) =>
+    const filteredResults = filteredData.filter((data) =>
       data.status.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredUsergroup(filteredResults);
   };
 
+ 
+const handleDelete = async (groupId: string) => {
+  try {
+     const token = userData?.token;
+     const config = {
+       headers: {
+         Authorization: `Bearer ${token}`,
+         "Content-Type": "application/json",
+       },
+     };
+    https: console.log("groupId is :", groupId);
+    await axios.delete(`http://localhost:5000/api/v1/group/${groupId}`,config);
+    setUserGroups(userGroups.filter((group) => group._id !== groupId));
+    setFilteredUsergroup(
+      filteredUserGroup.filter((group) => group._id !== groupId)
+    );
+  } catch (error) {
+    console.error("Error deleting user:", error);
+  }
+};
   return (
     <div>
       <h1 className="text-2xl font-semibold ml-5 mb-2">
         UserGroupDetailHistory
       </h1>
       <SearchUi handleSearch={handleSearch} search={"status"} />
-      <UserGroupManageTables
+      <Tables
         header={header}
-        userGroupManageData={
-          filteredUserGroup.length > 0 ? filteredUserGroup : userGroupManageData
-        }
+        datas={filteredUserGroup.length > 0 ? filteredUserGroup : filteredData}
+        onDelete={handleDelete}
       />
     </div>
   );
 };
 
-export default UserGroupDetailHistory
+export default UserGroupDetailHistory;

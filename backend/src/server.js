@@ -13,8 +13,12 @@ import userRouter from "./routes/userRoute.js";
 import groupRouter from "./routes/groupRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import paymentRouter from "./routes/paymentRoute.js";
+<<<<<<< .merge_file_mJgaCp
 import userScheduleAnnouncement from "./utils/userAnnouncement.js";
 import adminUpaideAnnouncement from "./utils/announcementAndcheckUpaidMember.js";
+=======
+import requestRouter from "./routes/requestRoutes.js";
+>>>>>>> .merge_file_indwDj
 
 const app = express();
 const port = process.env.PORT;
@@ -31,11 +35,17 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/group", groupRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/payment", paymentRouter);
+<<<<<<< .merge_file_mJgaCp
 
 //for user announcements
 userScheduleAnnouncement();
 
 adminUpaideAnnouncement();
+=======
+app.use("/api/v1/request", requestRouter);
+//connect to the database
+createDatabase();
+>>>>>>> .merge_file_indwDj
 //localhost:3000/api/v1/users/signUp
 // Start the server
 http: app.listen(port, () => {

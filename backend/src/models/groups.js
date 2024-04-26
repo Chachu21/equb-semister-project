@@ -166,6 +166,7 @@ const roundSchema = new mongoose.Schema({
   },
 });
 
+<<<<<<< .merge_file_2bjeSf
 const groupSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -205,11 +206,45 @@ const groupSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+=======
+const groupSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true, // Remove leading/trailing whitespace
     },
-  ],
-  winners: [
-    {
+    amount: {
+      type: Number,
+      required: true,
+      min: 0, // Ensure positive amount
+    },
+    types: {
+      type: String,
+      required: true,
+      trim: true,
+>>>>>>> .merge_file_XXp7C6
+    },
+    member: {
+      type: Number,
+      required: true,
+      min: 0, // Ensure positive amount
+    },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Reference the User model
+      },
+    ],
+    winners: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Reference the User model
+      },
+    ],
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
+<<<<<<< .merge_file_2bjeSf
       ref: "User",
     },
   ],
@@ -238,6 +273,32 @@ const groupSchema = new mongoose.Schema({
   contributions: [contributionSchema],
   rounds: [roundSchema],
 });
+=======
+      ref: "User", // Reference the User model
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      enum: ["pending", "started", "completed"], // Use enum for valid values
+      default: "pending",
+    },
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    startDate: {
+      type: Date,
+      default: Date.now, // Use default for automatic creation
+    },
+    completedDate: {
+      type: Date,
+    },
+  },
+
+  { timestamps: true }
+);
+>>>>>>> .merge_file_XXp7C6
 
 // Mongoose validation (optional)
 groupSchema.pre("save", function (next) {
@@ -335,6 +396,7 @@ groupSchema.methods.startGroupIfNeeded = async function () {
     // Await all promises to resolve
     const memberPhoneNumbers = await Promise.all(memberPhonePromises);
 
+<<<<<<< .merge_file_2bjeSf
     // Filter out null values and send SMS to each member
     memberPhoneNumbers
       .filter((phone) => phone)
@@ -406,6 +468,8 @@ groupSchema.methods.selectWinner = async function () {
     }
   }
 };
+=======
+>>>>>>> .merge_file_XXp7C6
 groupSchema.plugin(mongoosePaginate);
 
 const Group = mongoose.model("Group", groupSchema);

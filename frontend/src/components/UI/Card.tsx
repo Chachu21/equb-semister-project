@@ -1,4 +1,8 @@
+<<<<<<< .merge_file_3s5hXS
 import { useState, useEffect } from "react";
+=======
+import React, { useState, useEffect } from "react";
+>>>>>>> .merge_file_hfkuNg
 import axios from "axios";
 import { Link } from "react-router-dom";
 

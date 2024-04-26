@@ -1,7 +1,9 @@
 import Payment from "../models/payments.js";
+import PaymentResponse from "../models/paymentResponse.js";
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
+<<<<<<< .merge_file_ekkzoy
 
 // Define a function to retry requests with exponential backoff
 async function retryRequest(requestPromise, retryCount = 0) {
@@ -25,6 +27,10 @@ async function retryRequest(requestPromise, retryCount = 0) {
   });
 }
 const CHAPA_AUTH_KEY = process.env.CHAPA_AUTH_KEY; //Put Your Chapa Secret Key
+=======
+const CHAPA_AUTH_KEY =
+  process.env.CHAPA_AUTH_KEY; //Put Your Chapa Secret Key
+>>>>>>> .merge_file_nIzpSO
 
 const acceptPayment = async (req, res) => {
   const userId = req.user;
@@ -52,6 +58,11 @@ const acceptPayment = async (req, res) => {
       },
     };
 
+<<<<<<< .merge_file_ekkzoy
+=======
+    const TEXT_REF = {fname} + Date.now();
+
+>>>>>>> .merge_file_nIzpSO
     const body = {
       amount: amount,
       currency: currency,
@@ -69,6 +80,7 @@ const acceptPayment = async (req, res) => {
     )
       .then((response) => {
         resp = response;
+        console.log("something happen ", response);
       })
       .catch((error) => {
         console.log("error is :::", error);
@@ -80,6 +92,7 @@ const acceptPayment = async (req, res) => {
           text: "error from catch with 400",
         });
       });
+    console.log("dsjhfkjasdkdfj", resp.data);
     res.status(200).json(resp.data);
   } catch (e) {
     res.status(400).json({
@@ -91,12 +104,15 @@ const acceptPayment = async (req, res) => {
 
 // verification endpoint
 const verifyPayment = async (req, res) => {
+<<<<<<< .merge_file_ekkzoy
   console.log("am inside verify payment");
   const tx_ref = req.params.id;
   const group_id = req.params.groupId;
   const user_id = req.params.userId;
   const round = req.params.round;
   console.log("params", req.params);
+=======
+>>>>>>> .merge_file_nIzpSO
   // req header with chapa secret key
   const config = {
     headers: {
@@ -105,6 +121,7 @@ const verifyPayment = async (req, res) => {
   };
   //verify the transaction
   try {
+<<<<<<< .merge_file_ekkzoy
     const responseFromChapa = await retryRequest(
       axios.get(`https://api.chapa.co/v1/transaction/verify/${tx_ref}`, config)
     );
@@ -137,6 +154,28 @@ const verifyPayment = async (req, res) => {
   } catch (error) {
     console.log("error from catch", error);
     res.status(500).json({ error: "Failed to verify and save payment" });
+=======
+    const response = await axios.get(
+      "https://api.chapa.co/v1/transaction/verify/" + req.params.id,
+      config
+    );
+    console.log("Payment was successfully verified");
+    console.log(response.data);
+
+    // Save the payment response to the database
+    const paymentResponse = new PaymentResponse({
+      txRef: req.params.id,
+      response: response.data,
+    });
+    await paymentResponse.save();
+
+    res
+      .status(200)
+      .json({ message: "Payment verified and saved successfully" });
+  } catch (error) {
+    console.log("Payment can't be verified", error);
+    res.status(500).json({ error: "Failed to verify payment" });
+>>>>>>> .merge_file_nIzpSO
   }
 };
 

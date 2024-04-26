@@ -23,6 +23,8 @@ import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
 import Main from "./components/UserDashboard/userContent/main";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
+import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
+import SendRequest from "./components/UserDashboard/UI/SendRequest";
 import Settings from "./components/UserDashboard/Settings";
 
 const App = () => {
@@ -43,6 +45,7 @@ const App = () => {
           <Route path="/admin/manageuser" element={<UserManage />} />
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
+          {/* <Route path="/admin/pay" element={<Pay />} /> */}
 
           <Route
             path="/admin/grouphistory"
@@ -52,6 +55,7 @@ const App = () => {
           {/* <Route path="/admin/profile" element={<Profile />} /> */}
           <Route path="/admin/accountdetail" element={<AccountDetail />} />
           <Route path="/admin/profile" element={<Profile />} />
+          <Route path="/admin/managegroups" element={<ManageGroups />} />
           <Route path="/admin//group-details" element={<ViewGroupDetails />} />
         </Route>
         {/* for user Dashboard */}
@@ -59,6 +63,8 @@ const App = () => {
           <Route path="/userDashboard" index element={<Main />} />
           <Route path="/userDashboard/groups" element={<Equb />} />
           <Route path="/userDashboard/create" element={<CreateGroup />} />
+          <Route path="/userDashboard/userRequest" element={<SendRequest />} />
+
           <Route
             path="/userDashboard/transactions"
             element={<UserTransaction />}
@@ -68,6 +74,31 @@ const App = () => {
           <Route path="/userDashboard/profile" element={<Profile />} />
           <Route path="/userDashboard/setting" element={<Settings />} />
         </Route>
+        <Route path="/userDashboard" element={<UserDashboard />}>
+          <Route path="/userDashboard" index element={<Equb />} />
+          <Route path="/userDashboard/create" element={<CreateGroup />} />
+          <Route
+            path="/userDashboard/transactions"
+            element={<UserTransaction />}
+          />
+          <Route path="/userDashboard/payment" element={<Payment />} />
+          {/* <Route path="/userDashboard/pay" element={<Pay />} /> */}
+          <Route path="/userDashboard/profile" element={<Profile />} />
+          <Route path="/userDashboard/setting" element={<AccountDetail />} />
+        </Route>
+        <Route path="/equbCreatorDashboard" element={<EqubCreatorDashboard />}>
+          <Route
+            path="/equbCreatorDashboard/create"
+            index
+            element={<CreateGroup />}
+          />
+          <Route
+            path="/equbCreatorDashboard/manageGroups"
+            element={<ManageGroups />}
+          />
+        </Route>
+        <Route path="/admindashboard" element={<AdminDashboard />}></Route>
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
       </Routes>
     </div>
   );

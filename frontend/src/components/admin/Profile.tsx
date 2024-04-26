@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
+<<<<<<< .merge_file_dAMojn
 import { usersType } from "../../types/usersType";
 import profiles from "../../../public/307ce493-b254-4b2d-8ba4-d12c080d6651.jpg";
 import { toast } from "react-toastify";
@@ -17,6 +18,27 @@ const Profile: React.FC = () => {
   const userData = useSelector((state: RootState) => state.user.user);
   const id = userData?._id;
   const token = userData?.token;
+=======
+import { toast } from "react-toastify";
+
+interface User {
+  name: string;
+  email: string;
+  imageUrl: string;
+}
+
+const Profile: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [avatar, setAvatar] = useState<File | null>(null);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const userData: any = useSelector((state: RootState) => state.user.user);
+
+>>>>>>> .merge_file_7d4zYE
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -32,8 +54,14 @@ const Profile: React.FC = () => {
             `http://localhost:5000/api/v1/users/get/${id}`,
             config
           );
+<<<<<<< .merge_file_dAMojn
           setUser(response.data.user);
           setFormData({ name: response.data.name, email: response.data.email });
+=======
+          setUser(response.data);
+          setName(response.data.name);
+          setEmail(response.data.email);
+>>>>>>> .merge_file_7d4zYE
         } else {
           console.error("User ID not found in localStorage");
         }
@@ -143,6 +171,80 @@ const Profile: React.FC = () => {
     setShowChangePassword(!showChangePassword);
   };
 
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const userId = userData?._id;
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const data = {
+        name,
+        email,
+      };
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/users/${userId}`,
+        data,
+        config
+      );
+      console.log("Profile updated successfully");
+      console.log(response);
+      // Optionally, you can show a success message to the user
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      // Optionally, you can show an error message to the user
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const userId = userData?._id;
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const data = {
+        password: newPassword,
+        confirmPassword: confirmPassword,
+      };
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/users/${userId}`,
+        data,
+        config
+      );
+      console.log("Password changed successfully");
+      console.log(response);
+
+      if (response) {
+        toast.success("Successfully changed password");
+      }
+
+      // Optionally, you can show a success message to the user
+    } catch (error) {
+      console.error("Error changing password:", error);
+      // Optionally, you can show an error message to the user
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      setAvatar(selectedFile);
+    }
+  };
+
+  const toggleChangePassword = () => {
+    setShowChangePassword(!showChangePassword);
+  };
+
   return (
     <section className="section main-section md:p-6 py-1 px-1 container mx-auto">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
@@ -156,20 +258,26 @@ const Profile: React.FC = () => {
             </p>
           </header>
           <div className="card-content">
+<<<<<<< .merge_file_dAMojn
             <form onSubmit={handleSubmit}>
+=======
+            <form onSubmit={handleProfileUpdate}>
+>>>>>>> .merge_file_7d4zYE
               <div className="field">
                 <label className="label">Avatar</label>
                 <div className="field-body">
                   <div className="field file">
                     <label className="upload control">
+<<<<<<< .merge_file_dAMojn
                       <span className="button blue">Upload</span>
                       <input type="file" onChange={handleImageUpload} />
+=======
+                      <a className="button blue">Upload</a>
+                      <input type="file" onChange={handleFileUpload} />
+>>>>>>> .merge_file_7d4zYE
                     </label>
                   </div>
                 </div>
-              </div>
-              <hr />
-              <div className="field">
                 <label className="label">Name</label>
                 <div className="field-body">
                   <div className="field">
@@ -178,9 +286,14 @@ const Profile: React.FC = () => {
                         type="text"
                         autoComplete="on"
                         name="name"
+<<<<<<< .merge_file_dAMojn
                         value={formData.name || user?.name}
                         onChange={handleChange}
                         placeholder="John Doe"
+=======
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+>>>>>>> .merge_file_7d4zYE
                         className="input"
                         required
                       />
@@ -200,7 +313,8 @@ const Profile: React.FC = () => {
                         autoComplete="on"
                         onChange={handleChange}
                         name="email"
-                        placeholder="user@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="input"
                         required
                       />
@@ -281,19 +395,26 @@ const Profile: React.FC = () => {
       )}
       {showChangePassword && (
         <div className="card">
+<<<<<<< .merge_file_dAMojn
           <header className="card-header relative">
+=======
+          <header className="card-header">
+>>>>>>> .merge_file_7d4zYE
             <p className="card-header-title">
               <span className="icon">
                 <i className="mdi mdi-lock"></i>
               </span>
               Change Password
             </p>
+<<<<<<< .merge_file_dAMojn
             <span
               className="absolute top-0 right-5 cursor-pointer hover:text-red-500 bg-white text-5xl"
               onClick={toggleChangePassword}
             >
               &times;
             </span>
+=======
+>>>>>>> .merge_file_7d4zYE
           </header>
           <div className="card-content">
             <form onSubmit={handleChangePassword}>

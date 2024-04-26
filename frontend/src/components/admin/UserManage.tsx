@@ -1,7 +1,11 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchUi from "../UI/SearchUi";
-import UserTables from "../UI/UserTables";
+import Tables from "../UI/Tables";
+import { RootState } from "../../Redux/store";
+import { useSelector } from "react-redux";
+
 
 interface UserData {
   _id: string;
@@ -15,26 +19,69 @@ const UserManage = () => {
   const [tableData, setTableData] = useState<UserData[]>([]);
   const [filteredUser, setFilteredUser] = useState<UserData[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const userData: any = useSelector((state: RootState) => state.user.user);
+
+
+  const formatDateString = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  };
 
   useEffect(() => {
-    // Fetch data from API using Axios when component mounts
-    axios
-      .get<UserData[]>("http://localhost:5000/api/v1/users")
-      .then((response) => {
-        setTableData(response.data); // Set table data from API response
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []); // Empty dependency array to run effect only once on mount
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get<UserData[]>(
+        "http://localhost:5000/api/v1/users"
+      );
+      setTableData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Extract only necessary fields from tableData
+  const filteredData = tableData.map(
+    ({ _id, name, email, createdAt, updatedAt }) => ({
+      _id,
+      name,
+      email,
+      createdAt: formatDateString(createdAt),
+      updatedAt: formatDateString(updatedAt),
+    })
+  );
+
+
 
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
-    const filteredResults = tableData.filter((data) =>
+    const filteredResults = filteredData.filter((data) =>
       data.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredUser(filteredResults);
   };
+  
+  const handleDelete = async (userId: string) => {
+    
+    try {
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      
+      await axios.delete(`http://localhost:5000/api/v1/users/${userId}`,config);
+      setTableData(tableData.filter((user) => user._id !== userId));
+      setFilteredUser(filteredUser.filter((user) => user._id !== userId));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+  // Other functions remain the same
 
   const tableHead = [
     { id: "1", title: "User ID" },
@@ -48,9 +95,10 @@ const UserManage = () => {
     <div>
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage users</h1>
       <SearchUi handleSearch={handleSearch} search={"name"} />
-      <UserTables
+      <Tables
         header={tableHead}
-        Users={filteredUser.length > 0 ? filteredUser : tableData}
+        datas={filteredUser.length > 0 ? filteredUser : filteredData}
+        onDelete={handleDelete}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
@@ -71,63 +72,64 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch User" });
   }
 };
-//for updating users information
-// export const updateUser = async (req, res) => {
-//   const { updates } = req.body; // Assume updates is an object containing optional fields for updates
-//   try {
-//     const userId = req.params.id;
-//     let updateData = {};
 
-//     // Check if user exists
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
+// Update User
 
-//     // Check if the incoming data is the same as the existing data
-//     const isSameData = Object.keys(updates).every(
-//       (key) => user[key] === updates[key]
-//     );
+export const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const updates = req.body;
 
-//     if (isSameData) {
-//       return res.status(400).json({ error: "No changes were made" });
-//     }
+  try {
+    // if (req.file) {
+    //   // If a file is uploaded, upload it to Cloudinary
+    //   const result = await cloudinary.v2.uploader.upload(req.file.path);
+    //   updates.imageUrl = result.secure_url;
+    // }
 
-//     // Iterate through the updates and add them to updateData
-//     for (const key in updates) {
-//       // Exclude password updates
-//       if (key !== "password") {
-//         updateData[key] = updates[key];
-//       }
-//     }
+    if (updates.password !== updates.confirmPassword) {
+      return res.status(400).json({ error: "Passwords do not match" });
+    }
 
-//     // If image URL is provided, upload it to cloudinary
-//     if (updates.imageUrl) {
-//       const result = await cloudinary.uploader.upload(updates.imageUrl, {
-//         upload_preset: "profile",
-//       });
-//       updateData.imageUrl = {
-//         public_id: result.public_id,
-//         url: result.secure_url,
-//       };
-//     }
+    if (updates.password && updates.confirmPassword) {
+      const hashedPassword = await bcrypt.hash(updates.password, 10);
+      updates.password = hashedPassword;
+    }
 
-//     // Update the user
-//     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-//       new: true,
-//     });
+    await User.findByIdAndUpdate(userId, updates);
+    res.status(200).json({ message: "User details updated successfully" });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating user details" });
+  }
+};
 
-//     if (!updatedUser) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
+cloudinary.config({
+  cloud_name: "du9xasziv",
+  api_key: "952796695462214",
+  api_secret: "TI6YeNLqVWAMglzJ5I1blKSJNBQ",
+});
 
-//     // Send success response with updated user data
-//     res.json(updatedUser);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "Failed to update User" });
-//   }
-// };
+export const uploadImage = async (req, res) => {
+  try {
+    console.log(req.file);
+    // Check if file exists
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "equb",
+    });
+
+    // Send the Cloudinary URL in the response
+    res.json({ imageUrl: result.secure_url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error uploading image to Cloudinary" });
+  }
+};
 
 // Delete User
 export const deleteUser = async (req, res) => {
@@ -334,78 +336,5 @@ export const getResetPassword = async (req, res) => {
     return res
       .status(500)
       .json({ error: "An error occurred while handling password reset link" });
-  }
-};
-
-//for testing purposes
-export const updateUser = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const { updates } = req.body;
-    // console.log("updates", updates);
-    const updateData = {};
-    // Check if user exists
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Update user data excluding the image fields
-    Object.keys(updates).forEach((key) => {
-      if (key !== "password") {
-        updateData[key] = updates[key];
-      }
-    });
-
-    //Upload and update image fields if provided
-    if (updates.imageUrl) {
-      const isSameData = Object.keys(updates.imageUrl).every(
-        (key) => user.imageUrl[key] === updates.imageUrl[key]
-      );
-      if (isSameData) {
-        //sending some message for user profile image is already exsist
-        return res
-          .status(404)
-          .json({ error: "your profile image is already exsist" });
-      }
-      const imageUrl = await uploadImageToCloudinary(updates.imageUrl);
-      updateData.imageUrl = imageUrl;
-    }
-    //for uploading id image to cloudinary
-    if (updates.frontImage && updates.backImage) {
-      const frontUrl = await uploadImageToCloudinary(updates.frontImage);
-      const backUrl = await uploadImageToCloudinary(updates.backImage);
-
-      updateData.ID = { front: frontUrl, back: backUrl };
-    }
-
-    // Update the user
-    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-      new: true,
-    });
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    // Send success response with updated user data
-    res.json(updatedUser);
-  } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ error: "Failed to update user" });
-  }
-};
-
-// Function to upload image to Cloudinary
-const uploadImageToCloudinary = async (imageData) => {
-  // console.log("imageData:", imageData);
-  try {
-    const result = await cloudinary.uploader.upload(imageData, {
-      upload_preset: "profile",
-    });
-    console.log(result);
-    return { public_id: result.public_id, url: result.secure_url };
-  } catch (error) {
-    console.error("Error uploading image to Cloudinary:", error);
-    throw new Error("Failed to upload image to Cloudinary");
   }
 };

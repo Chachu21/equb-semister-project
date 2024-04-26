@@ -76,32 +76,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Pre-save hook to hash password before saving
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // Skip hashing if password isn't modified
-  const hashedPassword = await bcrypt.hash(this.password, 10);
-  this.password = hashedPassword;
-  next();
-});
-
-// Middleware to update is_approved when bank_account is filled
-userSchema.pre("save", function (next) {
-  console.log("update is approved properties");
-  if (this.isModified("bank_account") && !this.is_approved) {
-    this.is_approved = true;
-    console.log(this.is_approved);
-  }
-  next();
-});
-
-// Instance method to compare password during login
-userSchema.methods.comparePassword = async function (
-  candidatePassword,
-  password
-) {
-  return await bcrypt.compare(candidatePassword, password);
-};
-
 const User = mongoose.model("User", userSchema);
 
 export default User;

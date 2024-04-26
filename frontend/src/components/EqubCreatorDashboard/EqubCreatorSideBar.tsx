@@ -1,7 +1,7 @@
 import {
   RiDashboard2Line,
   RiSettings3Line,
-  // RiSecurePaymentFill,
+  RiSecurePaymentFill,
   RiCloseFill,
 } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,62 +10,49 @@ import { AppDispatch, RootState } from "../../Redux/store";
 import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
-import lucky from "../../../public/lucky.png";
 
 const LinkComponent = [
   {
     id: 1,
     name: "Dashboard",
-    path: "/userDashboard",
+    path: "/equbCreatorDashboard",
     icon: <RiDashboard2Line className="mr-3 text-xl" />,
   },
-
   {
     id: 2,
-    name: "Groups",
-    path: "/userDashboard/groups",
+    name: "Create Group",
+    path: "/equbCreatorDashboard/create",
     icon: <FaUserGroup className="mr-3 text-xl" />,
   },
   {
     id: 3,
-    name: "Transactions",
-    path: "/userDashboard/transactions",
+    name: "Requests",
+    path: "/equbCreatorDashboard/requests",
     icon: <GrTransaction className="mr-3 text-xl" />,
   },
-  // {
-  //   id: 4,
-  //   name: "payment",
-  //   path: "/userDashboard/payment",
-  //   icon: <RiSecurePaymentFill className="mr-3 text-xl" />,
-  // },
   {
-    id: 5,
-    name: "Account details",
-    path: "/userDashboard/setting",
-    icon: <RiSettings3Line className="mr-3 text-xl" />,
+    id: 4,
+    name: "Groups",
+    path: "/equbCreatorDashboard/manageGroups",
+    icon: <RiSecurePaymentFill className="mr-3 text-xl" />,
   },
   {
-<<<<<<< .merge_file_En7C31
-    id: 6,
-    name: "winner selection",
-    path: "/userDashboard/winner",
-    icon: <img src={lucky} className="mr-3 w-5 h-5" />,
-=======
-    id: 7,
-    name: "sendRequest",
-    path: "/userDashboard/userRequest",
+    id: 5,
+    name: "Settings",
+    path: "/equbCreatorDashboard/setting",
     icon: <RiSettings3Line className="mr-3 text-xl" />,
->>>>>>> .merge_file_ZDLNHN
   },
 ];
 
-const UserSideBar = () => {
+const EqubCreatorSideBar = () => {
   const isClicked = useSelector((state: RootState) => state.user.isClicked);
   const dispatch = useDispatch<AppDispatch>();
 
   const screenWidth = window.innerWidth;
 
   const handleCloseSideBar = () => {
+    console.log(screenWidth);
+
     if (screenWidth < 640) {
       dispatch(menuBar());
     }
@@ -79,13 +66,13 @@ const UserSideBar = () => {
     >
       <div className="flex justify-between items-center">
         <Link
-          to="/userDashboard"
+          to="/admin"
           className="items-center pb-4 border-b border-b-gray-800"
         >
           <h2 className="font-bold text-2xl">
             Equb
             <span className="bg-[#008B8B] text-white px-2 rounded-md">
-              user
+              creator
             </span>
           </h2>
         </Link>
@@ -102,12 +89,9 @@ const UserSideBar = () => {
         <span className="text-gray-400 font-bold">manage your account</span>
 
         {LinkComponent.map((links) => (
-          <li
-            key={links.id}
-            className="mb-1 group"
-            onClick={handleCloseSideBar}
-          >
+          <li className="mb-1 group" onClick={handleCloseSideBar}>
             <Link
+              key={links.id}
               to={links.path}
               className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
             >
@@ -121,4 +105,4 @@ const UserSideBar = () => {
   );
 };
 
-export default UserSideBar;
+export default EqubCreatorSideBar;
