@@ -11,7 +11,6 @@ const paymentSchema = new mongoose.Schema({
   },
   phone_number: {
     type: String,
-    required: true,
   },
   fname: {
     type: String,
@@ -29,31 +28,34 @@ const paymentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    required: true,
+  },
+  reference: {
+    type: String,
+    required: true,
+  },
+  round: {
+    type: Number,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  equbGroup: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "EqubGroup",
+  verified_at: {
+    type: Date,
     required: true,
   },
-  paymentResponse: {
-    // Payment verification response
-    status: {
-      type: String,
-      enum: ["pending", "verified", "failed"],
-      default: "pending",
-    },
-    data: {
-      type: Object,
-    },
-    // You can add more fields here like transaction ID, timestamps, etc.
+  equbGroup: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Group",
+    required: true,
   },
-  // You can add more fields as needed
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);
 
 export default Payment;
+//TODO'//i think we have to add paid feild in user to track user is paid at each round

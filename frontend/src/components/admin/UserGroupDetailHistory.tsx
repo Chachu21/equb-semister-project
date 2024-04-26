@@ -15,7 +15,7 @@ interface datas {
   status: string;
   name: string;
   types: string;
-  members: string;
+  
   winners: string;
   createdAt: string;
   updatedAT: string;
@@ -23,6 +23,11 @@ interface datas {
   amount: string;
   isCompleted: boolean;
 }
+
+//TODO
+
+//STARTEDDATE
+//COMPLETEDDATE both should be calculated soon
 const UserGroupDetailHistory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUserGroup, setFilteredUsergroup] = useState<datas[]>([]);
@@ -37,6 +42,11 @@ const UserGroupDetailHistory: React.FC = () => {
           `http://localhost:5000/api/v1/group/userJoinedGroups/${userId}`
         );
         setUserGroups(response.data);
+  //TODO
+// //find startdate
+// const data=response.data;
+// console.log("datas are");
+
 
         console.log("groupInfor", response.data);
 
@@ -55,7 +65,7 @@ const UserGroupDetailHistory: React.FC = () => {
       _id,
       name,
       member,
-      members,
+    
       winners,
       amount,
       status,
@@ -64,7 +74,7 @@ const UserGroupDetailHistory: React.FC = () => {
       _id,
       status,
       name,
-      members,
+      
       winners,
       amount,
        member,
@@ -76,7 +86,7 @@ const UserGroupDetailHistory: React.FC = () => {
     { id: "1", title: "GroupId" },
     { id: "2", title: "Status" },
     { id: "3", title: "GroupName" },
-    { id: "4", title: "members" },
+  
     { id: "5", title: "winners" },
     { id: "6", title: "amount" },
     { id: "7", title: "GroupSize" },

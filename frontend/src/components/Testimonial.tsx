@@ -30,7 +30,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="container bg-white dark:bg-gray-900 dark:text-white flex flex-col jsutify-evenly items-center mx-auto  space-y-32 py-10 ">
+    <div className="container bg-white dark:bg-gray-900 dark:text-white flex flex-col justify-evenly items-center mx-auto  space-y-32 py-10 ">
       <h1 className="text-3xl font-bold mb-4 text-[#1F284F]">
         Everybody Loves Us
       </h1>

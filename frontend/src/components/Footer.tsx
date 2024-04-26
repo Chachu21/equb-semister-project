@@ -19,16 +19,16 @@ const Footer = () => {
       name: "groups",
       url: "/group",
     },
-    {
-      id: 4,
-      name: "service",
-      url: "/service",
-    },
-    {
-      id: 5,
-      name: "contact",
-      url: "/contacts",
-    },
+    // {
+    //   id: 4,
+    //   name: "service",
+    //   url: "/service",
+    // },
+    // {
+    //   id: 5,
+    //   name: "contact",
+    //   url: "/contacts",
+    // },
   ];
 
   const Icons = [

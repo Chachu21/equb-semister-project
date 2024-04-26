@@ -36,17 +36,17 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+        <thead className="bg-gray-100">
           <tr>
             {header.map((item) => (
               <th
                 key={item.id}
-                className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md"
+                className="text-[14px] uppercase tracking-wide font-medium text-gray-900 py-3 px-5 bg-gray-100 text-left rounded-tl-md rounded-bl-md "
               >
                 {item.title}
               </th>
             ))}
-            <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
+            <th className="text-[12px] uppercase tracking-wide  font-medium text-gray-900 py-3 px-5 bg-gray-100 text-left rounded-tl-md rounded-bl-md">
               Actions
             </th>
           </tr>
@@ -55,7 +55,7 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
           {currentItems.map((data, index) => (
             <tr key={index}>
               {Object.values(data).map((value, index) => (
-                <td key={index} className="px-6 py-4 whitespace-nowrap">
+                <td key={index} className="py-3 px-5 whitespace-nowrap">
                   {String(value)}
                 </td>
               ))}
@@ -63,7 +63,7 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
               <td>
                 <button
                   onClick={() => handleDelete(data._id)}
-                  className="text-red-600 hover:text-red-900"
+                  className="text-red-600 hover:text-red-900 py-3 px-5"
                 >
                   Delete
                 </button>

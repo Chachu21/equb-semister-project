@@ -48,11 +48,24 @@ const FrequentlyAskedQuestions: React.FC = () => {
       answer:
         "Explanation of EQUB as a cooperative financial model where members contribute funds into a common pool, from which they can borrow interest-free loans.",
     },
-    {
-      question: "How do I join an EQUB?",
-      answer:
-        "Instructions on how individuals can become members of an EQUB, including any eligibility criteria or membership fees.",
-    },
+    
+  {
+    question: "How do I join an EQUB group?",
+    answer: "To join an EQUB group, you typically need to meet membership criteria and contribute an agreed-upon amount of funds to the common pool."
+  },
+  {
+    question: "What are the benefits of participating in an EQUB group?",
+    answer: "Participating in an EQUB group provides benefits such as access to interest-free loans, building financial discipline, and fostering community trust."
+  },
+  {
+    question: "How are decisions made within an EQUB group?",
+    answer: "Decisions within an EQUB group are typically made democratically, with members collectively deciding on loan distribution and other operational matters."
+  },
+  {
+    question: "What happens if a member is unable to contribute to the EQUB pool?",
+    answer: "EQUB groups may have contingency plans or support mechanisms in place to assist members facing financial difficulties."
+  },
+   
     {
       question: "What are the benefits of participating in an EQUB?",
       answer:

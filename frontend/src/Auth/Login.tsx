@@ -166,13 +166,13 @@ const Login = () => {
             Login
           </button>
         </form>
-
+{/* 
         <p className="text-center mb-2">or</p>
         <button
           type="button"
           className="md:w-[80%] mx-auto flex items-center justify-center bg-white border border-gray-200 p-5 rounded-lg font-semibold mb-4"
         >
-          {/* svg is google icons */}
+          
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -199,7 +199,7 @@ const Login = () => {
             ></path>
           </svg>
           continue with Google
-        </button>
+        </button> */}
 
         <div className=" text-center py-4">
           <p>

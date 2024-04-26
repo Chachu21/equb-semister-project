@@ -18,12 +18,14 @@ import Payment from "./components/payment/payment";
 import Pay from "./components/payment/pay";
 import Profile from "./components/admin/Profile";
 import ResetPassword from "./Auth/ResetPassword";
-import ViewGroupDetails from "./components/UI/ViewGroupDetail";
+import ViewGroupDetails from "./components/admin/ViewGroupDetail";
 // import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
 import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
 import SendRequest from "./components/UserDashboard/UI/SendRequest";
+import AdminNotification from "./components/admin/AdminNotification";
+
 
 const App = () => {
   return (
@@ -44,23 +46,20 @@ const App = () => {
           <Route path="/admin/transactions" element={<Transactions />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
           <Route path="/admin/pay" element={<Pay />} />
-
           <Route
             path="/admin/grouphistory"
             element={<UserGroupDetailHistory />}
           />
-
-          {/* <Route path="/admin/profile" element={<Profile />} /> */}
           <Route path="/admin/accountdetail" element={<AccountDetail />} />
           <Route path="/admin/profile" element={<Profile />} />
           <Route path="/admin/managegroups" element={<ManageGroups />} />
-          <Route path="/admin//group-details" element={<ViewGroupDetails />} />
+          <Route path="/admin/group-details" element={<ViewGroupDetails />} />
+          <Route path="/admin/message" element={<AdminNotification />} />
         </Route>
         <Route path="/userDashboard" element={<UserDashboard />}>
           <Route path="/userDashboard" index element={<Equb />} />
           <Route path="/userDashboard/create" element={<CreateGroup />} />
           <Route path="/userDashboard/userRequest" element={<SendRequest />} />
-
           <Route
             path="/userDashboard/transactions"
             element={<UserTransaction />}

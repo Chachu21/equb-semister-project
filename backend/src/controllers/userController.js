@@ -6,10 +6,11 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import sendSMS from "../config/sendSMS.js";
 
-const phoneNumber = "+251943438385";
-const message = "hey muller wellcome to my equb";
+// const phoneNumber = "+251943438385";
+
 // Create User
 export const createUser = async (req, res) => {
+  
   const {
     name,
     phone,
@@ -28,8 +29,9 @@ export const createUser = async (req, res) => {
     const existingUser = await User.findOne({
       $or: [{ phone }, { email }],
     });
+    
     if (existingUser) {
-      console.log(existingUser.phone_number, existingUser.email);
+      console.log(existingUser.phone, existingUser.email);
       return res.status(400).json({
         error: "User with this phone number or email already exists",
       });
@@ -49,8 +51,11 @@ export const createUser = async (req, res) => {
       agreeTerms,
       imageUrl: Date.now() + `/${name}`,
     });
+    const MessageSendToUser = `hey ${name}  you are member of Equb system`;
     // Save the user to the database
     const savedUser = await newUser.save();
+    console.log("sendSms", phone, MessageSendToUser);
+    sendSMS(phone, MessageSendToUser);
     // Log the saved user details
     console.log("Saved user:", savedUser);
     // Send a success response

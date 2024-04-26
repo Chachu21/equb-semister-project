@@ -34,7 +34,7 @@ const basicSchema = yup.object().shape({
     .oneOf([true], "You must accept the terms and conditions")
     .required("You must accept the terms and conditions"),
 });
-
+const message = "";
 const Register = () => {
   const navigate = useNavigate();
   // useFormik hook for form handling
@@ -74,14 +74,16 @@ const Register = () => {
             agreeTerms: values.agreeTerms,
           }
         );
-        console.log(response.data);
+        // console.log(response);
         navigate("/login");
       } catch (error) {
         console.error("An error occurred:", errors);
+       
+        
       }
 
-      console.log("values are :", values);
-      console.log("actions are  :", actions);
+      // console.log("values are :", values);
+      // console.log("actions are  :", actions);
       setTimeout(() => {
         actions.resetForm();
         actions.setSubmitting(false);
@@ -234,12 +236,12 @@ const Register = () => {
         </button>
       </form>
 
-      <p className="text-center mb-2">or</p>
+      {/* <p className="text-center mb-2">or</p>
       <button
         type="button"
         className=" w-full flex items-center justify-center bg-white border border-gray-200 p-5 rounded-lg font-semibold mb-4"
       >
-        {/* svg is google icons */}
+       
         <svg
           xmlns="http://www.w3.org/2000/svg"
           x="0px"
@@ -266,7 +268,7 @@ const Register = () => {
           ></path>
         </svg>
         continue with Google
-      </button>
+      </button> */}
 
       <div className=" text-center py-4">
         <p>

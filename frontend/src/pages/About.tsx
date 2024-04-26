@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import AboutCard from "../components/AboutCard";
 
 const About = () => {
@@ -108,13 +109,14 @@ const About = () => {
             and receive payments to and from anywhere in the world.
           </p>
           <div className="flex justify-end">
-            <button className="bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-4 rounded">
-              Follow
-            </button>
+            <Link to={"https://facebook.com"}>
+              <button className="bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-4 rounded">
+                Follow
+              </button>
+            </Link>
           </div>
         </div>
       </div>
-    
     </div>
   );
 };

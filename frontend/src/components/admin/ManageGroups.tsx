@@ -109,4 +109,3 @@ const handleDelete = async (groupId: string) => {
 };
 
 export default ManageGroups;
-

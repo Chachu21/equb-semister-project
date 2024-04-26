@@ -1,3 +1,90 @@
+// import mongoose from "mongoose";
+// import mongoosePaginate from "mongoose-paginate-v2";
+
+// const groupSchema = new mongoose.Schema(
+//   {
+//     name: {
+//       type: String,
+//       required: true,
+//       trim: true, // Remove leading/trailing whitespace
+//     },
+//     amount: {
+//       type: Number,
+//       required: true,
+//       min: 0, // Ensure positive amount
+//     },
+//     types: {
+//       type: String,
+//       required: true,
+//       trim: true,
+//     },
+//     member: {
+//       type: Number,
+//       required: true,
+//       min: 0, // Ensure positive amount
+//     },
+//     members: [
+//       {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User", // Reference the User model
+//       },
+//     ],
+//     winners: [
+//       {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User", // Reference the User model
+//       },
+//     ],
+//     createdBy: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "User", // Reference the User model
+//       required: true,
+//     },
+//     status: {
+//       type: String,
+//       required: true,
+//       enum: ["pending", "started", "completed"], // Use enum for valid values
+//       default: "pending",
+//     },
+//     //TODO
+//     //this should be at frontend as states
+//     paymentDeadline: {
+//       type: Date,
+//     },
+//     isCompleted: {
+//       type: Boolean,
+//       default: false,
+//     },
+//     //TODO
+//     //startdate should be the last joined member time 
+//     startDate: {
+//       type: Date,
+//       default: Date.now, // Use default for automatic creation
+//     },
+//     //TODO
+//     //this should be the last round so we have to do it
+//     completedDate: {
+//       type: Date,
+//     },
+//   },
+
+//   { timestamps: true }
+// );
+
+// // Mongoose validation (optional)
+// groupSchema.pre("save", function (next) {
+//   // Add custom validation logic here if needed
+//   // Example: Ensure group amount is a whole number
+//   if (!Number.isInteger(this.amount)) {
+//     throw new Error("Amount must be a whole number");
+//   }
+//   next(); // Continue with saving the document
+// });
+
+// groupSchema.plugin(mongoosePaginate);
+
+// const Group = mongoose.model("Group", groupSchema);
+// export default Group;
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
@@ -46,20 +133,29 @@ const groupSchema = new mongoose.Schema(
       enum: ["pending", "started", "completed"], // Use enum for valid values
       default: "pending",
     },
+    //TODO
+    //this should be at frontend as states
+    paymentDeadline: {
+      type: Date,
+    },
     isCompleted: {
       type: Boolean,
       default: false,
     },
+    //TODO
+    //startdate should be the last joined member time
     startDate: {
       type: Date,
       default: Date.now, // Use default for automatic creation
     },
+    //TODO
+    //this should be the last round so we have to do it
     completedDate: {
       type: Date,
     },
-  },
+  }
 
-  { timestamps: true }
+  // { timestamps: true }
 );
 
 // Mongoose validation (optional)
