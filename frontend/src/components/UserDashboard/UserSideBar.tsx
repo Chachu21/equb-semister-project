@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "../../Redux/store";
 import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
-import lucky from "../../../public/lucky.png";
+// import lucky from "../../../public/lucky.png";
 
 const LinkComponent = [
   {
@@ -45,17 +45,10 @@ const LinkComponent = [
     icon: <RiSettings3Line className="mr-3 text-xl" />,
   },
   {
-<<<<<<< .merge_file_En7C31
-    id: 6,
-    name: "winner selection",
-    path: "/userDashboard/winner",
-    icon: <img src={lucky} className="mr-3 w-5 h-5" />,
-=======
     id: 7,
     name: "sendRequest",
     path: "/userDashboard/userRequest",
     icon: <RiSettings3Line className="mr-3 text-xl" />,
->>>>>>> .merge_file_ZDLNHN
   },
 ];
 
