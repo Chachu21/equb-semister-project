@@ -6,10 +6,10 @@ import sendSMS from "../config/sendSMS.js";
 async function sendPrePaymentReminder(user, group) {
   try {
     // Sending a pre-payment reminder notification to the user via SMS
-    const message = `Hi ${user.name}, it's time to make your payment for the next round in group ${group.name}. Please make your payment soon.`;
+    const message = `Hi ${user.name}, it's time to make your payment of round ${group.round} in group ${group.name} equb. Please make your payment soon.`;
     // Send SMS function here
-    sendSMS(user.phone, message);
-    // console.log(message);
+    // sendSMS(user.phone, message);
+    console.log(message);
   } catch (error) {
     console.error("Error sending pre-payment reminder:", error.message);
   }
@@ -30,7 +30,7 @@ async function sendPostPaymentNotification(user, group) {
 async function sendPaymentDeadlineNotification(user, group) {
   try {
     // Sending a payment deadline notification to the user via SMS
-    const message = `Hi ${user.name}, the payment deadline for the next round in group ${group.name} has passed. Please make your payment as soon as possible to avoid any issues.`;
+    const message = `Hi ${user.name}, the payment deadline of round ${group.round} in group ${group.name} is now. Please make your payment as soon as possible to avoid any issues.`;
     // Send SMS function here
     // sendSMS(user.phone, message);
     console.log(message);
@@ -47,8 +47,8 @@ async function sendPostReminderForUnpaidPayments(user, group) {
     // Sending a post-reminder for unpaid payments after the payment deadline
     const message = `Hi ${user.name}, the payment deadline for the next round in group ${group.name} has passed, and your payment is still pending. Please make your payment as soon as possible to avoid any issues.`;
     // Send SMS function here
-    sendSMS(user.phone, message);
-    // console.log(message);
+    // sendSMS(user.phone, message);
+    console.log(message);
   } catch (error) {
     console.error(
       "Error sending post-reminder for unpaid payments:",
@@ -57,19 +57,19 @@ async function sendPostReminderForUnpaidPayments(user, group) {
   }
 }
 
-async function announcementOfUser(group) {
+async function UserUnPaidAnnouncement(group) {
+  console.log("from deadline", group);
   let addation = 0;
-  if (group.types === "daily") {
-    addation = 20 * 60 * 60 * 1000;
+  if (group.types === "daily" && group.roundDuration === 1) {
+    addation = 3 * 60 * 60 * 1000;
   } else if (group.types === "weekly") {
     addation = 24 * 60 * 60 * 1000;
   } else {
-    addation = 2 * 24 * 60 * 60 * 1000;
+    addation = 1 * 24 * 60 * 60 * 1000;
   }
   try {
     const today = new Date();
     const overdueMembers = [];
-    const logMessages = []; // Array to store log messages for each announcement
 
     for (const member of group.members) {
       const userId = member;
@@ -77,53 +77,42 @@ async function announcementOfUser(group) {
       if (!userData) continue;
 
       const payments = await Payment.find({
-        userId,
-        groupId: group._id,
-        status: "started",
+        user: userId,
+        equbGroup: group._id,
+        round: group.round,
       });
 
-      if (!payments.length) continue;
+      // console.log("payment from deadline announcment", payments);
+      // if (!payments.length) continue;
+
+      const hasSuccessfulPayment = payments.some(
+        (payment) => payment.status === "success"
+      );
 
       const lastPayment = payments[payments.length - 1];
       const paymentIntervalInMillis =
         group.paymentInterval * 24 * 60 * 60 * 1000;
       const paymentDeadline = new Date(
-        lastPayment.date.getTime() + paymentIntervalInMillis
+        winnerSelectionDate.getTime() - paymentIntervalInMillis + addation
       );
 
-      if (today > paymentDeadline) {
-        overdueMembers.push(member);
-        logMessages.push(
-          `Sent payment deadline notification to ${userData.name}`
-        );
-        await sendPaymentDeadlineNotification(userData, group);
+      if (today.toString() === paymentDeadline.toString() && !lastPayment) {
+        if (!hasSuccessfulPayment) {
+          overdueMembers.push(member);
+        }
+      } else {
+        console.log("error in un paid payment notification");
       }
     }
-
     if (overdueMembers.length > 0) {
-      for (const overdueMember of overdueMembers) {
-        const userData = await User.findById(overdueMember);
+      // Send notifications to overdue members
+      for (const memberId of overdueMembers) {
+        const userData = await User.findById(memberId);
         if (userData) {
-          logMessages.push(
-            `Sent post-reminder for unpaid payment to ${userData.name}`
-          );
-          await sendPostReminderForUnpaidPayments(userData, group);
-        }
-      }
-    } else {
-      // If there are no overdue payments, send pre-payment reminders to all members
-      for (const member of group.members) {
-        const userId = member;
-        const userData = await User.findById(userId);
-        if (userData) {
-          logMessages.push(`Sent pre-payment reminder to ${userData.name}`);
-          await sendPrePaymentReminder(userData, group);
+          await sendPaymentDeadlineNotification(userData, group);
         }
       }
     }
-
-    // After the loops, log all messages at once
-    // console.log(logMessages);
   } catch (error) {
     console.error(
       "Error announcing unpaid members before winner selection:",
@@ -131,6 +120,60 @@ async function announcementOfUser(group) {
     );
   }
 }
+//for announce members for deadline of paymnet time
+// const UserUnPaidAnnouncement = async (group) => {
+//   let addation = 0;
+//   if (group.types === "daily") {
+//     addation = 3 * 60 * 60 * 1000;
+//   } else if (group.types === "weekly") {
+//     addation = 24 * 60 * 60 * 1000;
+//   } else {
+//     addation = 1 * 24 * 60 * 60 * 1000;
+//   }
+//   const today = new Date();
+//   const overdueMembers = [];
+//   const userId = member;
+//   const userData = await User.findById(userId);
+//   if (!userData) {
+//     return;
+//   }
+
+//   const payments = await Payment.find({
+//     userId,
+//     groupId: group._id,
+//     status: "success",
+//   });
+//   console.log(payments);
+//   if (!payments.length) {
+//     return;
+//   }
+//   const lastPayment = payments[payments.length - 1];
+//   const paymentIntervalInMillis = group.paymentInterval * 24 * 60 * 60 * 1000;
+//   const paymentDeadline = new Date(
+//     winnerSelectionDate.getTime() - paymentIntervalInMillis + addation
+//   );
+
+//   if (today === paymentDeadline && !lastPayment) {
+//     overdueMembers.push(member);
+//     logMessages.push(`Sent payment deadline notification to ${userData.name}`);
+//     await sendPaymentDeadlineNotification(userData, group);
+//   } else {
+//     console.log("error in un paid payment notification");
+//   }
+// };
+//for announcement of pre paymnet  of members
+const userPrePaymentAnouncement = async (group) => {
+  // console.log("from pre payment announcement", group);
+  for (const member of group.members) {
+    const userId = member;
+    const userData = await User.findById(userId);
+    if (!userData) continue;
+    if (userData) {
+      // console.log(userData.name);
+      await sendPrePaymentReminder(userData, group);
+    }
+  }
+};
 
 const userScheduleAnnouncement = async () => {
   try {
@@ -140,36 +183,73 @@ const userScheduleAnnouncement = async () => {
       const paymentIntervalInMillis =
         group.paymentInterval * 24 * 60 * 60 * 1000;
       const winnerSelectionDate = new Date(group.startDate);
-      winnerSelectionDate.setDate(
-        winnerSelectionDate.getDate() + group.roundDuration
+      // console.log("start date of group", group.startDate.toString());
+      // Convert group.roundDuration from days to milliseconds
+      const durationMilliseconds = group.roundDuration * 24 * 60 * 60 * 1000;
+      winnerSelectionDate.setTime(
+        winnerSelectionDate.getTime() + durationMilliseconds
       );
-      console.log("winner selation date: " + winnerSelectionDate);
-      const announcementDate = new Date(
-        winnerSelectionDate.getTime() - paymentIntervalInMillis
+
+      console.log("winner selection date: " + winnerSelectionDate);
+      // const announcementDate = new Date(
+      //   winnerSelectionDate.getTime() - paymentIntervalInMillis
+      // );
+
+      // for pre reminder time
+      const preReminderDate = new Date(
+        winnerSelectionDate.getTime() - paymentIntervalInMillis - 120000
       );
+
       // console.log("winnerSelectionDate", winnerSelectionDate);
       // console.log("announcementDate", announcementDate);
       // Ensure all components of the cron pattern are valid numbers
-      const seconds = isNaN(announcementDate.getSeconds())
+      const seconds = isNaN(preReminderDate.getSeconds())
         ? "*"
-        : announcementDate.getSeconds();
-      const minutes = isNaN(announcementDate.getMinutes())
+        : preReminderDate.getSeconds();
+      const minutes = isNaN(preReminderDate.getMinutes())
         ? "*"
-        : announcementDate.getMinutes();
-      const hours = isNaN(announcementDate.getHours())
+        : preReminderDate.getMinutes();
+      const hours = isNaN(preReminderDate.getHours())
         ? "*"
-        : announcementDate.getHours();
-      const dayOfMonth = isNaN(announcementDate.getDate())
+        : preReminderDate.getHours();
+      const dayOfMonth = isNaN(preReminderDate.getDate())
         ? "*"
-        : announcementDate.getDate();
-      const month = isNaN(announcementDate.getMonth() + 1)
+        : preReminderDate.getDate();
+      const month = isNaN(preReminderDate.getMonth() + 1)
         ? "*"
-        : announcementDate.getMonth() + 1;
+        : preReminderDate.getMonth() + 1;
+
+      //for un paid
+      //for paymnet deadline
+      const paymentDeadline = new Date(
+        winnerSelectionDate.getTime() - paymentIntervalInMillis
+      );
+
+      console.log("paymnet deadline: " + paymentDeadline);
+
+      const Unseconds = isNaN(paymentDeadline.getSeconds())
+        ? "*"
+        : paymentDeadline.getSeconds();
+      const Unminutes = isNaN(paymentDeadline.getMinutes())
+        ? "*"
+        : paymentDeadline.getMinutes();
+      const Unhours = isNaN(paymentDeadline.getHours())
+        ? "*"
+        : paymentDeadline.getHours();
+      const UndayOfMonth = isNaN(paymentDeadline.getDate())
+        ? "*"
+        : paymentDeadline.getDate();
+      const Unmonth = isNaN(paymentDeadline.getMonth() + 1)
+        ? "*"
+        : paymentDeadline.getMonth() + 1;
       // Construct the cron pattern
-      const cronPattern = `${minutes} ${hours} ${dayOfMonth} ${month} *`;
-      console.log("from user announce", cronPattern);
+      const cronPattern = `${seconds} ${minutes} ${hours} ${dayOfMonth} ${month} *`;
+      const unpaidpattern = `${Unseconds} ${Unminutes} ${Unhours} ${UndayOfMonth} ${Unmonth} *`;
+      console.log("from user pre payment announce", cronPattern);
+      console.log("from user deadline", unpaidpattern);
       // Schedule announcementOfUser function to run on the calculated announcement date
-      cron.schedule(cronPattern, () => announcementOfUser(group));
+      cron.schedule(cronPattern, () => userPrePaymentAnouncement(group));
+      cron.schedule(unpaidpattern, () => UserUnPaidAnnouncement(group));
     }
   } catch (error) {
     console.error("Error scheduling announcement:", error.message);

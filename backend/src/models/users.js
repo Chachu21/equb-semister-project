@@ -34,12 +34,8 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     imageUrl: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
+      public_id: { type: String, default: Date.now() },
+      url: { type: String, default: Date.now() },
     },
     ID: {
       front: {
@@ -60,7 +56,7 @@ const userSchema = new mongoose.Schema(
       },
     },
     is_approved: {
-      type: String,
+      type: Boolean,
       default: false,
     },
     agreeTerms: {

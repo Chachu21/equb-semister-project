@@ -42,7 +42,7 @@ const CreateGroup = () => {
       .required("Number of members must be greater than or equal to 0.5")
       .positive("number must be positive")
       .min(
-        1,
+        0,
         "the duration of equb from selecting winner to next selection winner is  must be greater than or equal to 1day"
       ),
   });
@@ -50,7 +50,7 @@ const CreateGroup = () => {
   const handleSubmit = async (values: FormData) => {
     try {
       if (values.types === "daily") {
-        values.paymentInterval = 1;
+        values.paymentInterval = 0.00208;
       } else if (values.types === "weekly") {
         values.paymentInterval = 2;
       } else if (values.types === "monthly") {

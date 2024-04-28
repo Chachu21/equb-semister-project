@@ -45,7 +45,7 @@ const Login = () => {
       } else if (userData.role === "user") {
         navigate("/userDashboard");
       } else if (userData.role === "creator") {
-        navigate("/creatorDashboard");
+        navigate("/equbCreatorDashboard");
       } else {
         navigate("/login");
       }

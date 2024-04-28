@@ -24,7 +24,6 @@ export const createGroup = async (req, res) => {
       member,
       types,
       createdBy,
-      members: [createdBy],
       paymentInterval,
       roundDuration,
     });
@@ -152,7 +151,7 @@ export const joinGroup = async (req, res) => {
 
     // 2. Check if the user is already a member of the group
     if (group.members.includes(userId)) {
-      console.log("User already in group");
+      // console.log("User already in group");
       return res.status(400).json({ error: "UserAlreadyJoined" });
     }
 

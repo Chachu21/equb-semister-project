@@ -25,7 +25,7 @@ const Equb = () => {
   const [filteredData, setFilteredData] = useState<EqubType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-
+  console.log(Date());
   useEffect(() => {
     const fetchData = async () => {
       try {
