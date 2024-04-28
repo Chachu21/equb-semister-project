@@ -62,7 +62,7 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
 
               <td>
                 <button
-                  onClick={() => handleDelete(data.id)}
+                  onClick={() => handleDelete(data)}
                   className="text-red-600 hover:text-red-900"
                 >
                   Delete

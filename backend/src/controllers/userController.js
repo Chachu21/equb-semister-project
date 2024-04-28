@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+// import { v2 as cloudinary } from "cloudinary";
 import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
