@@ -1,11 +1,11 @@
 import React, { useState, ChangeEvent } from "react";
-import { HiSearch } from 'react-icons/hi';
+import { HiSearch } from "react-icons/hi";
 interface Props {
   handleSearch: (term: string) => void;
   search: string;
 }
 
-const SearchUi: React.FC<Props> = ({ handleSearch,search }) => {
+const SearchUi: React.FC<Props> = ({ handleSearch, search }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -14,9 +14,8 @@ const SearchUi: React.FC<Props> = ({ handleSearch,search }) => {
     handleSearch(value);
   };
 
- 
   return (
-    <div className="flex items-center space-x-2 mb-4">
+    <div className="flex items-center space-x-2 ">
       <label htmlFor="search" className="sr-only">
         Search
       </label>

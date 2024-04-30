@@ -91,7 +91,7 @@ const Card = ({
 
   return (
     <div className="mt-5">
-      <div className="flex container mx-auto flex-col p-5 md:p-6 space-y-4 justify-between items-start h-[340px] md:w-[400px] w-full  bg-white text-center border border-gray-300 dark:bg-neutral-700">
+      <div className="flex container mx-auto flex-col p-5 md:p-6 space-y-4 justify-between items-start h-fit md:w-[320px] lg:w-[360px] w-full  bg-white text-center border border-gray-300 dark:bg-neutral-700">
         <div className="flex justify-between">
           <div className="flex flex-col justify-evenly items-start space-y-8">
             <div className=" flex font-normal text-sm md:text-[18px] text-[#1F284F] dark:border-neutral-600 capitalize dark:text-neutral-50">
@@ -111,14 +111,15 @@ const Card = ({
             <div className=" text-sm md:text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
               Amount: <span className="ml-5 font-bold"> {amount} Birr</span>
             </div>
+            <div className=" text-sm md:text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-200">
+              Status:
+              <span className="ml-5 font-bold text-[#008B8B]">{status}</span>
+            </div>
             <div className="text-sm md:text-[18px] font-normal leading-tight text-[#1F284F] dark:text-neutral-50">
               <span>Created At:</span>
               <span className="ml-5 font-bold">{formattedCreatedAt}.</span>
             </div>
           </div>
-          <span className="text-lg bg-yellow-200 rounded-lg  text-blue-900 h-fit px-3 py-1 font-semibold italic">
-            {status}
-          </span>
         </div>
         <button
           type="button"

@@ -11,7 +11,7 @@ const paymentRouter = express.Router();
 
 paymentRouter.post("/accept-payment", verifyToken, acceptPayment);
 paymentRouter.get("/verify-payment/:id/:userId/:groupId/:round", verifyPayment);
-paymentRouter.get("/", getAllPayments);
+paymentRouter.get("/get", getAllPayments);
 paymentRouter.get("/get/:userId", getAllPaymentsByUserId);
 
 export default paymentRouter;

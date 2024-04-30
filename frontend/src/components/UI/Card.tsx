@@ -14,33 +14,30 @@ const Card = () => {
     const fetchStatusCounts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/group/get`
+          `http://localhost:5000/api/v1/group/getAll`
         );
-        const grp = response.data.searchResult.map(
-          (group: { _id: string }) => group._id
-        );
+        const grp = response.data.map((group: { _id: string }) => group._id);
 
         setGroups(grp);
         const counts = {
-          completed: response.data.searchResult.filter(
+          completed: response.data.filter(
             (group: { status: string }) => group.status === "completed"
           ).length,
-          pending: response.data.searchResult.filter(
+          pending: response.data.filter(
             (group: { status: string }) => group.status === "pending"
           ).length,
-          started: response.data.searchResult.filter(
+          started: response.data.filter(
             (group: { status: string }) => group.status === "started"
           ).length,
         };
         setStatusCounts(counts);
-        console.log(groups);
       } catch (error) {
         console.error("Error fetching group status counts:", error);
       }
     };
 
     fetchStatusCounts();
-  }, []);
+  }, [groups]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">

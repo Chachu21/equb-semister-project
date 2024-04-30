@@ -1,3 +1,5 @@
+import { usersType } from "./usersType";
+
 export interface groupsType {
   _id: string;
   name: string;
@@ -23,7 +25,7 @@ export interface groupsType {
   rounds: {
     round_no: number;
     totalCollected: number;
-    winner: string;
+    winner: usersType;
     winnerSelection_date: Date;
     distributedAmount: number;
   }[];

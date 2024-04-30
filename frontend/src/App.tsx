@@ -9,97 +9,120 @@ import ForgotPassword from "./Auth/ForgotPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminContent from "./components/admin/AdminContent";
 import UserManage from "./components/admin/UserManage";
-// import Transactions from "./components/admin/Transactions";
+import Transactions from "./components/admin/Transactions";
 import ManageGroups from "./components/admin/ManageGroups";
-import AccountDetail from "./components/admin/AccountDetail";
 import UserGroupDetailHistory from "./components/admin/UserGroupDetailHistory";
-import CreateGroup from "./components/UserDashboard/CreateGroup";
 import Payment from "./components/payment/payment";
 import Profile from "./components/admin/Profile";
 import ResetPassword from "./Auth/ResetPassword";
-import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 // import ViewGroupDetails from "./components/UI/ViewGroupDetail";
+import ViewGroupDetails from "./components/UI/ViewGroupDetail";
 import UserDashboard from "./pages/UserDashboard";
-import Main from "./components/UserDashboard/userContent/main";
+import Main from "./components/UserDashboard/userContent/Main";
 import UserTransaction from "./components/UserDashboard/UI/UserTransaction";
 import Settings from "./components/UserDashboard/Settings";
 import SendRequest from "./components/UserDashboard/UI/SendRequest";
 import EqubCreatorDashboard from "./pages/EqubCreatorDashboard";
-// import Pay from "./components/payment/pay";
+import { useSelector } from "react-redux";
+import { RootState } from "./Redux/store";
+import Page404 from "./pages/404";
+import DetailOfGroupType from "./components/UserDashboard/UI/DetailOfGroupType";
+import ManageUserRequest from "./components/EqubCreatorDashboard/ManageUserRequest";
+import EqubCreatorDashboardContent from "./components/EqubCreatorDashboard/EqubCreatorDashboardContent";
+import NotificationComponent from "./components/admin/AdminNotification";
 
 const App = () => {
+  const role = useSelector((state: RootState) => state.user.user?.role);
+  const user_id = useSelector((state: RootState) => state.user.user?._id);
+
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Root />}>
-          <Route index element={<Home />} />
-          <Route path="/group" element={<Equb />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/resetPassword/:token" element={<ResetPassword />} />
-        <Route path="/admin" element={<AdminDashboard />}>
-          <Route index element={<AdminContent />} />
-          <Route path="/admin/manageuser" element={<UserManage />} />
-          {/* <Route path="/admin/transactions" element={<Transactions />} /> */}
-          <Route path="/admin/managegroups" element={<ManageGroups />} />
-          {/* <Route path="/admin/pay" element={<Pay />} /> */}
+    <div className=" ">
+      {/* todo if looks not good remove max-w-[1920px] and above div */}
+      <div className="">
+        <Routes>
+          <Route path="/" element={<Root />}>
+            <Route index element={<Home />} />
+            <Route path="/group" element={<Equb />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+          <Route path="*" element={<Page404 />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword/:token" element={<ResetPassword />} />
+          {role === "admin" && (
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route index element={<AdminContent />} />
+              <Route path="/admin/manageuser" element={<UserManage />} />
+              <Route path="/admin/transactions" element={<Transactions />} />
+              <Route path="/admin/managegroups" element={<ManageGroups />} />
+              <Route
+                path="/admin/message"
+                element={<NotificationComponent />}
+              />
+              <Route
+                path="/admin/grouphistory"
+                element={<UserGroupDetailHistory />}
+              />
+              <Route path="/admin/profile" element={<Profile />} />
+              <Route
+                path="/admin/group-details?"
+                element={<ViewGroupDetails />}
+              />
+            </Route>
+          )}
+          {/* for user Dashboard */}
+          {role === "user" && (
+            <Route path="/userDashboard" element={<UserDashboard />}>
+              <Route path="/userDashboard" index element={<Main />} />
+              <Route path="/userDashboard/groups" element={<Equb />} />
+              <Route
+                path="/userDashboard/transactions"
+                element={
+                  <UserTransaction
+                    urll={`http://localhost:5000/api/v1/payment/get/${user_id}`}
+                    user_id={`${user_id}`}
+                  />
+                }
+              />
+              <Route path="/userDashboard/payment" element={<Payment />} />
+              <Route path="/userDashboard/profile" element={<Profile />} />
+              <Route path="/userDashboard/setting" element={<Settings />} />
+              <Route
+                path="/userDashboard/sendrequest"
+                element={<SendRequest />}
+              />
+              <Route
+                path="/userDashboard/statusdetailofgroup"
+                element={<DetailOfGroupType />}
+              />
+            </Route>
+          )}
 
-          <Route
-            path="/admin/grouphistory"
-            element={<UserGroupDetailHistory />}
-          />
+          {/* for creator dashboard */}
+          {role === "creator" && (
+            <Route
+              path="/equbCreatorDashboard"
+              element={<EqubCreatorDashboard />}
+            >
+              <Route
+                path="/equbCreatorDashboard"
+                index
+                element={<EqubCreatorDashboardContent />}
+              />
 
-          {/* <Route path="/admin/profile" element={<Profile />} /> */}
-          <Route path="/admin/accountdetail" element={<AccountDetail />} />
-          <Route path="/admin/profile" element={<Profile />} />
-          <Route path="/admin/managegroups" element={<ManageGroups />} />
-          <Route path="/admin//group-details" element={<ViewGroupDetails />} />
-        </Route>
-        {/* for user Dashboard */}
-        <Route path="/userDashboard" element={<UserDashboard />}>
-          <Route path="/userDashboard" index element={<Main />} />
-          <Route path="/userDashboard/groups" element={<Equb />} />
-          <Route path="/userDashboard/create" element={<CreateGroup />} />
-          <Route path="/userDashboard/userRequest" element={<SendRequest />} />
-
-          <Route
-            path="/userDashboard/transactions"
-            element={<UserTransaction />}
-          />
-          <Route path="/userDashboard/payment" element={<Payment />} />
-          {/* <Route path="/userDashboard/pay" element={<Pay />} /> */}
-          <Route path="/userDashboard/profile" element={<Profile />} />
-          <Route path="/userDashboard/setting" element={<Settings />} />
-        </Route>
-        <Route path="/userDashboard" element={<UserDashboard />}>
-          <Route path="/userDashboard" index element={<Equb />} />
-          <Route path="/userDashboard/create" element={<CreateGroup />} />
-          <Route
-            path="/userDashboard/transactions"
-            element={<UserTransaction />}
-          />
-          <Route path="/userDashboard/payment" element={<Payment />} />
-          {/* <Route path="/userDashboard/pay" element={<Pay />} /> */}
-          <Route path="/userDashboard/profile" element={<Profile />} />
-          <Route path="/userDashboard/setting" element={<AccountDetail />} />
-        </Route>
-        <Route path="/equbCreatorDashboard" element={<EqubCreatorDashboard />}>
-          <Route
-            path="/equbCreatorDashboard/create"
-            index
-            element={<CreateGroup />}
-          />
-          <Route
-            path="/equbCreatorDashboard/manageGroups"
-            element={<ManageGroups />}
-          />
-        </Route>
-        <Route path="/admindashboard" element={<AdminDashboard />}></Route>
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-      </Routes>
+              <Route
+                path="/equbCreatorDashboard/manageGroups"
+                element={<ManageGroups />}
+              />
+              <Route
+                path="/equbCreatorDashboard/requests"
+                element={<ManageUserRequest />}
+              />
+            </Route>
+          )}
+        </Routes>
+      </div>
     </div>
   );
 };

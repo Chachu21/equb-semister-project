@@ -36,15 +36,16 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/group", groupRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/request", requestRouter);
 
 //for user announcements
 userScheduleAnnouncement();
 //for admin  about unpaid announcements
 adminUpaideAnnouncement();
-//for winner announcements
+//for winner
 winnerSelection();
-//localhost:3000/api/v1/users/signUp
+
 // Start the server
-http: app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

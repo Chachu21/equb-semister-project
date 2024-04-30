@@ -2,45 +2,88 @@ import { useEffect, useState } from "react";
 import { transactionsType } from "../../../types/transaction";
 import axios from "axios";
 import Tables from "../../UI/Tables";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../Redux/store";
 
 const transactionHeader = [
   { id: "1", title: "id" },
-  { id: "2", title: "fname" },
-  { id: "3", title: "lname" },
-  { id: "4", title: "User id" },
-  { id: "5", title: "email" },
+  { id: "2", title: "Fname" },
+  { id: "3", title: "Lname" },
+  { id: "4", title: "email" },
+  { id: "5", title: "userId" },
   { id: "6", title: "group id" },
   { id: "7", title: "round" },
-  { id: "8", title: "amount" },
-  { id: "9", title: "currency" },
-  { id: "10", title: "reference" },
-  { id: "11", title: "tx_ref" },
-  { id: "12", title: "verified At" },
+  { id: "8", title: "status" },
+  { id: "9", title: "amount" },
+  { id: "10", title: "currency" },
+  { id: "12", title: "reference" },
+  { id: "13", title: "tx_ref" },
+  { id: "14", title: "verifiedAt" },
 ];
+interface endpoint {
+  urll: string;
+  user_id: string;
+}
 
-const UserTransaction = () => {
+const UserTransaction = ({ urll, user_id }: endpoint) => {
+  const hasDEleteAction = false;
   const [transaction, setTransaction] = useState<transactionsType[]>([]);
-  const user_id = useSelector((state: RootState) => state.user.user?._id);
+
   useEffect(() => {
     const fetchTransaction = async () => {
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/payment/get/${user_id}`
-      );
-      setTransaction(response.data);
-      console.log(response.data);
+      try {
+        const response = await axios.get(urll);
+
+        const filteredProperties = [
+          "_id",
+          "fname",
+          "lname",
+          "email",
+          "user",
+          "equbGroup",
+          "round",
+          "status",
+          "amount",
+          "currency",
+          "reference",
+          "tx_ref",
+          "verified_at",
+        ];
+
+        // Extract only the required properties from the response data
+        const filteredTransactionData = response.data.map(
+          (transaction: { [key: string]: any }) => {
+            const filteredTransaction: { [key: string]: any } = {}; // Type explicit declaration
+            filteredProperties.forEach((property: string) => {
+              if (transaction.hasOwnProperty(property)) {
+                filteredTransaction[property.toUpperCase()] =
+                  transaction[property];
+              }
+            });
+            return filteredTransaction;
+          }
+        );
+
+        // Set the filtered transaction data
+        setTransaction(filteredTransactionData);
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+      }
     };
-    fetchTransaction();
-  }, [user_id]);
+
+    if (user_id) {
+      fetchTransaction();
+    }
+  }, [user_id, urll]);
 
   return (
-    <div className="mt-20 container">
-      <Tables
-        header={transactionHeader}
-        datas={transaction}
-        onDelete={() => {}}
-      />
+    <div className="container justify-center mx-auto mt-3">
+      <div className="">
+        <Tables
+          header={transactionHeader}
+          datas={transaction}
+          hasDelete={hasDEleteAction} // Pass the boolean prop indicating delete button visibility
+          onDelete={() => {}}
+        />
+      </div>
     </div>
   );
 };

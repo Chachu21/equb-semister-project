@@ -139,13 +139,13 @@ const Equb = () => {
 
           <button
             type="submit"
-            className="bg-blue-400 h-10 flex md:w-fit w-full px-[14px] justify-center items-center rounded-[5px] cursor-pointer"
+            className="bg-blue-400 h-10 flex lg:w-fit w-full px-[14px] justify-center items-center rounded-[5px] cursor-pointer"
           >
             <FaSearch color="white" />
           </button>
         </form>
       </div>
-      <div className="w-full md:container md:mx-auto md:max-w-7xl grid grid-cols-1 md:grid-cols-3 md:gap-14 gap-3 ">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-10 lg:gap-14 gap-3 ">
         {filteredData.length > 0 ? (
           filteredData.map((equbItem) => (
             <Card
@@ -160,7 +160,9 @@ const Equb = () => {
             />
           ))
         ) : isSearched ? (
-          <p>No result found</p>
+          <div className="flex justify-center">
+            <p className="items-center">No result found</p>
+          </div>
         ) : (
           equbType.map((equbItem) => (
             <Card

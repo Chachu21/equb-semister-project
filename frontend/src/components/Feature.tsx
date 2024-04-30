@@ -4,7 +4,9 @@ import {
   faMoneyCheckAlt,
   faBell,
   faGauge,
-} from "@fortawesome/free-solid-svg-icons"; // Import necessary icons
+  faExchange,
+} from "@fortawesome/free-solid-svg-icons";
+// Import necessary icons
 
 const Feature = () => {
   const featureData = [
@@ -27,23 +29,23 @@ const Feature = () => {
       icon: faBell, // Specify the icon for this feature
     },
     {
-      title: "Searching",
+      title: "Payment",
       content:
         "Members contribute a fixed amount of money regularly into the equb pool, allowing them to save money over time.",
-      icon: faSave, // Specify the icon for this feature
-    },
-    {
-      title: "Dashboard",
-      content:
-        "Access to interest-free loans on a rotating basis, aiding in various financial needs.",
       icon: faMoneyCheckAlt, // Specify the icon for this feature
     },
     {
-      title: "Notification",
+      title: "Manage Transaction ",
       content:
-        " Provides banking-like services to individuals without access to traditional banks",
-      icon: faBell, // Specify the icon for this feature
+        " Provide a comprehensive overview of all transactions within the equb, allowing users to track the flow of funds, view transaction history, and monitor the status of pending transactions.",
+      icon: faExchange, // Specify the icon for this feature
     },
+    // {
+    //   title: "Notification",
+    //   content:
+    //     " Provides banking-like services to individuals without access to traditional banks",
+    //   icon: faBell, // Specify the icon for this feature
+    // },
     // Add more features here with their respective icons
   ];
 
@@ -52,7 +54,7 @@ const Feature = () => {
       <h2 className="flex justify-center items-center my-5 pt-10 text-3xl text-[#1F284F] underline underline-offset-8">
         Features
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-content-center place-items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-1  place-content-center place-items-center">
         {featureData.map((card, index) => (
           <FeatureCard
             key={index}

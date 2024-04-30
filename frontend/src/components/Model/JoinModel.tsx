@@ -24,7 +24,7 @@ const Modal = ({ isOpen, onClose, onLogin }: ModalProps) => {
           <div className="flex justify-end space-x-10 md:space-x-20">
             <button
               onClick={onLogin}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg text-center"
+              className="bg-[#008B8B] text-white px-4 py-2 rounded-lg text-center"
             >
               Login / Sign Up
             </button>

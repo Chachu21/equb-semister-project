@@ -8,7 +8,7 @@ const client = new twilio(accountSid, authToken);
 
 // Function to send SMS notification using Twilio
 const sendSMS = async (phoneNumber, messageType) => {
-  console.log("from sms component", phoneNumber);
+  // console.log("from sms component", phoneNumber);
   try {
     const response = await client.messages.create({
       body: messageType,
@@ -16,9 +16,9 @@ const sendSMS = async (phoneNumber, messageType) => {
       to: recipientPhoneNumber,
     });
 
-    console.log("SMS sent successfully:", response.sid);
+    // console.log("SMS sent successfully:", response.sid);
   } catch (error) {
-    console.error("Error sending SMS:", error);
+    console.log("Error sending SMS:", error);
   }
 };
 

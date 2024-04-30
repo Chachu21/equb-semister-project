@@ -70,7 +70,7 @@ const acceptPayment = async (req, res) => {
     )
       .then((response) => {
         resp = response;
-        console.log("something happen ", response);
+        // console.log("something happen ", response);
       })
       .catch((error) => {
         console.log("error is :::", error);
@@ -82,7 +82,7 @@ const acceptPayment = async (req, res) => {
           text: "error from catch with 400",
         });
       });
-    console.log("dsjhfkjasdkdfj", resp.data);
+    // console.log("dsjhfkjasdkdfj", resp.data);
     res.status(200).json(resp.data);
   } catch (e) {
     res.status(400).json({
@@ -99,7 +99,7 @@ const verifyPayment = async (req, res) => {
   const group_id = req.params.groupId;
   const user_id = req.params.userId;
   const round = req.params.round;
-  console.log("params", req.params);
+  // console.log("params", req.params);
   // req header with chapa secret key
   const config = {
     headers: {
@@ -135,7 +135,7 @@ const verifyPayment = async (req, res) => {
 
     // Save the transaction
     const savedPayment = await payment.save();
-    console.log("saved transaction", savedPayment);
+    // console.log("saved transaction", savedPayment);
     res.json(savedPayment);
   } catch (error) {
     console.log("error from catch", error);
@@ -146,9 +146,7 @@ const verifyPayment = async (req, res) => {
 // Get all payments
 const getAllPayments = async (req, res) => {
   try {
-    const payments = await Payment.find()
-      .populate("user")
-      .populate("equbGroup");
+    const payments = await Payment.find();
     res.json(payments);
   } catch (error) {
     res.status(500).json({ error: "Failed to retrieve payments" });

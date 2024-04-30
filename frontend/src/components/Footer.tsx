@@ -19,33 +19,28 @@ const Footer = () => {
       name: "groups",
       url: "/group",
     },
-    {
-      id: 4,
-      name: "service",
-      url: "/service",
-    },
-    {
-      id: 5,
-      name: "contact",
-      url: "/contacts",
-    },
+    // {
+    //   id: 4,
+    //   name: "service",
+    //   url: "/service",
+    // },
   ];
 
   const Icons = [
     {
       id: 1,
       url: "https://facebook.com",
-      icon: <FaFacebook size={32} />,
+      icon: <FaFacebook size={22} />,
     },
     {
       id: 1,
       url: "https://twitter.com",
-      icon: <BsTwitterX size={32} />,
+      icon: <BsTwitterX size={22} />,
     },
     {
       id: 3,
       url: "https://instagram.com",
-      icon: <FaSquareInstagram size={32} />,
+      icon: <FaSquareInstagram size={22} />,
     },
   ];
 
@@ -94,7 +89,7 @@ const Footer = () => {
             {/* Right Section: Social Media Links */}
             <div>
               <h2 className="text-xl font-medium mb-4">Reach Us</h2>
-              <ul className="flex flex-col items-center p-2 gap-8">
+              <ul className="flex flex-col items-center p-2 gap-4">
                 {Icons.map((icon, index) => (
                   <li key={index}>
                     {/* social media links must be corrected */}

@@ -2,7 +2,7 @@ import express from "express";
 import {
   createGroup,
   deleteGroup,
-  // getAllGroups,
+  getAllGroups,
   getGroup,
   getGroupByUserId,
   getGroups,
@@ -18,6 +18,7 @@ const groupRouter = express.Router();
 groupRouter.post("/create", verifyToken, createGroup);
 // groupRouter.get("/get/creator", verifyToken, getGroupByCreatorId);
 groupRouter.get("/get", getGroups);
+groupRouter.get("/getAll", getAllGroups);
 groupRouter.get("/get/:id", getGroup);
 groupRouter.get("/userJoinedGroups/:id", getUserJoinedGroups);
 groupRouter.post("/join/:groupId", verifyToken, joinGroup);

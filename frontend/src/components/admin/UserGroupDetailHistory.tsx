@@ -27,7 +27,7 @@ const UserGroupDetailHistory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUserGroup, setFilteredUsergroup] = useState<datas[]>([]);
   const [userGroups, setUserGroups] = useState<datas[]>([]);
-  const userData: any = useSelector((state: RootState) => state.user.user);
+  const userData = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const fetchUserGroups = async () => {
@@ -37,37 +37,24 @@ const UserGroupDetailHistory: React.FC = () => {
           `http://localhost:5000/api/v1/group/userJoinedGroups/${userId}`
         );
         setUserGroups(response.data);
-
-        console.log("groupInfor", response.data);
-
-        console.log("response", response);
       } catch (error) {
         console.error("Error fetching user's joined groups:", error);
       }
     };
 
     fetchUserGroups();
-  }, []);
+  }, [userData]);
 
   // Extract only necessary fields from tableData
   const filteredData = userGroups.map(
-    ({
+    ({ _id, name, member, members, winners, amount, status, isCompleted }) => ({
       _id,
+      status,
       name,
+      members,
+      winners,
+      amount,
       member,
-      members,
-      winners,
-      amount,
-      status,
-      isCompleted,
-    }) => ({
-      _id,
-      status,
-      name,
-      members,
-      winners,
-      amount,
-       member,
       isCompleted,
     })
   );
@@ -90,32 +77,39 @@ const UserGroupDetailHistory: React.FC = () => {
     setFilteredUsergroup(filteredResults);
   };
 
- 
-const handleDelete = async (groupId: string) => {
-  try {
-     const token = userData?.token;
-     const config = {
-       headers: {
-         Authorization: `Bearer ${token}`,
-         "Content-Type": "application/json",
-       },
-     };
-    https: console.log("groupId is :", groupId);
-    await axios.delete(`http://localhost:5000/api/v1/group/${groupId}`,config);
-    setUserGroups(userGroups.filter((group) => group._id !== groupId));
-    setFilteredUsergroup(
-      filteredUserGroup.filter((group) => group._id !== groupId)
-    );
-  } catch (error) {
-    console.error("Error deleting user:", error);
-  }
-};
+  const handleDelete = async (groupId: string) => {
+    try {
+      const token = userData?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      console.log("groupId is :", groupId);
+      await axios.delete(
+        `http://localhost:5000/api/v1/group/${groupId}`,
+        config
+      );
+      setUserGroups(userGroups.filter((group) => group._id !== groupId));
+      setFilteredUsergroup(
+        filteredUserGroup.filter((group) => group._id !== groupId)
+      );
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
   return (
     <div>
       <h1 className="text-2xl font-semibold ml-5 mb-2">
         UserGroupDetailHistory
       </h1>
-      <SearchUi handleSearch={handleSearch} search={"status"} />
+      <SearchUi
+        handleSearch={() => {
+          handleSearch(searchTerm);
+        }}
+        search={"status"}
+      />
       <Tables
         header={header}
         datas={filteredUserGroup.length > 0 ? filteredUserGroup : filteredData}

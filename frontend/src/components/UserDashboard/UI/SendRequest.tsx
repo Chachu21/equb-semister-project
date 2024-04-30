@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const SendRequest: React.FC = () => {
+const SendRequest = () => {
   const [equbType, setEqubType] = useState<string>("");
   const [equbTypeLength, setEqubTypeLength] = useState<number | null>(null);
   const [amount, setAmount] = useState<number>(0);
@@ -61,15 +61,19 @@ const SendRequest: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-md mx-auto bg-gray-100 rounded-lg shadow-md my-4 space-y-4">
+    <div className="p-4 md:p-12 mx-auto md:w-3/4 lg:w-1/2 bg-gray-100 rounded-lg shadow-md my-4 space-y-4">
+      <h1 className="font-semibold text-2xl text-center">
+        Request Equb Group Creation
+      </h1>
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        <div className="min-h-16">
           <label htmlFor="equbType" className="block text-lg text-gray-700">
             Equb Type
           </label>
           <select
             id="equbType"
-            className={`form-select mt-1 block w-full ${
+            className={`form-select mt-1 h-10 border border-gray-400 bg-gray-100 rounded-lg block w-full ${
               errors.equbType ? "border-red-500" : "border-gray-300"
             }`}
             onChange={(e) => setEqubType(e.target.value)}
@@ -83,9 +87,10 @@ const SendRequest: React.FC = () => {
             ))}
           </select>
           {errors.equbType && (
-            <p className="text-red-500 text-sm mt-1">{errors.equbType}</p>
+            <p className="text-red-500  text-sm mt-1">{errors.equbType}</p>
           )}
         </div>
+
         {equbType === "Daily" && (
           <div>
             <label
@@ -96,7 +101,7 @@ const SendRequest: React.FC = () => {
             </label>
             <select
               id="equbTypeLength"
-              className={`form-select mt-1 block w-full ${
+              className={`form-select mt-2 block border border-gray-400 bg-gray-100  p-3 rounded-lg w-full ${
                 errors.equbTypeLength ? "border-red-500" : "border-gray-300"
               }`}
               onChange={(e) => setEqubTypeLength(parseInt(e.target.value))}
@@ -126,7 +131,7 @@ const SendRequest: React.FC = () => {
             </label>
             <select
               id="equbTypeLength"
-              className={`form-select mt-2 block border border-gray-400 p-3 rounded-lg w-full ${
+              className={`form-select mt-2 block border border-gray-400 bg-gray-100  p-3 rounded-lg w-full ${
                 errors.equbTypeLength ? "border-red-500" : "border-gray-300"
               }`}
               onChange={(e) => setEqubTypeLength(parseInt(e.target.value))}
@@ -156,7 +161,7 @@ const SendRequest: React.FC = () => {
             </label>
             <select
               id="equbTypeLength"
-              className={`form-select mt-1 block border border-gray-400 p-3 rounded-lg w-full ${
+              className={`form-select mt-1 block border border-gray-400 bg-gray-100  p-3 rounded-lg w-full ${
                 errors.equbTypeLength ? "border-red-500" : "border-gray-300"
               }`}
               onChange={(e) => setEqubTypeLength(parseInt(e.target.value))}
@@ -183,7 +188,7 @@ const SendRequest: React.FC = () => {
           <input
             type="number"
             id="amount"
-            className={`form-input mt-1 block border border-gray-400 p-3 rounded-lg w-full ${
+            className={`form-input mt-1 block border border-gray-400 bg-gray-100  p-3 rounded-lg w-full ${
               errors.amount ? "border-red-500" : "border-gray-300"
             }`}
             onChange={(e) => setAmount(parseInt(e.target.value))}
@@ -200,7 +205,7 @@ const SendRequest: React.FC = () => {
           <input
             type="number"
             id="numMembers"
-            className={`form-input mt-1 block border border-gray-400 p-3 rounded-lg w-full ${
+            className={`form-input mt-1 block border border-gray-400 bg-gray-100  p-3 rounded-lg w-full ${
               errors.numMembers ? "border-red-500" : "border-gray-300"
             }`}
             onChange={(e) => setNumMembers(parseInt(e.target.value))}

@@ -1,14 +1,15 @@
 export interface transactionsType {
   _id: string;
-  tx_ref: string;
-  email: string;
   fname: string;
   lname: string;
+  user: string;
+  email: string;
+  equbGroup: string;
+  round: number;
   amount: number;
   currency: string;
-  Chapa_reference: string;
+  reference: string;
+  tx_ref: string;
   status: string;
   verified_at: Date;
-  user: string;
-  equbGroup: string;
 }

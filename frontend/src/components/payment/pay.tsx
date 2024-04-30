@@ -99,7 +99,7 @@ const Pay = ({ isOpen, onClose, group_id, round, amount }: ModalProps) => {
               onClick={onClose}
             >
               &times;
-            </span>{" "}
+            </span>
             <div className="flex items-center justify-center w-full h-full">
               <div className=" flex flex-col justify-center items-center w-full space-y-8">
                 <h1 className="font-mono font-extrabold text-lg">Welcome</h1>

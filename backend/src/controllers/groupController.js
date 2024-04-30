@@ -1,11 +1,12 @@
 import Group from "../models/groups.js";
 import User from "../models/users.js";
 import { errorHandler } from "../utils/errorHandler.js";
+
 export const createGroup = async (req, res) => {
   const { name, amount, member, types, paymentInterval, roundDuration } =
     req.body;
   const createdBy = req.user;
-  console.log(req.body);
+  // console.log(req.body);
   try {
     if (!name || !amount || !types || !createdBy || !member) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -285,7 +286,11 @@ export const getGroupByUserId = async (req, res) => {
     }
 
     // Check if user is already in a group
-    const group = await Group.find({ members: { $in: [userId] } });
+    const group = await Group.find({ members: { $in: [userId] } }).populate({
+      path: "rounds.winner",
+      model: "User",
+    });
+    console.log(group);
     if (!group || group.length === 0) {
       return res.status(404).json({ message: "Group not found" });
     }

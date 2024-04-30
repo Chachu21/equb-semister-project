@@ -4,6 +4,7 @@ import SearchUi from "../UI/SearchUi";
 import Tables from "../UI/Tables";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
+import CreateGroup from "../UserDashboard/CreateGroup";
 
 interface EqubGroup {
   _id: string;
@@ -18,31 +19,24 @@ const ManageGroups = () => {
   const [equbGroups, setEqubGroups] = useState<EqubGroup[]>([]);
   const [filteredGroup, setFilteredGroup] = useState<EqubGroup[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showModal, setShowModal] = useState(false);
+
   const userData = useSelector((state: RootState) => state.user.user);
-  const user_id = userData?._id;
-  const token = userData?.token;
-  console.log("use id", user_id);
+  // const user_id = userData?._id;
+  // const token = userData?.token;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/group/get/creator/${user_id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "http://localhost:5000/api/v1/group/getAll"
         );
-        console.log("groups form manage group", response.data.groups);
-        setEqubGroups(response.data.groups);
-        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkk", response.data);
+        setEqubGroups(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [user_id, token]);
+  }, []);
 
   // Extract only necessary fields from tableData
   const filteredData = equbGroups.map(
@@ -75,7 +69,7 @@ const ManageGroups = () => {
 
   const handleDelete = async (groupId: string) => {
     try {
-      console.log("groupId is", groupId);
+      // console.log("groupId is", groupId);
 
       const token = userData?.token;
       const config = {
@@ -99,18 +93,37 @@ const ManageGroups = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto py-8">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
-      <SearchUi
-        handleSearch={() => {
-          handleSearch(searchTerm);
-        }}
-        search={"period"}
-      />
+      <div className="flex justify-between items-center my-4">
+        <SearchUi
+          handleSearch={() => {
+            handleSearch(searchTerm);
+          }}
+          search={"period"}
+        />
+        <div>
+          <button
+            onClick={() => {
+              setShowModal(true);
+            }}
+            className="w-fit px-[1.5px] md:px-3 py-2 md:py-[2px] rounded-md items-center text-center text-white bg-[#008B8B]"
+          >
+            add group
+          </button>
+          <CreateGroup
+            isOpen={showModal}
+            onClose={() => {
+              setShowModal(false);
+            }}
+          />
+        </div>
+      </div>
       <Tables
         header={tableHead}
         datas={filteredGroup.length > 0 ? filteredGroup : filteredData}
         onDelete={handleDelete}
+        hasDelete={true}
       />
     </div>
   );

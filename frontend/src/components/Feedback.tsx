@@ -4,6 +4,11 @@ import feedback from "../../public/feedback.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../Redux/store";
+import Modal from "./Model/JoinModel";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -13,6 +18,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const FeedbackForm = () => {
+  const [showModal, setShowModal] = useState(false);
+  const isLogin = useSelector((state: RootState) => state.user.isLogin);
+  const user = useSelector((state: RootState) => state.user.user);
+  const token = user?.token;
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -33,14 +43,24 @@ const FeedbackForm = () => {
     rating: number;
   }) => {
     // Handle form submission
-    console.log(values);
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/comment/create",
-      values
-    );
 
-    toast.success("Successfully commented");
-    console.log(response.data);
+    if (isLogin && token) {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/comment/create",
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success("Successfully commented");
+      console.log(response.data);
+    } else {
+      setShowModal(true);
+      return;
+    }
 
     // Reset form fields
     formik.resetForm();
@@ -53,6 +73,10 @@ const FeedbackForm = () => {
   const handleCancel = () => {
     // Reset form fields
     formik.resetForm();
+  };
+  const handleLogin = () => {
+    // Redirect to the login page
+    navigate("/login");
   };
 
   return (
@@ -145,7 +169,7 @@ const FeedbackForm = () => {
           <div className="flex justify-between md:justify-end items-center ">
             <button
               type="button"
-              className="bg-gray-200 px-5 py-2 rounded-lg text-gray-700 mr-7"
+              className="bg-gray-200 px-5 py-2 rounded-lg text-gray-700 mr-7 mb-4"
               onClick={handleCancel}
             >
               Cancel
@@ -159,6 +183,11 @@ const FeedbackForm = () => {
           </div>
         </form>
       </div>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onLogin={handleLogin}
+      />
     </div>
   );
 };

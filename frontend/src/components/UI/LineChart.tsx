@@ -10,6 +10,10 @@ import {
   //  Legend,
   ResponsiveContainer,
 } from "recharts";
+import { groupsType } from "../../types/groupType";
+import { usersType } from "../../types/usersType";
+import { commetType } from "../../types/comments";
+import { requestType } from "../../types/request";
 
 const LineCharts: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -30,21 +34,21 @@ const LineCharts: React.FC = () => {
         usersResponse,
       ] = await Promise.all([
         axios.get(`http://localhost:5000/api/v1/comment/get`),
-        axios.get(`http://localhost:5000/api/v1/group/get`),
+        axios.get(`http://localhost:5000/api/v1/group/getAll`),
         axios.get(`http://localhost:5000/api/v1/request/get`),
         axios.get(`http://localhost:5000/api/v1/users`),
       ]);
 
       const comments = commentsResponse.data;
-     const groups = groupsResponse.data.searchResult;
-        console.log("groupResponse :",groups);
-        
+      const groups = groupsResponse.data;
+      console.log("groupResponse :", groups);
+
       const requests = requestsResponse.data;
       const users = usersResponse.data;
-            console.log("comments", comments);
-            console.log("groups", groups);
-            console.log("requests", requests);
-            console.log("users", users);
+      console.log("comments", comments);
+      console.log("groups", groups);
+      console.log("requests", requests);
+      console.log("users", users);
 
       processData(month, comments, groups, requests, users);
     } catch (error) {
@@ -52,45 +56,45 @@ const LineCharts: React.FC = () => {
     }
   };
 
- const processData = (
-   month: number,
-   comments: any[],
-   groups: any[],
-   requests: any[],
-   users: any[]
- ) => {
-   const monthlyData: any[] = [];
+  const processData = (
+    month: number,
+    comments: commetType[],
+    groups: groupsType[],
+    requests: requestType[],
+    users: usersType[]
+  ) => {
+    const monthlyData = [];
 
-   // Count comments for the selected month
-   const commentCount = comments.filter(
-     (comment) => new Date(comment.createdAt).getMonth() + 1 === month
-   ).length;
-   monthlyData.push({ name: "Comments", count: commentCount });
-console.log(commentCount);
+    // Count comments for the selected month
+    const commentCount = comments.filter(
+      (comment) => new Date(comment.createdAt).getMonth() + 1 === month
+    ).length;
+    monthlyData.push({ name: "Comments", count: commentCount });
+    console.log(commentCount);
 
-   // Count groups for the selected month
-   const groupCount = groups.filter(
-     (group) => new Date(group.createdAt).getMonth() + 1 === month
-   ).length;
-   monthlyData.push({ name: "Groups", count: groupCount });
-console.log("groupCount is :",groupCount);
+    // Count groups for the selected month
+    const groupCount = groups.filter(
+      (group) => new Date(group.createdOn).getMonth() + 1 === month
+    ).length;
+    monthlyData.push({ name: "Groups", count: groupCount });
+    console.log("groupCount is :", groupCount);
 
-   // Count requests for the selected month
-   const requestCount = requests.filter(
-     (request) => new Date(request.createdAt).getMonth() + 1 === month
-   ).length;
-   monthlyData.push({ name: "Requests", count: requestCount });
+    // Count requests for the selected month
+    const requestCount = requests.filter(
+      (request) => new Date(request.createdAt).getMonth() + 1 === month
+    ).length;
+    monthlyData.push({ name: "Requests", count: requestCount });
 
-   // Count user signups for the selected month
-   const userCount = users.filter(
-     (user) => new Date(user.createdAt).getMonth() + 1 === month
-   ).length;
-   monthlyData.push({ name: "Users", count: userCount });
+    // Count user signups for the selected month
+    const userCount = users.filter(
+      (user) => new Date(user.createdAt).getMonth() + 1 === month
+    ).length;
+    monthlyData.push({ name: "Users", count: userCount });
 
-   setChartData(monthlyData);
- };
+    setChartData(monthlyData);
+  };
 
-console.log("chartData",chartData);
+  console.log("chartData", chartData);
   const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedMonth = parseInt(event.target.value);
     setSelectedMonth(selectedMonth);

@@ -89,14 +89,16 @@ const UserManage = () => {
   ];
 
   return (
-    <div>
+    <div className="container mt-5">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage users</h1>
-      <SearchUi
-        handleSearch={() => {
-          handleSearch(searchTerm);
-        }}
-        search={"name"}
-      />
+      <div className="my-5">
+        <SearchUi
+          handleSearch={() => {
+            handleSearch(searchTerm);
+          }}
+          search={"name"}
+        />
+      </div>
       <Tables
         header={tableHead}
         datas={filteredUser.length > 0 ? filteredUser : filteredData}

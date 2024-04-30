@@ -1,3 +1,6 @@
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 interface TestimonialData {
   name: string;
   role: string;
@@ -28,6 +31,42 @@ const Testimonial = () => {
       rating: 4,
     },
   ];
+  const settings = {
+    dots: true,
+    arrows: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="container bg-white dark:bg-gray-900 dark:text-white flex flex-col jsutify-evenly items-center mx-auto  space-y-32 py-10 ">
@@ -38,51 +77,53 @@ const Testimonial = () => {
         Check out some of our recent product reviews.
       </p> */}
 
-      <div className="flex flex-col space-y-10 md:flex-row md:justify-center shadow-sm">
-        {testimonials.map((testimonial, index) => (
-          <div key={index} className="relative max-w-sm  shadow-sm">
-            {/* Stars */}
-            <div className="flex justify-center items-center mt-8 mb-4">
-              <div className="relative">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <span
-                    key={index}
-                    className={`absolute -top-9 -left-4 text-4xl ${
-                      index < testimonial.rating
-                        ? "text-yellow-500"
-                        : "text-gray-300"
-                    }`}
-                    style={{
-                      transform: `rotate(${
-                        index * (360 / 5)
-                      }deg) translate(30px) rotate(-${index * (360 / 5)}deg)`,
-                    }}
-                  >
-                    ★
-                  </span>
-                ))}
+      <div className="container">
+        <Slider {...settings}>
+          {testimonials.map((testimonial, index) => (
+            <div key={index} className="relative max-w-sm  shadow-sm">
+              {/* Stars */}
+              <div className="flex justify-center items-center mt-8 mb-4">
+                <div className="relative">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <span
+                      key={index}
+                      className={`absolute -top-9 -left-4 text-4xl ${
+                        index < testimonial.rating
+                          ? "text-yellow-500"
+                          : "text-gray-300"
+                      }`}
+                      style={{
+                        transform: `rotate(${
+                          index * (360 / 5)
+                        }deg) translate(30px) rotate(-${index * (360 / 5)}deg)`,
+                      }}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-lg font-bold text-center">
+                  {testimonial.rating}
+                </p>
               </div>
-              <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-lg font-bold text-center">
-                {testimonial.rating}
-              </p>
+              {/* Testimonial content */}
+              <div className="p-4">
+                {/* Comment */}
+                <p className="text-gray-800 mb-4 text-center">
+                  {testimonial.comment}
+                </p>
+                {/* Name */}
+                <p className="text-lg font-semibold mb-1 text-center">
+                  {testimonial.name}
+                </p>
+                {/* Role */}
+                <p className="text-gray-500 mb-2 text-center">
+                  {testimonial.role}
+                </p>
+              </div>
             </div>
-            {/* Testimonial content */}
-            <div className="p-4">
-              {/* Comment */}
-              <p className="text-gray-800 mb-4 text-center">
-                {testimonial.comment}
-              </p>
-              {/* Name */}
-              <p className="text-lg font-semibold mb-1 text-center">
-                {testimonial.name}
-              </p>
-              {/* Role */}
-              <p className="text-gray-500 mb-2 text-center">
-                {testimonial.role}
-              </p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </Slider>
       </div>
     </div>
   );

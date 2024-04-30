@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "../../Redux/store";
 import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
-import lucky from "../../../public/lucky.png";
+import { FaQuestionCircle } from "react-icons/fa";
 
 const LinkComponent = [
   {
@@ -32,23 +32,18 @@ const LinkComponent = [
     path: "/userDashboard/transactions",
     icon: <GrTransaction className="mr-3 text-xl" />,
   },
-  // {
-  //   id: 4,
-  //   name: "payment",
-  //   path: "/userDashboard/payment",
-  //   icon: <RiSecurePaymentFill className="mr-3 text-xl" />,
-  // },
+
   {
-    id: 5,
+    id: 4,
     name: "Account details",
     path: "/userDashboard/setting",
     icon: <RiSettings3Line className="mr-3 text-xl" />,
   },
   {
-    id: 6,
-    name: "winner selection",
-    path: "/userDashboard/winner",
-    icon: <img src={lucky} className="mr-3 w-5 h-5" />,
+    id: 5,
+    name: "send request",
+    path: "/userDashboard/sendrequest",
+    icon: <FaQuestionCircle className="mr-3 w-5 h-5" />,
   },
 ];
 

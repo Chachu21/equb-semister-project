@@ -1,12 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// import { v2 as cloudinary } from "cloudinary";
 import User from "../models/users.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import sendSMS from "../config/sendSMS.js";
-const phoneNumber = "+251943438385";
-const message = "hey muller wellcome to my equb";
 import cloudinary from "../utils/cloudinary.js";
 
 // Create User
@@ -21,7 +18,7 @@ export const createUser = async (req, res) => {
       $or: [{ phone }, { email }],
     });
     if (existingUser) {
-      console.log(existingUser.phone_number, existingUser.email);
+      console.log(existingUser.phone, existingUser.email);
       return res.status(400).json({
         error: "User with this phone number or email already exists",
       });
@@ -190,21 +187,6 @@ export const loginController = async function (req, res) {
   }
 };
 
-// export const comparePasswords = async (password, hashedPassword) => {
-//   try {
-//     return await bcrypt.compare(password, hashedPassword);
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// export const logoutController = (req, res) => {
-//   // Clear user data from session
-//   req.user = null;
-//   res.status(200).json({ message: "Logout successful" });
-// };
-
-//
 // Function to send password reset email
 const sendPasswordResetEmail = async (email, token) => {
   try {
@@ -286,11 +268,11 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ error: "Invalid or expired token" });
     }
 
-    // Hash the new password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // // Hash the new password
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Update user's password and clear reset token fields
-    user.password = hashedPassword;
+    // // Update user's password and clear reset token fields
+    user.password = password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 

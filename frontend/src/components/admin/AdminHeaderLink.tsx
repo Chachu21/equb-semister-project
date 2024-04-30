@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { RiSearchLine } from "react-icons/ri";
+// import { RiSearchLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
 import { logoutSuccess } from "../../Redux/Features/userSlice";
 
 const AdminHeaderLink = () => {
-  const [search, setSearch] = useState(false);
-  const [nnotification, setnnotification] = useState(false);
+  //   const [search, setSearch] = useState(false);
+  //   const [nnotification, setnnotification] = useState(false);
   const [Profile, setProfile] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const handlesearch = () => {
-    setSearch(!search);
-    setnnotification(false);
-    setProfile(false);
-  };
+  // const handlesearch = () => {
+  //   setSearch(!search);
+  //   setnnotification(false);
+  //   setProfile(false);
+  // };
 
   const logoutHandler = async () => {
     try {
@@ -30,7 +30,7 @@ const AdminHeaderLink = () => {
   return (
     <>
       <ul className="ml-auto flex items-center">
-        {/*for search begin */}
+        {/* for search begin
         <li className="mr-1 relative">
           <button
             onClick={handlesearch}
@@ -69,7 +69,7 @@ const AdminHeaderLink = () => {
         {/* search end */}
 
         {/* notification */}
-        <li className="">
+        {/* <li className="">
           <button
             onClick={() => {
               setnnotification(!nnotification);
@@ -329,13 +329,11 @@ const AdminHeaderLink = () => {
               </ul>
             </div>
           </div>
-        </li>
+        </li> */}
         <li className="ml-3">
           <button
             onClick={() => {
               setProfile(!Profile);
-              setnnotification(false);
-              setSearch(false);
             }}
             type="button"
             className="flex items-center"
@@ -374,14 +372,6 @@ const AdminHeaderLink = () => {
                 Profile
               </Link>
             </li>
-            {/* <li>
-              <Link
-                to="#"
-                className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50"
-              >
-                Settings
-              </Link>
-            </li> */}
             <li>
               <form method="POST" action="" onClick={logoutHandler}>
                 <Link
