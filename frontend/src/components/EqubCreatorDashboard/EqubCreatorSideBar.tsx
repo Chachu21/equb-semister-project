@@ -84,7 +84,7 @@ const EqubCreatorSideBar = () => {
       >
         <div className="flex justify-between items-center">
           <Link
-            to="/admin"
+            to="/equbCreatorDashboard"
             className="items-center pb-4 border-b border-b-gray-800"
           >
             <h2 className="font-bold text-2xl">

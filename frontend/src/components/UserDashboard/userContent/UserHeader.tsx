@@ -58,7 +58,7 @@ const UserHeader = () => {
           >
             <RiMenuFill />
           </button>
-          <span>Dashboard</span>
+          {/* <span>Dashboard</span> */}
         </div>
         <ul>
           <li className="ml-3">

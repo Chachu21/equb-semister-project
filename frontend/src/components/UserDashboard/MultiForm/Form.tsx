@@ -114,12 +114,7 @@ const Form = () => {
 
       //check user name and accountholder name is same
       if (data.name === data.account_holder_name) {
-        console.log(
-          "name:",
-          data.name,
-          "accountholder:",
-          data.account_holder_name
-        );
+        console.log(data.name, data.account_holder_name);
         // Prepare the data to be sent to the backend
         const bank_account = {
           bank_name: data.bank_name,
@@ -139,6 +134,8 @@ const Form = () => {
           },
         };
 
+        // if (data.account_holder_name ===) {
+        // }
         // Send the data to the backend
         await axios.put(
           `http://localhost:5000/api/v1/users/update/${id}`,
@@ -232,6 +229,7 @@ const Form = () => {
         id="front"
         label="ID front"
         register={register}
+        accept="image/*"
         placeholder="front part of your ID"
         required
         onChange={(e) => {
@@ -241,6 +239,7 @@ const Form = () => {
       <Input
         type="file"
         errors={errors}
+        accept="image/*"
         id="back"
         label="ID Back"
         register={register}

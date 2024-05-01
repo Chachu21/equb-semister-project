@@ -30,7 +30,7 @@ const About = () => {
       </section>
       <section className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-10">
-          <div className="flex flex-col items-start bg-white shadow-lg p-16 rounded-lg mb-4 md:mb-0">
+          <div className="flex flex-col items-start bg-white shadow-lg p-6 rounded-lg mb-4 md:mb-0">
             <h2 className="text-xl md:text-2xl text-[#1F284F] font-bold mb-2 md:mb-4">
               Vision
             </h2>
@@ -60,8 +60,10 @@ const About = () => {
               Our Team
             </h2>
             <p className="font-light text-gray-500 lg:mb-16 md:text-xl dark:text-gray-400">
-              Explore the whole collection of open-source web components and
-              elements built with the utility classNamees from Tailwind
+              At Equb system, we pride ourselves on our diverse and talented
+              team, united by a shared passion for project mission or values.
+              Get to know the individuals behind our success, each bringing
+              unique expertise and dedication to their roles.
             </p>
           </div>
           <div className="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
@@ -83,8 +85,8 @@ jJ6F6JtKv4lP4PWJtj91P/rH/PUQhH0p6ZPo1/eFLw8l328/r3n9I74FCE8vZ4uS3r/e7vxLX5KC9R9G
                   CEO & Web Developer
                 </span>
                 <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                  Chalie drives the technical strategy of the equb platform and
-                  brand.
+                  As CEO, he provides strategic leadership and direction,
+                  guiding our team towards achieving our mission and goals.
                 </p>
                 <ul className="flex space-x-4 md:mt-0">
                   <li>
@@ -177,8 +179,10 @@ bQf1W9aoGA0iy1tmHdtvTBjbRoU9AQRhAEQQEiCEIggIIghCMICCNqAJrhpLHgEgljgCNCNOSDhXGdh3
                 </h3>
                 <span className="text-gray-500 dark:text-gray-400">CTO</span>
                 <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                  Muller drives the technical strategy of the equb platform and
-                  brand.
+                  As the CTO, he is responsible for overseeing the development
+                  and implementation of our technology roadmap, ensuring that
+                  our products and services are built on the latest advancements
+                  in technology.
                 </p>
                 <ul className="flex space-x-4 md:mt-0">
                   <li>
@@ -275,8 +279,8 @@ WLRg2fWuOd9UwjT0fDdV4fUSXcqhIttCmYMitIpmDIpQLBPkRJFC00lao0iqKLaW34oxkd88m0fE8Fcp
                   Full-stack Developer
                 </span>
                 <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                  Natty drives the technical strategy of the equb platform and
-                  brand.
+                  he is our skilled Full-stack Developer, proficient in both
+                  front-end and back-end technologies.
                 </p>
                 <ul className="flex space-x-4 md:mt-0">
                   <li>
@@ -370,8 +374,9 @@ WLRg2fWuOd9UwjT0fDdV4fUSXcqhIttCmYMitIpmDIpQLBPkRJFC00lao0iqKLaW34oxkd88m0fE8Fcp
                   Marketing & Sale
                 </span>
                 <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                  Gebre drives the technical strategy of the equb platform and
-                  brand.
+                  he is our dynamic Marketing & Sales specialist, spearheading
+                  our company's efforts to connect with customers and drive
+                  revenue growth.
                 </p>
                 <ul className="flex space-x-4 md:mt-0">
                   <li>
@@ -452,23 +457,6 @@ WLRg2fWuOd9UwjT0fDdV4fUSXcqhIttCmYMitIpmDIpQLBPkRJFC00lao0iqKLaW34oxkd88m0fE8Fcp
           </div>
         </div>
       </section>
-
-      <div className="flex items-center justify-center pb-40">
-        <div className="w-full flex  flex-col space-y-5 justify-center items-center max-w-xl p-6 bg-white rounded-lg shadow-sm">
-          <h2 className="text-2xl text-[#1F284F] font-bold mb-4">
-            Our Memories
-          </h2>
-          <p className="text-gray-600 mb-4 text-center">
-            Giving you the safest, quickest, and most modern approach to make
-            and receive payments to and from anywhere in the world.
-          </p>
-          <div className="flex justify-end">
-            <button className="bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-8 rounded">
-              Follow
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

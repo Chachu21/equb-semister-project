@@ -5,7 +5,6 @@ import UserHeader from "./UserHeader";
 
 const UserContent = () => {
   const isClicked = useSelector((state: RootState) => state.user.isClicked);
-
   return (
     <div
       className={`w-full relative flex flex-col flex-1 bg-gray-200 min-h-screen transition-all  ${

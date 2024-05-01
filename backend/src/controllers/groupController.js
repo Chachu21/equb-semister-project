@@ -66,7 +66,7 @@ export const createGroup = async (req, res) => {
 //get all groups
 export const getAllGroups = async (req, res) => {
   try {
-    const groups = await Group.find();
+    const groups = await Group.find().sort({ createdOn: -1 });
     // console.log(groups);
     res.json({ groups: groups });
   } catch (error) {
@@ -152,9 +152,9 @@ export const joinGroup = async (req, res) => {
     const userGroupsCount = await Group.countDocuments({ members: userId });
 
     // Check if the user has already joined the maximum number of groups (2 in this case)
-    if (userGroupsCount >= 3) {
+    if (userGroupsCount >= 2) {
       return res.status(400).json({
-        error: "User has already joined the maximum number of groups",
+        error: "you has already joined the maximum limit number of groups",
       });
     }
 

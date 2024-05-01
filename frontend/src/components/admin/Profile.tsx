@@ -10,10 +10,6 @@ const Profile: React.FC = () => {
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [image, setImage] = useState<string>("");
   const [saving, setSaving] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showChangePassword, setShowChangePassword] = useState(false);
   const userData = useSelector((state: RootState) => state.user.user);
   const id = userData?._id;
   const token = userData?.token;
@@ -103,44 +99,6 @@ const Profile: React.FC = () => {
         toast.error(axiosError.response.data.error);
       }
     }
-  };
-
-  //for handling password changes
-
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const data = {
-        password: newPassword,
-        confirmPassword: confirmPassword,
-      };
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/users/${id}`,
-        data,
-        config
-      );
-      console.log("Password changed successfully");
-      console.log(response);
-
-      if (response) {
-        toast.success("Successfully changed password");
-      }
-
-      // Optionally, you can show a success message to the user
-    } catch (error) {
-      console.error("Error changing password:", error);
-      // Optionally, you can show an error message to the user
-    }
-  };
-  //for toggling password
-  const toggleChangePassword = () => {
-    setShowChangePassword(!showChangePassword);
   };
 
   return (
@@ -274,84 +232,6 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </div>
-      {!showChangePassword && (
-        <button className="button green" onClick={toggleChangePassword}>
-          Change Password
-        </button>
-      )}
-      {showChangePassword && (
-        <div className="card">
-          <header className="card-header relative">
-            <p className="card-header-title">
-              <span className="icon">
-                <i className="mdi mdi-lock"></i>
-              </span>
-              Change Password
-            </p>
-            <span
-              className="absolute top-0 right-5 cursor-pointer hover:text-red-500 bg-white text-5xl"
-              onClick={toggleChangePassword}
-            >
-              &times;
-            </span>
-          </header>
-          <div className="card-content">
-            <form onSubmit={handleChangePassword}>
-              <div className="field">
-                <label className="label">Current password</label>
-                <div className="control">
-                  <input
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    autoComplete="current-password"
-                    className="input"
-                    required
-                  />
-                </div>
-                <p className="help">Required. Your current password</p>
-              </div>
-              <hr />
-              <div className="field">
-                <label className="label">New password</label>
-                <div className="control">
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    autoComplete="new-password"
-                    className="input"
-                    required
-                  />
-                </div>
-                <p className="help">Required. New password</p>
-              </div>
-              <div className="field">
-                <label className="label">Confirm password</label>
-                <div className="control">
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    autoComplete="new-password"
-                    className="input"
-                    required
-                  />
-                </div>
-                <p className="help">Required. New password one more time</p>
-              </div>
-              <hr />
-              <div className="field">
-                <div className="control">
-                  <button type="submit" className="button green">
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

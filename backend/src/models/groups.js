@@ -4,42 +4,12 @@ import sendSMS from "../config/sendSMS.js"; // Assuming SMS sending function
 import User from "./users.js";
 import Payment from "./payments.js";
 
-// const contributionSchema = new mongoose.Schema({
-//   user: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User",
-//     required: true,
-//   },
-//   round: {
-//     type: Number,
-//     required: true,
-//   },
-//   amount: {
-//     type: Number,
-//     required: true,
-//     min: 0,
-//   },
-//   timestamp: {
-//     type: Date,
-//     default: Date(),
-//   },
-//   status: {
-//     type: String,
-//     enum: ["pending", "paid"],
-//     default: "pending",
-//   },
-// });
-
 const roundSchema = new mongoose.Schema({
   round_no: {
     type: Number,
     required: true,
   },
-  // totalCollected: {
-  //   type: Number,
-  //   required: true,
-  //   min: 0,
-  // },
+
   winner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -57,9 +27,6 @@ const roundSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  // distributedAmount: {
-  //   type: Number,
-  // },
 });
 
 const groupSchema = new mongoose.Schema({
@@ -131,7 +98,6 @@ const groupSchema = new mongoose.Schema({
     type: Number,
     // required: true,
   },
-  // contributions: [contributionSchema],
   rounds: [roundSchema],
 });
 
@@ -175,16 +141,13 @@ groupSchema.pre("save", async function (next) {
     this.status = "started";
     this.round = 1;
     const startedMessage = `Congratulations! The ${this.name} equb has started.`;
-    console.log("i am in side in start notification");
     // Retrieve phone numbers of all group members
     const memberPhonePromises = this.members.map(async (user_id) => {
       const user = await User.findById(user_id);
       return user ? user.phone : null;
     });
-    console.log("member promise of phone number", memberPhonePromises);
     // Await all promises to resolve
     const memberPhoneNumbers = await Promise.all(memberPhonePromises);
-    console.log(memberPhoneNumbers);
     // Filter out null values and send SMS to each member
     memberPhoneNumbers
       .filter((phone) => phone)
@@ -221,18 +184,25 @@ groupSchema.methods.selectWinner = async function () {
   ) {
     // Retrieve previous winners
     const previousWinners = this.winners;
-
+    console.log("previous winners", previousWinners);
     // Filter members who haven't paid successfully
     const allMembersPaid = await Promise.all(
       this.members.map(async (memberId) => {
+        console.log(memberId, this._id, this.round);
         // Check if all payments for the member are successful
         const payments = await Payment.find({
           user: memberId,
           equbGroup: this._id,
           round: this.round,
-          // status: "success",
         });
-        return payments.every((payment) => payment.status === "success");
+        console.log("payment successful", payments);
+
+        // Ensure payments is an array before using every()
+        if (Array.isArray(payments) && payments.length > 0) {
+          return payments.every((payment) => payment.status === "success");
+        } else {
+          return false; // No successful payments found for this member
+        }
       })
     );
 

@@ -97,6 +97,7 @@ const ManageUserRequest = () => {
           filteredUserRequest.length > 0 ? filteredUserRequest : filteredData
         }
         onDelete={handleDelete}
+        hasDelete={true}
       />
     </div>
   );

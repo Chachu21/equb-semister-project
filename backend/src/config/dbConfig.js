@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const createDatabase = () => {
   mongoose
-    .connect(process.env.MONGO_URL, {
+    .connect(process.env.DB_URL, {
       // useNewUrlParser: true,
       // useUnifiedTopology: true,
     })

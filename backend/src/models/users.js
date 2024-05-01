@@ -80,12 +80,10 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Middleware to update is_approved when bank_account is filled
+//Middleware to update is_approved when bank_account is filled
 userSchema.pre("save", function (next) {
-  console.log("update is approved properties");
   if (this.isModified("bank_account") && !this.is_approved) {
     this.is_approved = true;
-    console.log(this.is_approved);
   }
   next();
 });

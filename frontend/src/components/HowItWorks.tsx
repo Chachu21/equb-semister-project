@@ -5,7 +5,7 @@ const HowItWorks = () => {
         <h2 className="flex justify-center items-center my-12 pt-10 text-3xl text-[#1F284F] underline underline-offset-8">
           How It Works
         </h2>
-        <div className="flex flex-col md:flex-row md:space-x-24 justify-center">
+        <div className="flex flex-col md:flex-row md:space-x-24 justify-center text-gray-500">
           <div className="flex items-center mx-4 mb-8 md:mb-0">
             <div className="bg-[#008B8B] text-white rounded-full w-16 h-16 flex items-center justify-center text-md font-bold m-6">
               1
@@ -20,15 +20,15 @@ const HowItWorks = () => {
             <div className="bg-[#008B8B] text-white rounded-full w-16 h-16 flex items-center justify-center text-md font-bold m-6">
               2
             </div>
-            <div className="max-w-xs">
+            <div className="max-w-xs ">
               Join or request to create a Group: Once logged in, you can join
-              either an existing or a new equb group.after joining an equb group
-              member must fulfill all nessessary requirmentslisted on the
+              either an existing or a new equb group. after joining an equb
+              group member must fulfill all nessessary requirments listed on the
               platform.
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row md:space-x-24 justify-center">
+        <div className="flex flex-col md:flex-row md:space-x-24 justify-center text-gray-500">
           <div className="flex items-center mx-4 mb-8 md:mb-0">
             <div className="bg-[#008B8B] text-white rounded-full w-16 h-16 flex items-center justify-center text-md font-bold m-6">
               3
@@ -51,18 +51,18 @@ const HowItWorks = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row md:space-x-24 justify-center">
+        <div className="flex flex-col md:flex-row md:space-x-24 justify-center text-gray-500">
           <div className="flex items-center mx-4 mb-8 md:mb-0">
             <div className="bg-[#008B8B] text-white rounded-full w-16 h-16 flex items-center justify-center text-md font-bold m-6">
               5
             </div>
             <div className="max-w-xs">
-              Fifth Explanation.Receive Payout: If you're selected to receive
-              the money, you'll receive the payout by selecting one or two
-              members as garantee or colatorial based on rotation schedule.
-              After receiving your payout, you'll continue to make contributions
-              according to the group's schedule. The cycle repeats until all
-              members have received their payouts.
+              Receive Payout: If you're selected to receive the money, you'll
+              receive the payout by selecting one or two members as garantee or
+              colatorial based on rotation schedule. After receiving your
+              payout, you'll continue to make contributions according to the
+              group's schedule. The cycle repeats until all members have
+              received their payouts.
             </div>
           </div>
           <div className="flex items-center mx-4 mb-8 md:mb-0">
@@ -70,9 +70,9 @@ const HowItWorks = () => {
               6
             </div>
             <div className="max-w-xs">
-              Sixth Explanation. Provide Feedback: If the EQUB system has a
-              feedback mechanism, use it to provide suggestions for improvement
-              or report any issues you encounter while using the platform.
+              Provide Feedback: If the EQUB system has a feedback mechanism, use
+              it to provide suggestions for improvement or report any issues you
+              encounter while using the platform.
             </div>
           </div>
         </div>

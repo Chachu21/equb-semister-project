@@ -11,6 +11,8 @@ import {
   resetPassword,
   getResetPassword,
 } from "../controllers/userController.js";
+import { verifyToken } from "../midleware/jwtMiddleware.js";
+import isAdmin from "../midleware/isAdmin.js";
 const userRouter = express.Router();
 
 userRouter.get("resetPassword/:token", getResetPassword);
@@ -26,6 +28,6 @@ userRouter.post("/resetPassword/:token", resetPassword);
 
 userRouter.put("/update/:id", updateUser);
 
-userRouter.delete("/delete/:id", deleteUser);
+userRouter.delete("/delete/:id", verifyToken, isAdmin, deleteUser);
 
 export default userRouter;

@@ -68,10 +68,10 @@ const Tables = <T,>({ header, datas, onDelete, hasDelete }: TableProps<T>) => {
                   </td>
                 ))}
                 {hasDelete && (
-                  <td>
+                  <td className=" h-full justify-center flex mt-4">
                     <button
                       onClick={() => handleDelete(data._id)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-red-600  text-center hover:text-red-900"
                     >
                       Delete
                     </button>

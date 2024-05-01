@@ -1,4 +1,4 @@
-import Service from "../components/Service";
+// import Service from "../components/Service";
 import Hero from "../components/Hero";
 import Feature from "../components/Feature";
 import SampleEqubGroup from "../components/SampleEqubGroup";
@@ -12,9 +12,9 @@ const Home = () => {
   return (
     <section className="flex flex-col space-y-10 min-h-screen bg-white dark:bg-gray-700 dark:text-white">
       <Hero />
-      <Service />
-      <HowItWorks />
       <Feature />
+      {/* <Service /> */}
+      <HowItWorks />
       <SampleEqubGroup />
       <WhoisEligible />
       <FrequentlyAskedQuestions />

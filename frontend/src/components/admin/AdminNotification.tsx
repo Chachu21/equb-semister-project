@@ -15,7 +15,7 @@ const NotificationComponent: React.FC = () => {
   const [unseenCount, setUnseenCount] = useState<number>(0);
 
   useEffect(() => {
-    async function fetchNotifications() {
+    const fetchNotifications = async () => {
       try {
         const response = await axios.get(
           "http://localhost:5000/api/v1/notification/get"
@@ -25,7 +25,7 @@ const NotificationComponent: React.FC = () => {
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
-    }
+    };
     fetchNotifications();
   }, []);
 

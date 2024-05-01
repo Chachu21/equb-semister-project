@@ -5,12 +5,15 @@ import Tables from "../UI/Tables";
 import { RootState } from "../../Redux/store";
 import { useSelector } from "react-redux";
 import { usersType } from "../../types/usersType";
+import { toast } from "react-toastify";
 
 interface UserData {
-  _id: string;
+  address: string;
   name: string;
   phone: string;
   email: string;
+  _id: string;
+  city: string;
 }
 
 const UserManage = () => {
@@ -27,19 +30,23 @@ const UserManage = () => {
       const response = await axios.get<usersType[]>(
         "http://localhost:5000/api/v1/users"
       );
-      setTableData(response.data);
+      setTableData(response.data.filter((res) => res.role === "user"));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   // Extract only necessary fields from tableData
-  const filteredData = tableData.map(({ _id, name, email, phone }) => ({
-    _id,
-    name,
-    email,
-    phone,
-  }));
+  const filteredData = tableData.map(
+    ({ _id, name, email, phone, address, city }) => ({
+      _id,
+      name,
+      email,
+      phone,
+      address,
+      city,
+    })
+  );
 
   const handleSearch = (searchTerm: string) => {
     const filteredResults = filteredData.filter((data) =>
@@ -58,10 +65,25 @@ const UserManage = () => {
         },
       };
 
-      await axios.delete(
-        `http://localhost:5000/api/v1/users/${userId}`,
-        config
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/group/get/by/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      const groupsData = response.data.group;
+      if (groupsData && groupsData.status === "stated") {
+        toast.warning("you can not delete a user");
+      } else if (response.status === 404) {
+        toast.warning("this action allowed for admin");
+      } else {
+        await axios.delete(
+          `http://localhost:5000/api/v1/users/delete/${userId}`,
+          config
+        );
+      }
       setTableData(tableData.filter((user) => user._id !== userId));
       setFilteredUser(filteredUser.filter((user) => user._id !== userId));
     } catch (error) {
@@ -71,10 +93,12 @@ const UserManage = () => {
   // Other functions remain the same
 
   const tableHead = [
-    { id: "1", title: "User ID" },
+    { id: "1", title: "ID" },
     { id: "2", title: "Name" },
     { id: "3", title: "Email" },
-    { id: "4", title: "Phone" },
+    { id: "4", title: "PHONE" },
+    { id: "5", title: "Address" },
+    { id: "6", title: "City" },
   ];
 
   return (
@@ -87,6 +111,7 @@ const UserManage = () => {
         header={tableHead}
         datas={filteredUser.length > 0 ? filteredUser : filteredData}
         onDelete={handleDelete}
+        hasDelete={true}
       />
     </div>
   );

@@ -58,7 +58,7 @@ async function sendPostReminderForUnpaidPayments(user, group) {
 }
 
 async function UserUnPaidAnnouncement(group) {
-  console.log("from deadline", group);
+  console.log("from deadline");
   let addation = 0;
   if (group.types === "daily" && group.roundDuration === 1) {
     addation = 3 * 60 * 60 * 1000;
@@ -70,7 +70,7 @@ async function UserUnPaidAnnouncement(group) {
   try {
     const today = new Date();
     const overdueMembers = [];
-
+    console.log("i am in side for loop");
     for (const member of group.members) {
       const userId = member;
       const userData = await User.findById(userId);
@@ -89,15 +89,21 @@ async function UserUnPaidAnnouncement(group) {
         (payment) => payment.status === "success"
       );
 
-      const lastPayment = payments[payments.length - 1];
+      // const lastPayment = payments[payments.length - 1];
       const paymentIntervalInMillis =
         group.paymentInterval * 24 * 60 * 60 * 1000;
+      const winnerSelectionDate = new Date(group.startDate);
+      const durationMilliseconds = group.roundDuration * 24 * 60 * 60 * 1000;
+      winnerSelectionDate.setTime(
+        winnerSelectionDate.getTime() + durationMilliseconds
+      );
       const paymentDeadline = new Date(
         winnerSelectionDate.getTime() - paymentIntervalInMillis + addation
       );
-
-      if (today.toString() === paymentDeadline.toString() && !lastPayment) {
+      console.log(today.toString() === paymentDeadline.toString());
+      if (today.toString() === paymentDeadline.toString()) {
         if (!hasSuccessfulPayment) {
+          console.log("pushin unpaid to overdue");
           overdueMembers.push(member);
         }
       } else {
@@ -105,6 +111,7 @@ async function UserUnPaidAnnouncement(group) {
       }
     }
     if (overdueMembers.length > 0) {
+      console.log("inside overdue member greater than 0");
       // Send notifications to overdue members
       for (const memberId of overdueMembers) {
         const userData = await User.findById(memberId);

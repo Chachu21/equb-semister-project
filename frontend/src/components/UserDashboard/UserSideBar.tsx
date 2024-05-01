@@ -6,7 +6,7 @@ import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
 import { FaQuestionCircle } from "react-icons/fa";
-import { SiCashapp } from "react-icons/si";
+// import { SiCashapp } from "react-icons/si";
 
 const LinkComponent = [
   {
@@ -41,12 +41,12 @@ const LinkComponent = [
     path: "/userDashboard/sendrequest",
     icon: <FaQuestionCircle className="mr-3 w-5 h-5" />,
   },
-  {
-    id: 6,
-    name: "payout",
-    path: "/userDashboard/payout",
-    icon: <SiCashapp className="mr-3 w-5 h-5" />,
-  },
+  // {
+  //   id: 6,
+  //   name: "payout",
+  //   path: "/userDashboard/payout",
+  //   icon: <SiCashapp className="mr-3 w-5 h-5" />,
+  // },
 ];
 
 const UserSideBar = () => {

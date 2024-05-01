@@ -28,10 +28,10 @@ import { RootState } from "./Redux/store";
 import Page404 from "./pages/404";
 import DetailOfGroupType from "./components/UserDashboard/UI/DetailOfGroupType";
 import ManageUserRequest from "./components/EqubCreatorDashboard/ManageUserRequest";
-import EqubCreatorDashboardContent from "./components/EqubCreatorDashboard/EqubCreatorDashboardContent";
+// import EqubCreatorDashboardContent from "./components/EqubCreatorDashboard/EqubCreatorDashboardContent";
 import NotificationComponent from "./components/admin/AdminNotification";
 import ManageCreators from "./components/admin/ManageCreator";
-import Payout from "./components/UserDashboard/userContent/Payout";
+// import Payout from "./components/UserDashboard/userContent/Payout";
 
 const App = () => {
   const role = useSelector((state: RootState) => state.user.user?.role);
@@ -102,7 +102,7 @@ const App = () => {
                 path="/userDashboard/statusdetailofgroup"
                 element={<DetailOfGroupType />}
               />
-              <Route path="/userDashboard/payout" element={<Payout />} />
+              {/* <Route path="/userDashboard/payout" element={<Payout />} /> */}
             </Route>
           )}
 
@@ -115,9 +115,8 @@ const App = () => {
               <Route
                 path="/equbCreatorDashboard"
                 index
-                element={<EqubCreatorDashboardContent />}
+                element={<ManageGroups />}
               />
-
               <Route
                 path="/equbCreatorDashboard/manageGroups"
                 element={<ManageGroups />}
@@ -125,6 +124,10 @@ const App = () => {
               <Route
                 path="/equbCreatorDashboard/requests"
                 element={<ManageUserRequest />}
+              />
+              <Route
+                path="/equbCreatorDashboard/profile"
+                element={<Profile />}
               />
             </Route>
           )}

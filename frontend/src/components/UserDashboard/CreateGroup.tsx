@@ -1,10 +1,9 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
-import { useNavigate } from "react-router-dom";
 
 interface FormData {
   name: string;
@@ -20,7 +19,6 @@ interface ModalProps {
 }
 
 const CreateGroup = ({ onClose, isOpen }: ModalProps) => {
-  const naviagte = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
   const initialValues: FormData = {
     name: "",
@@ -43,18 +41,21 @@ const CreateGroup = ({ onClose, isOpen }: ModalProps) => {
       .positive("Number of members must be positive")
       .min(3, "member must be greater than or equal to 3"),
     roundDuration: Yup.number()
-      .required("Number of members must be greater than or equal to 0.5")
-      .positive("number must be positive")
+      .required("round duration must be greater than or equal to 0.5")
+      .positive("duration must be positive")
       .min(
         0,
-        "the duration of equb from selecting winner to next selection winner is  must be greater than or equal to 1day"
+        "the duration of equb from selecting winner to next selection winner is  must be greater than or equal to 1 day"
       ),
   });
 
-  const handleSubmit = async (values: FormData) => {
+  const handleSubmit = async (
+    values: FormData,
+    { resetForm }: FormikHelpers<FormData>
+  ) => {
     try {
       if (values.types === "daily") {
-        values.paymentInterval = 0.00208;
+        values.paymentInterval = 0.00694;
       } else if (values.types === "weekly") {
         values.paymentInterval = 2;
       } else if (values.types === "monthly") {
@@ -73,9 +74,8 @@ const CreateGroup = ({ onClose, isOpen }: ModalProps) => {
 
       if (response) {
         toast.success("Successfully created group");
-
-        // naviagte to manage group
-        naviagte("/equbCreatorDashboard/manageGroups");
+        resetForm();
+        onClose();
       }
       console.log(response.data);
     } catch (error) {

@@ -41,14 +41,9 @@ const LineCharts: React.FC = () => {
 
       const comments = commentsResponse.data;
       const groups = groupsResponse.data.groups;
-      console.log("groupResponse :", groups);
 
       const requests = requestsResponse.data;
       const users = usersResponse.data;
-      console.log("comments", comments);
-      console.log("groups", groups);
-      console.log("requests", requests);
-      console.log("users", users);
 
       processData(month, comments, groups, requests, users);
     } catch (error) {
@@ -70,14 +65,12 @@ const LineCharts: React.FC = () => {
       (comment) => new Date(comment.createdAt).getMonth() + 1 === month
     ).length;
     monthlyData.push({ name: "Comments", count: commentCount });
-    console.log(commentCount);
 
     // Count groups for the selected month
     const groupCount = groups.filter(
       (group) => new Date(group.createdOn).getMonth() + 1 === month
     ).length;
     monthlyData.push({ name: "Groups", count: groupCount });
-    console.log("groupCount is :", groupCount);
 
     // Count requests for the selected month
     const requestCount = requests.filter(
@@ -94,7 +87,6 @@ const LineCharts: React.FC = () => {
     setChartData(monthlyData);
   };
 
-  console.log("chartData", chartData);
   const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedMonth = parseInt(event.target.value);
     setSelectedMonth(selectedMonth);

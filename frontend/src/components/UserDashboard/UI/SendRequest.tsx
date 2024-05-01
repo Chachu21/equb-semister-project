@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SendRequest = () => {
   const [equbType, setEqubType] = useState<string>("");
@@ -39,16 +40,14 @@ const SendRequest = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/request/create",
-        {
-          equbType,
-          equbTypeLength,
-          amount,
-          numMembers,
-        }
-      );
-      console.log("Request submitted:", response.data);
+      await axios.post("http://localhost:5000/api/v1/request/create", {
+        equbType,
+        equbTypeLength,
+        amount,
+        numMembers,
+      });
+
+      toast.success("request sent successfully");
 
       // Clear form fields
       setEqubType("");

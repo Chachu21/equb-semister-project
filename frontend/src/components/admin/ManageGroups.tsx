@@ -24,18 +24,25 @@ const ManageGroups = () => {
   // const user_id = userData?._id;
   // const token = userData?.token;
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/group/getAll"
-        );
-        setEqubGroups(response.data.groups);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
   }, []);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/group/getAll"
+      );
+      setEqubGroups(response.data.groups);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Call fetchData again when showModal changes
+    if (!showModal) {
+      fetchData();
+    }
+  }, [showModal]);
 
   // Extract only necessary fields from tableData
   const filteredData = equbGroups.map(

@@ -18,14 +18,11 @@ export const createUser = async (req, res) => {
       $or: [{ phone }, { email }],
     });
     if (existingUser) {
-      console.log(existingUser.phone, existingUser.email);
+      // console.log(existingUser.phone, existingUser.email);
       return res.status(400).json({
         error: "User with this phone number or email already exists",
       });
     }
-
-    // Hash the password
-    // const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user object
     const newUser = new User({
@@ -41,7 +38,7 @@ export const createUser = async (req, res) => {
     // console.log(savedUser);
     res.status(201).json({ message: "your account created successfully" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error: "An error occurred while signing up" });
   }
 };
@@ -69,69 +66,12 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch User" });
   }
 };
-//for updating users information
-// export const updateUser = async (req, res) => {
-//   const { updates } = req.body; // Assume updates is an object containing optional fields for updates
-//   try {
-//     const userId = req.params.id;
-//     let updateData = {};
-
-//     // Check if user exists
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-
-//     // Check if the incoming data is the same as the existing data
-//     const isSameData = Object.keys(updates).every(
-//       (key) => user[key] === updates[key]
-//     );
-
-//     if (isSameData) {
-//       return res.status(400).json({ error: "No changes were made" });
-//     }
-
-//     // Iterate through the updates and add them to updateData
-//     for (const key in updates) {
-//       // Exclude password updates
-//       if (key !== "password") {
-//         updateData[key] = updates[key];
-//       }
-//     }
-
-//     // If image URL is provided, upload it to cloudinary
-//     if (updates.imageUrl) {
-//       const result = await cloudinary.uploader.upload(updates.imageUrl, {
-//         upload_preset: "profile",
-//       });
-//       updateData.imageUrl = {
-//         public_id: result.public_id,
-//         url: result.secure_url,
-//       };
-//     }
-
-//     // Update the user
-//     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-//       new: true,
-//     });
-
-//     if (!updatedUser) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-
-//     // Send success response with updated user data
-//     res.json(updatedUser);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "Failed to update User" });
-//   }
-// };
 
 // Delete User
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    console.log(userId);
+    // console.log(userId);
     const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) {
       return res.status(404).json({ error: "User not found" });
@@ -269,9 +209,6 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ error: "Invalid or expired token" });
     }
 
-    // // Hash the new password
-    // const hashedPassword = await bcrypt.hash(password, 10);
-
     // // Update user's password and clear reset token fields
     user.password = password;
     user.resetPasswordToken = undefined;
@@ -385,7 +322,7 @@ const uploadImageToCloudinary = async (imageData) => {
     const result = await cloudinary.uploader.upload(imageData, {
       upload_preset: "profile",
     });
-    console.log(result);
+    // console.log(result);
     return { public_id: result.public_id, url: result.secure_url };
   } catch (error) {
     console.error("Error uploading image to Cloudinary:", error);

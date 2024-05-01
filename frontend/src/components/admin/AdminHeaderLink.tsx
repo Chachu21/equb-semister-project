@@ -12,12 +12,6 @@ const AdminHeaderLink = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  // const handlesearch = () => {
-  //   setSearch(!search);
-  //   setnnotification(false);
-  //   setProfile(false);
-  // };
-
   const logoutHandler = async () => {
     try {
       dispatch(logoutSuccess());

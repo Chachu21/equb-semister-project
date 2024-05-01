@@ -5,11 +5,14 @@ import Tables from "../UI/Tables";
 import { RootState } from "../../Redux/store";
 import { useSelector } from "react-redux";
 import { usersType } from "../../types/usersType";
+import { MdPersonAddAlt1 } from "react-icons/md";
 interface UserData {
-  _id: string;
+  address: string;
   name: string;
   phone: string;
   email: string;
+  _id: string;
+  city: string;
 }
 
 const ManageCreators = () => {
@@ -22,11 +25,18 @@ const ManageCreators = () => {
     phone: "",
     password: "",
   });
-
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const userData = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     fetchData();
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const fetchData = async () => {
@@ -41,12 +51,16 @@ const ManageCreators = () => {
   };
 
   // Extract only necessary fields from tableData
-  const filteredData = tableData.map(({ _id, name, email, phone }) => ({
-    _id,
-    name,
-    email,
-    phone,
-  }));
+  const filteredData = tableData.map(
+    ({ _id, name, email, phone, address, city }) => ({
+      _id,
+      name,
+      email,
+      phone,
+      address,
+      city,
+    })
+  );
 
   const handleSearch = (searchTerm: string) => {
     const filteredResults = filteredData.filter((data) =>
@@ -119,23 +133,27 @@ const ManageCreators = () => {
   };
 
   const tableHead = [
-    { id: "1", title: "Creator ID" },
+    { id: "1", title: "ID" },
     { id: "2", title: "Name" },
     { id: "3", title: "Email" },
     { id: "4", title: "PHONE" },
+    { id: "5", title: "Address" },
+    { id: "6", title: "City" },
   ];
 
   return (
     <div className="container mt-5">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Creators</h1>
-      <div className="flex justify-between m-6">
+      <div className="flex justify-between my-6">
         <SearchUi handleSearch={handleSearch} search={"name"} />
         <button
           type="button"
-          className="bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-4 rounded"
+          className={`bg-[#008B8B] hover:bg-[#7da7a7] text-white font-bold py-2 px-2 md:px-4 rounded ${
+            screenWidth <= 415 ? "h-10 w-10" : "h-auto"
+          }`}
           onClick={() => setShowForm(true)}
         >
-          Add Creators
+          {screenWidth <= 415 ? <MdPersonAddAlt1 size={22} /> : "Add Creators"}
         </button>
       </div>
 
@@ -145,7 +163,7 @@ const ManageCreators = () => {
         onDelete={handleDelete}
       />
       {showForm && (
-        <div className="fixed top-0 left-0 w-full h-full z-[100] bg-black bg-opacity-75 flex justify-center items-center">
+        <div className="container fixed top-0 left-0 w-full h-full z-[100] bg-black bg-opacity-75 flex justify-center items-center">
           <form className="container w-full md:max-w-2xl mx-auto my-3 bg-white p-8 rounded-lg">
             {/* Form inputs */}
             <button
