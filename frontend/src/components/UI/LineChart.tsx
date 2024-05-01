@@ -40,7 +40,7 @@ const LineCharts: React.FC = () => {
       ]);
 
       const comments = commentsResponse.data;
-      const groups = groupsResponse.data;
+      const groups = groupsResponse.data.groups;
       console.log("groupResponse :", groups);
 
       const requests = requestsResponse.data;

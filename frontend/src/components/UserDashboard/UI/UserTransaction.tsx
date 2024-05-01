@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { transactionsType } from "../../../types/transaction";
 import axios from "axios";
 import Tables from "../../UI/Tables";
+import SearchUi from "../../UI/SearchUi";
 
 const transactionHeader = [
   { id: "1", title: "id" },
@@ -18,14 +18,16 @@ const transactionHeader = [
   { id: "13", title: "tx_ref" },
   { id: "14", title: "verifiedAt" },
 ];
+
 interface endpoint {
   urll: string;
   user_id: string;
+  isSearch?: boolean;
 }
 
-const UserTransaction = ({ urll, user_id }: endpoint) => {
-  const hasDEleteAction = false;
-  const [transaction, setTransaction] = useState<transactionsType[]>([]);
+const UserTransaction = ({ urll, user_id, isSearch }: endpoint) => {
+  const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
   useEffect(() => {
     const fetchTransaction = async () => {
@@ -54,8 +56,7 @@ const UserTransaction = ({ urll, user_id }: endpoint) => {
             const filteredTransaction: { [key: string]: any } = {}; // Type explicit declaration
             filteredProperties.forEach((property: string) => {
               if (transaction.hasOwnProperty(property)) {
-                filteredTransaction[property.toUpperCase()] =
-                  transaction[property];
+                filteredTransaction[property] = transaction[property];
               }
             });
             return filteredTransaction;
@@ -63,7 +64,7 @@ const UserTransaction = ({ urll, user_id }: endpoint) => {
         );
 
         // Set the filtered transaction data
-        setTransaction(filteredTransactionData);
+        setTransactions(filteredTransactionData);
       } catch (error) {
         console.error("Error fetching transaction data:", error);
       }
@@ -74,13 +75,27 @@ const UserTransaction = ({ urll, user_id }: endpoint) => {
     }
   }, [user_id, urll]);
 
+  const handleSearch = (searchTerm: string) => {
+    const filteredResults = transactions.filter((transaction: any) =>
+      Object.values(transaction).some((value: any) =>
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilteredTransactions(filteredResults);
+  };
+
   return (
     <div className="container justify-center mx-auto mt-3">
-      <div className="">
+      <div className="flex flex-col space-y-5 justify-start">
+        {isSearch && <SearchUi handleSearch={handleSearch} search="fname" />}
         <Tables
           header={transactionHeader}
-          datas={transaction}
-          hasDelete={hasDEleteAction} // Pass the boolean prop indicating delete button visibility
+          datas={
+            filteredTransactions.length > 0
+              ? filteredTransactions
+              : transactions
+          }
+          hasDelete={false} // Pass the boolean prop indicating delete button visibility
           onDelete={() => {}}
         />
       </div>

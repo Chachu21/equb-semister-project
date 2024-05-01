@@ -18,7 +18,6 @@ interface EqubGroup {
 const ManageGroups = () => {
   const [equbGroups, setEqubGroups] = useState<EqubGroup[]>([]);
   const [filteredGroup, setFilteredGroup] = useState<EqubGroup[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
 
   const userData = useSelector((state: RootState) => state.user.user);
@@ -30,7 +29,7 @@ const ManageGroups = () => {
         const response = await axios.get(
           "http://localhost:5000/api/v1/group/getAll"
         );
-        setEqubGroups(response.data);
+        setEqubGroups(response.data.groups);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -60,9 +59,8 @@ const ManageGroups = () => {
   ];
 
   const handleSearch = (searchTerm: string) => {
-    setSearchTerm(searchTerm);
     const filteredResults = filteredData.filter((data) =>
-      data.types.toLowerCase().includes(searchTerm.toLowerCase())
+      data.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredGroup(filteredResults);
   };
@@ -84,7 +82,6 @@ const ManageGroups = () => {
       );
       // If successful, call the parent component handler to update the state
       // onGroupDeleted(groupToDelete!);
-      console.log("Group deleted successfully");
       setEqubGroups(equbGroups.filter((group) => group._id !== groupId));
       setFilteredGroup(filteredGroup.filter((group) => group._id !== groupId));
     } catch (error) {
@@ -96,12 +93,7 @@ const ManageGroups = () => {
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
       <div className="flex justify-between items-center my-4">
-        <SearchUi
-          handleSearch={() => {
-            handleSearch(searchTerm);
-          }}
-          search={"period"}
-        />
+        <SearchUi handleSearch={handleSearch} search={"name"} />
         <div>
           <button
             onClick={() => {

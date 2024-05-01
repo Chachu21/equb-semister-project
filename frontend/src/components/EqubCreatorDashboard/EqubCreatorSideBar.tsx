@@ -4,30 +4,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
-import { RiDashboard2Line, RiCloseFill } from "react-icons/ri";
+// import { RiDashboard2Line, RiCloseFill } from "react-icons/ri";
 import { FaQuestionCircle } from "react-icons/fa";
 import { RootState, AppDispatch } from "../../Redux/store";
 import { resetCount } from "../../Redux/Features/requestSlice";
+import { RiCloseFill } from "react-icons/ri";
 
 const LinkComponent = [
   {
     id: 1,
-    name: "Dashboard",
-    path: "/equbCreatorDashboard",
-    icon: <RiDashboard2Line className="mr-3 text-xl" />,
+    name: "Manage groups",
+    path: "/equbCreatorDashboard/manageGroups",
+    icon: <FaUserGroup className="mr-3 text-xl" />,
   },
+  // {
+  //   id: 1,
+  //   name: "Dashboard",
+  //   path: "/equbCreatorDashboard",
+  //   icon: <RiDashboard2Line className="mr-3 text-xl" />,
+  // },
   {
     id: 2,
     name: "manage requests",
     path: "/equbCreatorDashboard/requests",
     icon: <FaQuestionCircle className="mr-3 text-xl" />,
   },
-  {
-    id: 3,
-    name: "Manage groups",
-    path: "/equbCreatorDashboard/manageGroups",
-    icon: <FaUserGroup className="mr-3 text-xl" />,
-  },
+
   // {
   //   id: 5,
   //   name: "Settings",

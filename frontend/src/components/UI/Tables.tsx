@@ -16,7 +16,7 @@ interface TableProps<T> {
   onDelete: (Id: string) => void;
 }
 
-const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
+const Tables = <T,>({ header, datas, onDelete, hasDelete }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage] = useState<number>(5);
   const [showModal, setShowModal] = useState<boolean>(false); // State to manage modal visibility
@@ -47,14 +47,16 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
               {header.map((item) => (
                 <th
                   key={item.id}
-                  className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md"
+                  className="text-[14px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md"
                 >
                   {item.title}
                 </th>
               ))}
-              <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
-                Actions
-              </th>
+              {hasDelete && (
+                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
+                  Actions
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -65,15 +67,16 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
                     {String(value)}
                   </td>
                 ))}
-
-                <td>
-                  <button
-                    onClick={() => handleDelete(data._id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    Delete
-                  </button>
-                </td>
+                {hasDelete && (
+                  <td>
+                    <button
+                      onClick={() => handleDelete(data._id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -165,7 +168,7 @@ const Tables = <T,>({ header, datas, onDelete }: TableProps<T>) => {
             </button>
           </li>
           {Array.from({ length: Math.ceil(datas.length / itemsPerPage) }).map(
-            (item, index) => (
+            (_, index) => (
               <li key={index}>
                 <button
                   onClick={() => paginate(index + 1)}

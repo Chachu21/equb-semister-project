@@ -4,25 +4,19 @@ import SearchUi from "../UI/SearchUi";
 import Tables from "../UI/Tables";
 import { RootState } from "../../Redux/store";
 import { useSelector } from "react-redux";
+import { usersType } from "../../types/usersType";
 
 interface UserData {
   _id: string;
   name: string;
+  phone: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 const UserManage = () => {
-  const [tableData, setTableData] = useState<UserData[]>([]);
+  const [tableData, setTableData] = useState<usersType[]>([]);
   const [filteredUser, setFilteredUser] = useState<UserData[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const userData = useSelector((state: RootState) => state.user.user);
-
-  const formatDateString = (dateString: string) => {
-    const date = new Date(dateString);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-  };
 
   useEffect(() => {
     fetchData();
@@ -30,7 +24,7 @@ const UserManage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get<UserData[]>(
+      const response = await axios.get<usersType[]>(
         "http://localhost:5000/api/v1/users"
       );
       setTableData(response.data);
@@ -40,18 +34,14 @@ const UserManage = () => {
   };
 
   // Extract only necessary fields from tableData
-  const filteredData = tableData.map(
-    ({ _id, name, email, createdAt, updatedAt }) => ({
-      _id,
-      name,
-      email,
-      createdAt: formatDateString(createdAt),
-      updatedAt: formatDateString(updatedAt),
-    })
-  );
+  const filteredData = tableData.map(({ _id, name, email, phone }) => ({
+    _id,
+    name,
+    email,
+    phone,
+  }));
 
   const handleSearch = (searchTerm: string) => {
-    setSearchTerm(searchTerm);
     const filteredResults = filteredData.filter((data) =>
       data.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -84,20 +74,14 @@ const UserManage = () => {
     { id: "1", title: "User ID" },
     { id: "2", title: "Name" },
     { id: "3", title: "Email" },
-    { id: "4", title: "CREATED DATE" },
-    { id: "5", title: "UPDATED DATE" },
+    { id: "4", title: "Phone" },
   ];
 
   return (
     <div className="container mt-5">
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage users</h1>
       <div className="my-5">
-        <SearchUi
-          handleSearch={() => {
-            handleSearch(searchTerm);
-          }}
-          search={"name"}
-        />
+        <SearchUi handleSearch={handleSearch} search={"name"} />
       </div>
       <Tables
         header={tableHead}

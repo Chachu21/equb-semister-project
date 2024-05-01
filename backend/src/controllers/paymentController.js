@@ -1,5 +1,4 @@
 import Payment from "../models/payments.js";
-import PaymentResponse from "../models/paymentResponse.js";
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
@@ -91,7 +90,6 @@ const acceptPayment = async (req, res) => {
     });
   }
 };
-
 // verification endpoint
 const verifyPayment = async (req, res) => {
   console.log("am inside verify payment");
@@ -142,7 +140,19 @@ const verifyPayment = async (req, res) => {
     res.status(500).json({ error: "Failed to verify and save payment" });
   }
 };
-
+// //List banks
+// const response = axios.get("https://api.chapa.co/v1/banks", {
+//   headers: {
+//     Authorization: `Bearer ${CHAPA_AUTH_KEY}`,
+//     "Content-Type": "application/json",
+//   },
+// });
+// const banks = response.data;
+// console.log(banks);
+// //trnsfer payment to the winner
+// const transferPayment = async (req, res) => {
+//   const response = await axios.post("https://api.chapa.co/v1/transfers");
+// };
 // Get all payments
 const getAllPayments = async (req, res) => {
   try {

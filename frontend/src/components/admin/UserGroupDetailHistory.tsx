@@ -24,7 +24,6 @@ interface datas {
   isCompleted: boolean;
 }
 const UserGroupDetailHistory: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUserGroup, setFilteredUsergroup] = useState<datas[]>([]);
   const [userGroups, setUserGroups] = useState<datas[]>([]);
   const userData = useSelector((state: RootState) => state.user.user);
@@ -70,7 +69,6 @@ const UserGroupDetailHistory: React.FC = () => {
     { id: "8", title: "iscompleted" },
   ];
   const handleSearch = (searchTerm: string) => {
-    setSearchTerm(searchTerm);
     const filteredResults = filteredData.filter((data) =>
       data.status.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -104,12 +102,7 @@ const UserGroupDetailHistory: React.FC = () => {
       <h1 className="text-2xl font-semibold ml-5 mb-2">
         UserGroupDetailHistory
       </h1>
-      <SearchUi
-        handleSearch={() => {
-          handleSearch(searchTerm);
-        }}
-        search={"status"}
-      />
+      <SearchUi handleSearch={handleSearch} search={"name"} />
       <Tables
         header={header}
         datas={filteredUserGroup.length > 0 ? filteredUserGroup : filteredData}

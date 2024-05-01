@@ -2,26 +2,19 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-//mine nly
-import crypto from "crypto";
-import nodemailer from "nodemailer";
-//
-
-dotenv.config();
 import createDatabase from "./config/dbConfig.js";
 import userRouter from "./routes/userRoute.js";
 import groupRouter from "./routes/groupRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import paymentRouter from "./routes/paymentRoute.js";
 import requestRouter from "./routes/requestRoutes.js";
-
 import userScheduleAnnouncement from "./utils/userAnnouncement.js";
 import adminUpaideAnnouncement from "./utils/announcementAndcheckUpaidMember.js";
-
-// import requestRouter from "./routes/requestRoutes.js";
 import winnerSelection from "./utils/automticSelectWinner.js";
+import notificationRouter from "./routes/notificationRoute.js";
 
 const app = express();
+dotenv.config();
 const port = process.env.PORT;
 //connect to the database
 createDatabase();
@@ -37,6 +30,7 @@ app.use("/api/v1/group", groupRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/request", requestRouter);
+app.use("/api/v1/notification", notificationRouter);
 
 //for user announcements
 userScheduleAnnouncement();

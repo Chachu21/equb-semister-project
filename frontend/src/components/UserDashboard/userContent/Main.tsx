@@ -15,10 +15,9 @@ const Main = () => {
           <UserTransaction
             urll={`http://localhost:5000/api/v1/payment/get/${user_id}`}
             user_id={`${user_id}`}
+            isSearch={false}
           />
         </div>
-        {/* <p>in this part shows the details of each group</p> */}
-        {/* <LuckIdentifier /> */}
       </div>
     </div>
   );

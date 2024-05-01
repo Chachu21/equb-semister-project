@@ -47,6 +47,16 @@ const roundSchema = new mongoose.Schema({
   winnerSelection_date: {
     type: Date,
   },
+  receivedPayment: {
+    type: Boolean,
+    default: false, // Set default value to false
+  },
+  guarantee: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   // distributedAmount: {
   //   type: Number,
   // },

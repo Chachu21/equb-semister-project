@@ -8,7 +8,7 @@ import cloudinary from "../utils/cloudinary.js";
 
 // Create User
 export const createUser = async (req, res) => {
-  const { name, phone, password, email, agreeTerms } = req.body;
+  const { name, phone, password, email, agreeTerms, role } = req.body;
 
   // console.log(req.body);
 
@@ -34,6 +34,7 @@ export const createUser = async (req, res) => {
       password,
       email,
       agreeTerms,
+      role,
     });
     const savedUser = await newUser.save();
     // Send a success response

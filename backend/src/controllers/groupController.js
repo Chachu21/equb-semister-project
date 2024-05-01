@@ -68,7 +68,7 @@ export const getAllGroups = async (req, res) => {
   try {
     const groups = await Group.find();
     // console.log(groups);
-    res.json(groups);
+    res.json({ groups: groups });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

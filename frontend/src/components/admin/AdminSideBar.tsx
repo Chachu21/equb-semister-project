@@ -31,16 +31,17 @@ const LinkComponent = [
   },
   {
     id: 3,
+    name: "Manage Creators",
+    path: "/admin/managecreators",
+    icon: <FaUserGroup className="mr-3 text-xl" />,
+  },
+  {
+    id: 4,
     name: "Manage Groups",
     path: "/admin/managegroups",
     icon: <GrTransaction className="mr-3 text-xl" />,
   },
-  {
-    id: 4,
-    name: "UserGroupDetail",
-    path: "/admin/grouphistory",
-    icon: <img src={lucky} className="mr-3 w-5 h-5" />,
-  },
+
   {
     id: 5,
     name: "Transactions",

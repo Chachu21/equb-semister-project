@@ -28,5 +28,8 @@ export interface groupsType {
     winner: usersType;
     winnerSelection_date: Date;
     distributedAmount: number;
+    _id: string;
+    receivedPayment: boolean;
+    guarantee: string[];
   }[];
 }

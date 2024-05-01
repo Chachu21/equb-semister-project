@@ -30,6 +30,8 @@ import DetailOfGroupType from "./components/UserDashboard/UI/DetailOfGroupType";
 import ManageUserRequest from "./components/EqubCreatorDashboard/ManageUserRequest";
 import EqubCreatorDashboardContent from "./components/EqubCreatorDashboard/EqubCreatorDashboardContent";
 import NotificationComponent from "./components/admin/AdminNotification";
+import ManageCreators from "./components/admin/ManageCreator";
+import Payout from "./components/UserDashboard/userContent/Payout";
 
 const App = () => {
   const role = useSelector((state: RootState) => state.user.user?.role);
@@ -69,6 +71,10 @@ const App = () => {
                 path="/admin/group-details?"
                 element={<ViewGroupDetails />}
               />
+              <Route
+                path="/admin/managecreators"
+                element={<ManageCreators />}
+              />
             </Route>
           )}
           {/* for user Dashboard */}
@@ -96,6 +102,7 @@ const App = () => {
                 path="/userDashboard/statusdetailofgroup"
                 element={<DetailOfGroupType />}
               />
+              <Route path="/userDashboard/payout" element={<Payout />} />
             </Route>
           )}
 

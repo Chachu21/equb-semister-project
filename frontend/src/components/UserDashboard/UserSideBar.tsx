@@ -1,9 +1,4 @@
-import {
-  RiDashboard2Line,
-  RiSettings3Line,
-  // RiSecurePaymentFill,
-  RiCloseFill,
-} from "react-icons/ri";
+import { RiDashboard2Line, RiSettings3Line, RiCloseFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "../../Redux/store";
@@ -11,6 +6,7 @@ import { menuBar } from "../../Redux/Features/userSlice";
 import { FaUserGroup } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
 import { FaQuestionCircle } from "react-icons/fa";
+import { SiCashapp } from "react-icons/si";
 
 const LinkComponent = [
   {
@@ -44,6 +40,12 @@ const LinkComponent = [
     name: "send request",
     path: "/userDashboard/sendrequest",
     icon: <FaQuestionCircle className="mr-3 w-5 h-5" />,
+  },
+  {
+    id: 6,
+    name: "payout",
+    path: "/userDashboard/payout",
+    icon: <SiCashapp className="mr-3 w-5 h-5" />,
   },
 ];
 

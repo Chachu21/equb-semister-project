@@ -16,17 +16,19 @@ const Card = () => {
         const response = await axios.get(
           `http://localhost:5000/api/v1/group/getAll`
         );
-        const grp = response.data.map((group: { _id: string }) => group._id);
+        const grp = response.data.groups.map(
+          (group: { _id: string }) => group._id
+        );
 
         setGroups(grp);
         const counts = {
-          completed: response.data.filter(
+          completed: response.data.groups.filter(
             (group: { status: string }) => group.status === "completed"
           ).length,
-          pending: response.data.filter(
+          pending: response.data.groups.filter(
             (group: { status: string }) => group.status === "pending"
           ).length,
-          started: response.data.filter(
+          started: response.data.groups.filter(
             (group: { status: string }) => group.status === "started"
           ).length,
         };
@@ -111,7 +113,7 @@ const Card = () => {
           </div>
         </div>
         <Link
-          to={`/admin/group-details?status=unstarted`}
+          to={`/admin/group-details?status=started`}
           className="text-[#f84525] font-medium text-sm hover:text-red-800"
         >
           View

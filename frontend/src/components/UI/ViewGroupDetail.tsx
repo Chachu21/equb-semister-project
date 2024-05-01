@@ -1,31 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { groupsType } from "../../types/groupType";
 
-interface Group {
-  _id: string;
-  name: string;
-  amount: number;
-  types: string;
-  member: number;
-  status: string; // Add status property
-}
+// interface Group {
+//   _id: string;
+//   name: string;
+//   amount: number;
+//   types: string;
+//   member: number;
+//   status: string; // Add status property
+// }
 
 const ViewGroupDetails: React.FC = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const status = params.get("status");
-  const [groups, setGroups] = useState<Group[]>([]);
-console.log("status",status);
+  const [groups, setGroups] = useState<groupsType[]>([]);
+  console.log("status", status);
 
   useEffect(() => {
     const fetchGroupsAndFilterByStatus = async () => {
       try {
-        const response = await axios.get<{ searchResult: Group[] }>(
-          "http://localhost:5000/api/v1/group/get"
+        const response = await axios.get<{ groups: groupsType[] }>(
+          "http://localhost:5000/api/v1/group/getAll"
         );
         // Extract groups from response data
-        const allGroups = response.data.searchResult;
+        const allGroups = response.data.groups;
+        console.log(allGroups);
         // Filter groups based on status
         const filteredGroups = allGroups.filter(
           (group) => group.status === status

@@ -1,5 +1,3 @@
-// notification.js
-
 import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema({
@@ -14,6 +12,10 @@ const notificationSchema = new mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+  },
+  read: {
+    type: Boolean,
+    default: false, // Default value is false, indicating unread
   },
   createdAt: {
     type: Date,
