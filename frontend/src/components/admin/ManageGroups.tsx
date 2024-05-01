@@ -19,8 +19,8 @@ const ManageGroups = () => {
   const [equbGroups, setEqubGroups] = useState<EqubGroup[]>([]);
   const [filteredGroup, setFilteredGroup] = useState<EqubGroup[]>([]);
   const [showModal, setShowModal] = useState(false);
-
   const userData = useSelector((state: RootState) => state.user.user);
+  const role = userData?.role;
   // const user_id = userData?._id;
   // const token = userData?.token;
   useEffect(() => {
@@ -94,22 +94,24 @@ const ManageGroups = () => {
       <h1 className="text-2xl font-semibold ml-5 mb-2">Manage Equb Groups</h1>
       <div className="flex justify-between items-center my-4">
         <SearchUi handleSearch={handleSearch} search={"name"} />
-        <div>
-          <button
-            onClick={() => {
-              setShowModal(true);
-            }}
-            className="w-fit px-[1.5px] md:px-3 py-2 md:py-[2px] rounded-md items-center text-center text-white bg-[#008B8B]"
-          >
-            add group
-          </button>
-          <CreateGroup
-            isOpen={showModal}
-            onClose={() => {
-              setShowModal(false);
-            }}
-          />
-        </div>
+        {role === "creator" && (
+          <div>
+            <button
+              onClick={() => {
+                setShowModal(true);
+              }}
+              className="w-fit px-[1.5px] md:px-3 py-2 md:py-[2px] rounded-md items-center text-center text-white bg-[#008B8B]"
+            >
+              add group
+            </button>
+            <CreateGroup
+              isOpen={showModal}
+              onClose={() => {
+                setShowModal(false);
+              }}
+            />
+          </div>
+        )}
       </div>
       <Tables
         header={tableHead}

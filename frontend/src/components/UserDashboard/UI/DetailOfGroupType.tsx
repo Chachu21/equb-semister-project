@@ -80,11 +80,13 @@ const DetailOfGroupType = () => {
                     <h3 className="underline font-bold text-[#008B8B]">
                       contact Info
                     </h3>
-                    <p>
+                    <p className="max-w-xs break-all">
                       <span>
                         <MdOutlineEmail size={20} />
                       </span>
-                      <span className="text-gray-500">{member.email}</span>
+                      <span className="text-gray-500 lowercase">
+                        {member.email}
+                      </span>
                     </p>
                     <p>
                       <span>
