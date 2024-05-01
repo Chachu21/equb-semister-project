@@ -13,6 +13,7 @@ import adminUpaideAnnouncement from "./utils/announcementAndcheckUpaidMember.js"
 import winnerSelection from "./utils/automticSelectWinner.js";
 import notificationRouter from "./routes/notificationRoute.js";
 
+//instantait the express
 const app = express();
 dotenv.config();
 const port = process.env.PORT;

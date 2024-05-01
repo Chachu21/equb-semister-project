@@ -31,5 +31,8 @@
     "nodemailer": "^6.9.13",
     "twilio": "^5.0.1",
     "validatorjs": "^3.22.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.0"
   }
 }
