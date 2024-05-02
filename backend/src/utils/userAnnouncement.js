@@ -57,6 +57,76 @@ async function sendPostReminderForUnpaidPayments(user, group) {
   }
 }
 
+async function announceUnpaidMembersBeforeWinnerSelection(group) {
+  try {
+    let addation = 0;
+    if (group.types === "daily" && group.paymentInterval === 1) {
+      addation = 20 * 60 * 60 * 1000;
+    } else if (group.types === "weekly") {
+      addation = 24 * 60 * 60 * 1000;
+    } else {
+      addation = 2 * 24 * 60 * 60 * 1000;
+    }
+
+    const overdueMembers = [];
+    const today = new Date();
+
+    const winnerSelectionDate = new Date(group.startDate);
+    const durationMilliseconds = group.roundDuration * 24 * 60 * 60 * 1000;
+    winnerSelectionDate.setTime(
+      winnerSelectionDate.getTime() + durationMilliseconds
+    );
+
+    const paymentIntervalInMillis = group.paymentInterval * 24 * 60 * 60 * 1000;
+    const announcementDate = new Date(
+      winnerSelectionDate.getTime() - paymentIntervalInMillis
+    );
+
+    if (today.toString() === announcementDate.toString()) {
+      for (const member of group.members) {
+        const userId = member;
+        const userData = await User.findById(userId);
+        if (!userData) continue;
+
+        const payments = await Payment.find({
+          user: userId,
+          equbGroup: group._id,
+          round: group.round,
+        });
+
+        const hasSuccessfulPayment = payments.some(
+          (payment) => payment.status === "success"
+        );
+
+        if (!hasSuccessfulPayment) {
+          overdueMembers.push(member);
+        }
+      }
+
+      if (overdueMembers.length > 0) {
+        const message = `Group ${
+          group.name
+        } has overdue payments from: ${overdueMembers.join(
+          ", "
+        )} before winner selection!`;
+        console.log(message);
+
+        const notification = new Notification({
+          message,
+          groupId: group._id,
+          userID: member,
+        });
+        await notification.save();
+      }
+    }
+  } catch (error) {
+    console.log(
+      "Error announcing unpaid members before winner selection:",
+      error.message
+    );
+  }
+}
+
 async function UserUnPaidAnnouncement(group) {
   console.log("from deadline");
   let addation = 0;
@@ -187,6 +257,14 @@ const userScheduleAnnouncement = async () => {
     const groups = await Group.find({ status: "started" });
     // console.log(groups);
     for (const group of groups) {
+      let addation = 0;
+      if (group.types === "daily" && group.roundDuration === 1) {
+        addation = 3 * 60 * 60 * 1000;
+      } else if (group.types === "weekly") {
+        addation = 24 * 60 * 60 * 1000;
+      } else {
+        addation = 1 * 24 * 60 * 60 * 1000;
+      }
       const paymentIntervalInMillis =
         group.paymentInterval * 24 * 60 * 60 * 1000;
       const winnerSelectionDate = new Date(group.startDate);
@@ -229,7 +307,7 @@ const userScheduleAnnouncement = async () => {
       //for un paid
       //for paymnet deadline
       const paymentDeadline = new Date(
-        winnerSelectionDate.getTime() - paymentIntervalInMillis
+        winnerSelectionDate.getTime() - paymentIntervalInMillis + addation
       );
 
       console.log("paymnet deadline: " + paymentDeadline);
@@ -256,7 +334,9 @@ const userScheduleAnnouncement = async () => {
       console.log("from user deadline", unpaidpattern);
       // Schedule announcementOfUser function to run on the calculated announcement date
       cron.schedule(cronPattern, () => userPrePaymentAnouncement(group));
-      cron.schedule(unpaidpattern, () => UserUnPaidAnnouncement(group));
+      cron.schedule(unpaidpattern, () =>
+        announceUnpaidMembersBeforeWinnerSelection(group)
+      );
     }
   } catch (error) {
     console.error("Error scheduling announcement:", error.message);

@@ -177,14 +177,12 @@ groupSchema.post("save", async function (doc) {
 
 // New method for winner selection (optional)
 groupSchema.methods.selectWinner = async function () {
-  console.log("I am inside selectWinner function");
   if (
     this.status === "started" &&
     this.members.length !== this.winners.length
   ) {
     // Retrieve previous winners
     const previousWinners = this.winners;
-    console.log("previous winners", previousWinners);
     // Filter members who haven't paid successfully
     const allMembersPaid = await Promise.all(
       this.members.map(async (memberId) => {
@@ -246,6 +244,16 @@ groupSchema.methods.selectWinner = async function () {
         // Increment round and update start date
         this.startDate = new Date();
         this.round += 1;
+      }
+      //for sending notification admin about winner
+      const adminmessage = `the  winner of the round ${this.round} for ${this.name} equb is ${winner.name}.`;
+      if (winner) {
+        const notification = new Notification({
+          adminmessage,
+          groupId: group._id,
+          userID: member,
+        });
+        await notification.save();
       }
       // Save the changes to the document
       await this.save();

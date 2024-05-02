@@ -36,7 +36,7 @@ app.use("/api/v1/notification", notificationRouter);
 //for user announcements
 userScheduleAnnouncement();
 //for admin  about unpaid announcements
-adminUpaideAnnouncement();
+// adminUpaideAnnouncement();
 //for winner
 winnerSelection();
 

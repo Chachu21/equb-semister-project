@@ -26,7 +26,7 @@ async function announceUnpaidMembersBeforeWinnerSelection(group) {
 
     const paymentIntervalInMillis = group.paymentInterval * 24 * 60 * 60 * 1000;
     const announcementDate = new Date(
-      winnerSelectionDate.getTime() - paymentIntervalInMillis + addation
+      winnerSelectionDate.getTime() - paymentIntervalInMillis
     );
 
     if (today.toString() === announcementDate.toString()) {
@@ -121,7 +121,7 @@ const adminUpaideAnnouncement = async () => {
 
       // Construct the cron pattern
       const cronPattern = `${seconds} ${minutes} ${hours} ${dayOfMonth} ${month} *`;
-      console.log("from admin", cronPattern);
+      console.log("from admin --------", cronPattern);
       // Schedule announcementOfUser function to run on the calculated announcement date
       cron.schedule(cronPattern, () =>
         announceUnpaidMembersBeforeWinnerSelection(group)
