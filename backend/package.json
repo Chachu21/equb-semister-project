@@ -27,12 +27,15 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.4",
     "mongoose-paginate-v2": "^1.8.0",
-    "node-cron": "^3.0.3",
-    "nodemailer": "^6.9.13",
+    "node-cron": "^4.4.1",
+    "nodemailer": "^9.0.1",
     "twilio": "^5.0.1",
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0"
+  },
+  "overrides": {
+    "tar": "^7.5.7"
   }
 }
